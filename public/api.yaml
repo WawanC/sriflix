@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: Sriflix API
+  description: REST API for Sriflix Web App
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local
+  - url: https://sriflix.kurniawanc.com/api
+    description: Production
+
+paths:
+  /hello:
+    get:
+      summary: Returns a hello message.
+      responses:
+        '200':
+          description: Hello message response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hello from Sriflix API"
+
