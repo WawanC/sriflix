@@ -23,8 +23,15 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage() ?? 'System Error',
+                ], $e->getCode() <= 0 ? 500 : $e->getCode());
+            } else {
+                return null;
+            }
         });
     }
+
 }

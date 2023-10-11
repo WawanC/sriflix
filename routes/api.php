@@ -24,5 +24,6 @@ Route::get('/hello', function () {
 });
 
 Route::prefix("movies")->group(function () {
-    Route::get("/", [MovieController::class, "getAll"]);
+    Route::get("/", [MovieController::class, "get_all"]);
+    Route::get("/{id}", [MovieController::class, "get_by_id"])->whereUuid("id");
 });

@@ -12,4 +12,9 @@ class MovieRepository
     {
         return Movie::all();
     }
+
+    public function get_movie_by_id(string $id): Movie|null
+    {
+        return Movie::find($id);
+    }
 }
