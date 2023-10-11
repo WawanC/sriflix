@@ -17,8 +17,8 @@
                     />
                 </div>
                 <iframe
+                    :src="getMovie.data.value?.video_url"
                     class="w-full md:w-3/4 aspect-video"
-                    src="https://www.youtube.com/embed/tgbNymZ7vqY"
                 ></iframe>
             </div>
             <p class="text-xl italic indent-8 md:indent-16">
