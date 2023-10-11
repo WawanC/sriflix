@@ -1,5 +1,6 @@
 import { createWebHistory, RouterOptions } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
+import MovieDetailPage from "./pages/MovieDetailPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -8,6 +9,11 @@ export const routerOptions: RouterOptions = {
             path: "/",
             name: "Home | Sriflix",
             component: HomePage,
+        },
+        {
+            path: "/movies/:movieId",
+            name: "Movie Detail | Sriflix",
+            component: MovieDetailPage,
         },
     ],
 };

@@ -9,3 +9,7 @@ export type Movie = {
 export type GetMoviesResponse = {
     movies: Movie[];
 };
+
+export type GetMovieResponse = {
+    movie: Movie;
+};

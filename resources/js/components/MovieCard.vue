@@ -1,7 +1,7 @@
 <template>
     <router-link
         :key="props.movie.id"
-        :to="`/props.movies/${props.movie.id}`"
+        :to="`/movies/${props.movie.id}`"
         class="w-1/3 md:w-1/4 flex relative rounded overflow-hidden shadow"
     >
         <img
