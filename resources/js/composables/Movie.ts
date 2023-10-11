@@ -37,5 +37,5 @@ export const useGetMovie = (movieId: string) => {
         }
     };
 
-    return { data, isFetching, fetchMovie };
+    return { data, isFetching, error, fetchMovie };
 };

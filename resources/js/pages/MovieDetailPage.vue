@@ -1,5 +1,11 @@
 <template>
-    <main class="flex-1 flex justify-center py-4 md:py-8 px-8 md:px-0">
+    <main
+        v-if="getMovie.error.value"
+        class="flex-1 flex justify-center items-center"
+    >
+        <span class="text-4xl font-bold">Movie not found</span>
+    </main>
+    <main v-else class="flex-1 flex justify-center py-4 md:py-8 px-8 md:px-0">
         <loading v-show="getMovie.isFetching.value" class="self-center" />
         <section
             v-show="!getMovie.isFetching.value"
