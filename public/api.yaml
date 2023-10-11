@@ -45,3 +45,41 @@ paths:
                           video_url: "link to movie video url",
                         },
                       ]
+  /movies/{movieId}:
+    get:
+      summary: Returns single movie.
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      responses:
+        "200":
+          description: Get single movie response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movie:
+                    type: object
+                    example:
+                      {
+                        id: "123abc",
+                        title: "movie name",
+                        description: "some movie description",
+                        video_url: "link to movie video url",
+                      }
+        "404":
+          description: Movie not found response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Movie not found"
