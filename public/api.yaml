@@ -11,18 +11,37 @@ servers:
     description: Production
 
 paths:
-  /hello:
+  /movies:
     get:
-      summary: Returns a hello message.
+      summary: Returns all movies.
       responses:
-        '200':
-          description: Hello message response
+        "200":
+          description: Get all movies response
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: "Hello from Sriflix API"
-
+                  movies:
+                    type: array
+                    example:
+                      [
+                        {
+                          id: "123abc",
+                          title: "movie name",
+                          description: "some movie description",
+                          video_url: "link to movie video url",
+                        },
+                        {
+                          id: "321bca",
+                          title: "movie name",
+                          description: "some movie description",
+                          video_url: "link to movie video url",
+                        },
+                        {
+                          id: "132acb",
+                          title: "movie name",
+                          description: "some movie description",
+                          video_url: "link to movie video url",
+                        },
+                      ]
