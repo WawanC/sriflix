@@ -11,7 +11,7 @@ class MovieTest extends TestCase
         $response = $this->get('/api/movies');
 
         $response->assertJsonStructure([
-            "movies"
+            "movies" => ["*" => ["id", "title", "description", "picture_url", "video_url"]]
         ]);
         $response->assertStatus(200);
     }
@@ -22,7 +22,7 @@ class MovieTest extends TestCase
         $response = $this->get("/api/movies/" . $movies[0]['id']);
 
         $response->assertJsonStructure([
-            "movie"
+            "movie" => ["id", "title", "description", "picture_url", "video_url"]
         ]);
         $response->assertStatus(200);
     }
