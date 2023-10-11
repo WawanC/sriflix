@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('description');
+            $table->string('picture_url');
             $table->string('video_url');
         });
     }

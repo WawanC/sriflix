@@ -30,18 +30,21 @@ paths:
                           id: "123abc",
                           title: "movie name",
                           description: "some movie description",
+                          picture_url: "link to picture url",
                           video_url: "link to movie video url",
                         },
                         {
                           id: "321bca",
                           title: "movie name",
                           description: "some movie description",
+                          picture_url: "link to picture url",
                           video_url: "link to movie video url",
                         },
                         {
                           id: "132acb",
                           title: "movie name",
                           description: "some movie description",
+                          picture_url: "link to picture url",
                           video_url: "link to movie video url",
                         },
                       ]
@@ -71,6 +74,7 @@ paths:
                         id: "123abc",
                         title: "movie name",
                         description: "some movie description",
+                        picture_url: "link to picture url",
                         video_url: "link to movie video url",
                       }
         "404":
