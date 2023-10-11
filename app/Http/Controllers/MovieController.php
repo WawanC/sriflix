@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\MovieRepository;
+use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
@@ -24,6 +25,13 @@ class MovieController extends Controller
 
     public function get_by_id(string $id)
     {
+        $validId = Str::isUuid($id);
+        if (!$validId) {
+            return response()->json([
+                "message" => "Invalid movie id"
+            ], 400);
+        }
+
         $movie = $this->movieRepository->get_movie_by_id($id);
         if (!$movie) {
             return response()->json([
