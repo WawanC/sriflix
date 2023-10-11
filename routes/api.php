@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\MovieController;
+
 Route::get('/docs', function () {
     return view('swagger');
 });
@@ -19,4 +21,8 @@ Route::get('/hello', function () {
     return Response::json([
         "message" => "Hello from Sriflix API"
     ]);
+});
+
+Route::prefix("movies")->group(function () {
+    Route::get("/", [MovieController::class, "getAll"]);
 });
