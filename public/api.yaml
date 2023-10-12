@@ -87,3 +87,54 @@ paths:
                   message:
                     type: string
                     example: "Movie not found"
+  /auth/register:
+    post:
+      summary: Register and create new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: username123
+                  required: true
+                  minLength: 6
+                password:
+                  type: string
+                  example: 123456
+                  required: true
+                  minLength: 6
+      responses:
+        200:
+          description: Register success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+        400:
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Username is required
+        409:
+          description: Conflict Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Username already exists
