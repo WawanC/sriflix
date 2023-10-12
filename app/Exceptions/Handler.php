@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,6 +27,12 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e, $request) {
             error_log($e);
             if ($request->is('api/*')) {
+                if ($e instanceof AuthenticationException) {
+                    return response()->json([
+                        'message' => 'Unauthorized',
+                    ], 401);
+                }
+
                 return response()->json([
                     'message' => $e->getMessage() ?? 'System Error',
                 ], $e->getCode() <= 0 ? 500 : $e->getCode());
