@@ -138,3 +138,46 @@ paths:
                   message:
                     type: string
                     example: Username already exists
+  /auth/login:
+    post:
+      summary: Login with existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: username123
+                  required: true
+                password:
+                  type: string
+                  example: 123456
+                  required: true
+      responses:
+        200:
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  access_token:
+                    type: string
+                    example: abcdefghijklmn
+        401:
+          description: Wrong username or password info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Wrong credentials
+
