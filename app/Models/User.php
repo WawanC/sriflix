@@ -9,5 +9,7 @@ class User extends Model
 {
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = ["username", "password"];
 }

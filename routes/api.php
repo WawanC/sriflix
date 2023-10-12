@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 
 Route::get('/docs', function () {
@@ -26,4 +27,8 @@ Route::get('/hello', function () {
 Route::prefix("movies")->group(function () {
     Route::get("/", [MovieController::class, "get_all"]);
     Route::get("/{id}", [MovieController::class, "get_by_id"]);
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
 });
