@@ -61,5 +61,32 @@ class AuthTest extends TestCase
         $response->assertStatus(409);
     }
 
+    /**
+     * @depends test_register_success
+     */
+    public function test_login_success($user): void
+    {
+        $response = $this->post('/api/auth/login', [
+            "username" => $user['username'],
+            "password" => $user['password']
+        ]);
+
+        $response->assertJsonStructure(["message", "access_token"]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * @depends test_register_success
+     */
+    public function test_login_wrong_credentials($user): void
+    {
+        $response = $this->post('/api/auth/login', [
+            "username" => $user['username'],
+            "password" => "xxxxxxxxxxxxxxx"
+        ]);
+
+        $response->assertJson(["message" => "Wrong credentials"]);
+        $response->assertStatus(401);
+    }
 
 }
