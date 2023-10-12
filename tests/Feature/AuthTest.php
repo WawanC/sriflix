@@ -64,7 +64,7 @@ class AuthTest extends TestCase
     /**
      * @depends test_register_success
      */
-    public function test_login_success($user): void
+    public function test_login_success($user): string
     {
         $response = $this->post('/api/auth/login', [
             "username" => $user['username'],
@@ -73,6 +73,8 @@ class AuthTest extends TestCase
 
         $response->assertJsonStructure(["message", "access_token"]);
         $response->assertStatus(200);
+
+        return $response["access_token"];
     }
 
     /**
@@ -89,4 +91,27 @@ class AuthTest extends TestCase
         $response->assertStatus(401);
     }
 
+    /**
+     * @depends test_login_success
+     */
+    public function test_get_me_success($accessToken): void
+    {
+        $response = $this->get('/api/auth/me', [
+            "Authorization" => "Bearer " . $accessToken
+        ]);
+
+        $response->assertJsonStructure(["message", "user" => ["username"]]);
+        $response->assertStatus(200);
+    }
+
+
+    public function test_get_me_unauthorized(): void
+    {
+        $response = $this->get('/api/auth/me', [
+            "Accept" => "application/json"
+        ]);
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
 }
