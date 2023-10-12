@@ -32,4 +32,5 @@ Route::prefix("movies")->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/me', [AuthController::class, 'get_me'])->middleware('auth:sanctum');
 });

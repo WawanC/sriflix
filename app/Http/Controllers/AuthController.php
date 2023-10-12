@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -48,11 +50,23 @@ class AuthController extends Controller
 
         $user->tokens()->delete();
 
-        $accessToken = $user->createToken("access_token")->plainTextToken;
+        $accessToken = $user->createToken("access_token", ["*"], Carbon::now()->addMinutes(15))->plainTextToken;
 
         return response()->json([
             "message" => "Success",
             "access_token" => $accessToken
+        ]);
+    }
+
+    public function get_me(Request $request)
+    {
+        $userData = [
+            "username" => $request->user()['username']
+        ];
+
+        return response()->json([
+            "message" => "Success",
+            "user" => $userData
         ]);
     }
 }
