@@ -10,6 +10,13 @@ servers:
   - url: https://sriflix.kurniawanc.com/api
     description: Production
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /movies:
     get:
@@ -180,4 +187,38 @@ paths:
                   message:
                     type: string
                     example: Wrong credentials
-
+  /auth/me:
+    get:
+      summary: Get authenticated user info
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            type: string
+          example: application/json
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Get user info success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  user:
+                    type: object
+                    example: { user: { username: user123 } }
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
