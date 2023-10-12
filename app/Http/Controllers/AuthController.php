@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -31,5 +33,26 @@ class AuthController extends Controller
         return response()->json([
             "message" => "Success"
         ], 201);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $validated = $request->validated();
+
+        $user = $this->userRepository->get_user_by_username($validated['username']);
+        if (!$user || !Hash::check($validated['password'], $user['password'])) {
+            throw new HttpResponseException(response()->json([
+                "message" => "Wrong credentials"
+            ], 401));
+        }
+
+        $user->tokens()->delete();
+
+        $accessToken = $user->createToken("access_token")->plainTextToken;
+
+        return response()->json([
+            "message" => "Success",
+            "access_token" => $accessToken
+        ]);
     }
 }

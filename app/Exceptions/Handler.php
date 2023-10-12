@@ -24,6 +24,7 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->renderable(function (Throwable $e, $request) {
+            error_log($e);
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => $e->getMessage() ?? 'System Error',
