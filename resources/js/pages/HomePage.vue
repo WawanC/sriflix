@@ -1,9 +1,13 @@
 <template>
-    <main class="flex-1 flex flex-col gap-16 justify-center items-center">
-        <h1 class="text-4xl font-bold absolute top-4">Sriflix</h1>
-        <loading v-show="getMovies.isFetching.value" />
+    <main class="flex-1 flex flex-col py-4 gap-8 items-center">
+        <h1
+            class="text-2xl md:text-4xl font-semibold underline underline-offset-8"
+        >
+            Movie List
+        </h1>
+        <loading v-if="getMovies.isFetching.value" />
         <ul
-            v-show="!getMovies.isFetching.value"
+            v-else
             class="flex flex-wrap justify-center items-stretch gap-4 text-center w-full md:w-2/3"
         >
             <MovieCard v-for="movie in getMovies.data.value" :movie="movie" />

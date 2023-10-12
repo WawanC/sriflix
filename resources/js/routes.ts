@@ -4,6 +4,7 @@ import MovieDetailPage from "./pages/MovieDetailPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
+
     routes: [
         {
             path: "/",
