@@ -5,9 +5,11 @@ import axios from "axios";
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null);
+    const isFetching = ref(false);
 
     const fetchUser = async () => {
         try {
+            isFetching.value = true;
             const accessToken = localStorage.getItem("access_token");
             if (!accessToken) {
                 user.value = null;
@@ -24,8 +26,10 @@ export const useAuthStore = defineStore("auth", () => {
         } catch (e) {
             user.value = null;
             localStorage.removeItem("access_token");
+        } finally {
+            isFetching.value = false;
         }
     };
 
-    return { user, fetchUser };
+    return { user, fetchUser, isFetching };
 });
