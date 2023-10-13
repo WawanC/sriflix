@@ -3,13 +3,17 @@
         class="flex-1 flex flex-col items-center md:justify-center gap-12 p-8 md:p-0"
     >
         <h1 class="text-4xl font-bold">Create Account</h1>
+        <loading v-if="register.isLoading.value" />
         <form
+            v-else
             class="w-full md:w-1/4 flex flex-col gap-8 text-xl"
             @submit.prevent="formSubmitHandler"
         >
-            <span v-if="error" class="text-red-500 font-semibold text-center">{{
-                error
-            }}</span>
+            <span
+                v-if="error || register.error.value"
+                class="text-red-500 font-semibold text-center"
+                >{{ error || register.error.value }}</span
+            >
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="username">Username :</label>
                 <input
@@ -51,11 +55,17 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import { useRegister } from "../composables/Auth";
+import Loading from "../components/Loading.vue";
+import { useRouter } from "vue-router";
 
 const username = ref("");
 const password = ref("");
 const password2 = ref("");
 const error = ref<string | null>(null);
+
+const register = useRegister();
+const router = useRouter();
 
 const clearForm = () => {
     username.value = "";
@@ -82,8 +92,12 @@ const formSubmitHandler = async () => {
         return;
     }
 
-    console.log(username.value, password.value, password2.value);
+    await register.mutate({
+        username: username.value,
+        password: password.value,
+    });
 
+    await router.push("/");
     clearForm();
 };
 </script>
