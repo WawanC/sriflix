@@ -3,11 +3,17 @@
         class="flex-1 flex flex-col items-center md:justify-center gap-12 p-8 md:p-0"
     >
         <h1 class="text-4xl font-bold">Sign-In</h1>
-
+        <loading v-if="login.isLoading.value" />
         <form
+            v-else
             class="w-full md:w-1/4 flex flex-col gap-8 text-xl"
             @submit.prevent="formSubmitHandler"
         >
+            <span
+                v-if="login.error.value"
+                class="text-red-500 font-semibold text-center"
+                >{{ login.error.value }}</span
+            >
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="username">Username :</label>
                 <input
@@ -39,10 +45,13 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useLogin } from "../composables/Auth";
+import Loading from "../components/Loading.vue";
 
 const username = ref("");
 const password = ref("");
 
+const login = useLogin();
 const router = useRouter();
 
 const clearForm = () => {
@@ -51,7 +60,8 @@ const clearForm = () => {
 };
 
 const formSubmitHandler = async () => {
-    await router.push("/");
+    await login.mutate({ username: username.value, password: password.value });
+    if (!login.error.value) await router.push("/");
     clearForm();
 };
 </script>
