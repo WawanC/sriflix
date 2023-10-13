@@ -2,6 +2,7 @@ import { createWebHistory, RouterOptions } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import MovieDetailPage from "./pages/MovieDetailPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
+import LoginPage from "./pages/LoginPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -21,6 +22,11 @@ export const routerOptions: RouterOptions = {
             path: "/register",
             name: "Register | Sriflix",
             component: RegisterPage,
+        },
+        {
+            path: "/login",
+            name: "Login | Sriflix",
+            component: LoginPage,
         },
     ],
 };
