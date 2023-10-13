@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { LoginResponse } from "../types/Auth";
+import { useAuthStore } from "../stores/auth";
 
 export const useRegister = () => {
     const isLoading = ref(false);
@@ -29,6 +30,7 @@ export const useRegister = () => {
 export const useLogin = () => {
     const isLoading = ref(false);
     const error = ref<string | null>(null);
+    const authStore = useAuthStore();
 
     const mutate = async (data: { username: string; password: string }) => {
         try {
@@ -42,6 +44,7 @@ export const useLogin = () => {
                 },
             );
             localStorage.setItem("access_token", response.data.access_token);
+            await authStore.fetchUser();
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 error.value = e.response.data.message;
