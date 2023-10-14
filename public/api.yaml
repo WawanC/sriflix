@@ -190,12 +190,6 @@ paths:
   /auth/me:
     get:
       summary: Get authenticated user info
-      parameters:
-        - in: header
-          name: Accept
-          schema:
-            type: string
-          example: application/json
       security:
         - bearerAuth: []
       responses:
@@ -212,6 +206,94 @@ paths:
                   user:
                     type: object
                     example: { user: { username: user123 } }
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+  /reviews/{movieId}:
+    get:
+      summary: Create new review for selected movie
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  example: This is test comment
+                  required: true
+                rating:
+                  type: number
+                  example: 3
+                  required: true
+                  minimum: 1
+                  maximum: 5
+      responses:
+        200:
+          description: Create new review success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  movieReview:
+                    type: object
+                    example:
+                      {
+                        movieReview:
+                          {
+                            id: 9a5d8963-1f53-49dc-9846-2ca94bade073,
+                            comment: This is test comment,
+                            rating: 3,
+                            movieId: 9a5d7000-f08a-428e-94c4-ff6c3e8c06a3,
+                            userId: 9a5d860b-21a9-46ff-b34b-1d294f7f700a,
+                            created_at: 2023-10-14T06:34:36.000000Z,
+                            updated_at: 2023-10-14T06:34:36.000000Z,
+                          },
+                      }
+        400:
+          description: Invalid movie id (UUID)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid movie id
+        404:
+          description: Selected movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Movie not found
+        409:
+          description: Movie review already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Movie review already exists
         401:
           description: Unauthorized access
           content:
