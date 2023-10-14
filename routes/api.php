@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieReviewController;
 
 Route::get('/docs', function () {
     return view('swagger');
@@ -34,3 +35,5 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/me', [AuthController::class, 'get_me'])->middleware('auth:sanctum');
 });
+
+Route::post("/reviews/{movieId}", [MovieReviewController::class, 'create'])->middleware('auth:sanctum');
