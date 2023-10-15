@@ -61,6 +61,13 @@ class MovieReviewController extends Controller
             ], 400);
         }
 
+        $movie = $this->movieRepository->get_movie_by_id($movieId);
+        if (!$movie) {
+            return response()->json([
+                "message" => "Movie not found"
+            ], 404);
+        }
+
         $reviews = $this->movieReviewRepository->get_by_movie($movieId);
 
         return response()->json([

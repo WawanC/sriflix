@@ -236,6 +236,16 @@ paths:
                   message:
                     type: string
                     example: Invalid movie id
+        404:
+          description: Movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Movie not found
     post:
       tags:
         - Movie Review

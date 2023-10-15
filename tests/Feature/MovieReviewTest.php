@@ -132,6 +132,14 @@ class MovieReviewTest extends TestCase
         $response->assertStatus(400);
     }
 
+    public function test_get_movie_reviews_not_found(): void
+    {
+        $response = $this->get('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddff1');
+
+        $response->assertJson(["message" => "Movie not found"]);
+        $response->assertStatus(404);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
