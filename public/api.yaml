@@ -199,6 +199,43 @@ paths:
                     example: Unauthorized
 
   /reviews/{movieId}:
+    get:
+      tags:
+        - Movie Review
+      summary: Get reviews for selected movie
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      responses:
+        200:
+          description: Create new review success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  reviews:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MovieReview"
+        400:
+          description: Invalid movie id (UUID)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid movie id
     post:
       tags:
         - Movie Review
