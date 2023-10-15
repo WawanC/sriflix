@@ -10,16 +10,19 @@ servers:
   - url: https://sriflix.kurniawanc.com/api
     description: Production
 
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+tags:
+  - name: Movie
+    description: API about Movie
+  - name: Auth
+    description: API about Authentication
+  - name: Movie Review
+    description: API about Movie Review
 
 paths:
   /movies:
     get:
+      tags:
+        - Movie
       summary: Returns all movies.
       responses:
         "200":
@@ -31,32 +34,12 @@ paths:
                 properties:
                   movies:
                     type: array
-                    example:
-                      [
-                        {
-                          id: "123abc",
-                          title: "movie name",
-                          description: "some movie description",
-                          picture_url: "link to picture url",
-                          video_url: "link to movie video url",
-                        },
-                        {
-                          id: "321bca",
-                          title: "movie name",
-                          description: "some movie description",
-                          picture_url: "link to picture url",
-                          video_url: "link to movie video url",
-                        },
-                        {
-                          id: "132acb",
-                          title: "movie name",
-                          description: "some movie description",
-                          picture_url: "link to picture url",
-                          video_url: "link to movie video url",
-                        },
-                      ]
+                    items:
+                      $ref: "#/components/schemas/Movie"
   /movies/{movieId}:
     get:
+      tags:
+        - Movie
       summary: Returns single movie.
       parameters:
         - in: path
@@ -75,15 +58,7 @@ paths:
                 type: object
                 properties:
                   movie:
-                    type: object
-                    example:
-                      {
-                        id: "123abc",
-                        title: "movie name",
-                        description: "some movie description",
-                        picture_url: "link to picture url",
-                        video_url: "link to movie video url",
-                      }
+                    $ref: "#/components/schemas/Movie"
         "404":
           description: Movie not found response
           content:
@@ -94,8 +69,11 @@ paths:
                   message:
                     type: string
                     example: "Movie not found"
+
   /auth/register:
     post:
+      tags:
+        - Auth
       summary: Register and create new user
       requestBody:
         required: true
@@ -147,6 +125,8 @@ paths:
                     example: Username already exists
   /auth/login:
     post:
+      tags:
+        - Auth
       summary: Login with existing user
       requestBody:
         required: true
@@ -189,6 +169,8 @@ paths:
                     example: Wrong credentials
   /auth/me:
     get:
+      tags:
+        - Auth
       summary: Get authenticated user info
       security:
         - bearerAuth: []
@@ -204,8 +186,7 @@ paths:
                     type: string
                     example: Success
                   user:
-                    type: object
-                    example: { user: { username: user123 } }
+                    $ref: "#/components/schemas/User"
         401:
           description: Unauthorized access
           content:
@@ -216,11 +197,22 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+
   /reviews/{movieId}:
-    get:
+    post:
+      tags:
+        - Movie Review
       summary: Create new review for selected movie
       security:
         - bearerAuth: []
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
       requestBody:
         required: true
         content:
@@ -250,20 +242,7 @@ paths:
                     type: string
                     example: Success
                   movieReview:
-                    type: object
-                    example:
-                      {
-                        movieReview:
-                          {
-                            id: 9a5d8963-1f53-49dc-9846-2ca94bade073,
-                            comment: This is test comment,
-                            rating: 3,
-                            movieId: 9a5d7000-f08a-428e-94c4-ff6c3e8c06a3,
-                            userId: 9a5d860b-21a9-46ff-b34b-1d294f7f700a,
-                            created_at: 2023-10-14T06:34:36.000000Z,
-                            updated_at: 2023-10-14T06:34:36.000000Z,
-                          },
-                      }
+                    $ref: "#/components/schemas/MovieReview"
         400:
           description: Invalid movie id (UUID)
           content:
@@ -304,3 +283,64 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: c387e062-69b3-4d7b-b758-59264c24de60
+        title:
+          type: string
+          example: Movie Title
+        description:
+          type: string
+          example: Some movie description text
+        picture_url:
+          type: string
+          example: https://source.com/picture.png
+        video_url:
+          type: string
+          example: https://source.com/video.mp4
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: user123
+    MovieReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: c387e062-69b3-4d7b-b758-59264c24de60
+        comment:
+          type: string
+          example: Some review comment
+        rating:
+          type: integer
+          example: 3
+        movie_id:
+          type: string
+          format: uuid
+          example: c387e062-69b3-4d7b-b758-59264c24de60
+        user_id:
+          type: string
+          format: uuid
+          example: c387e062-69b3-4d7b-b758-59264c24de60
+        created_at:
+          type: string
+          example: 2023-10-14T06:34:36.000000Z
+        updated_at:
+          type: string
+          example: 2023-10-14T06:34:36.000000Z
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
