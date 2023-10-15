@@ -27,6 +27,35 @@
                     class="w-full md:w-3/4 aspect-video"
                 ></iframe>
             </div>
+            <div class="flex flex-col items-center gap-4">
+                <RatingStarDisplay
+                    :rating="getMovie.data.value?.avg_rating || 0"
+                />
+                <div class="flex flex-col items-center gap-2">
+                    <span
+                        v-if="
+                            (getMovie.data.value?.avg_rating || 0) <= 0 &&
+                            (getMovie.data.value?.rating_count || 0) <= 0
+                        "
+                        class="text-xl font-bold"
+                        >No Review yet</span
+                    >
+                    <template v-else>
+                        <span class="text-4xl font-semibold">{{
+                            getMovie.data.value?.avg_rating
+                        }}</span
+                        ><span class="text-sm">
+                            from
+                            {{ getMovie.data.value?.rating_count }}
+                            {{
+                                (getMovie.data.value?.rating_count || 0) > 1
+                                    ? "reviews"
+                                    : "review"
+                            }}</span
+                        >
+                    </template>
+                </div>
+            </div>
             <p class="text-xl italic indent-8 md:indent-16">
                 {{ getMovie.data.value?.description }}
             </p>
@@ -39,6 +68,7 @@ import { useRoute } from "vue-router";
 import { useGetMovie } from "../composables/Movie";
 import { onMounted } from "vue";
 import Loading from "../components/Loading.vue";
+import RatingStarDisplay from "../components/RatingStarDisplay.vue";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;

@@ -4,6 +4,8 @@ export type Movie = {
     description: string;
     picture_url: string;
     video_url: string;
+    avg_rating: number | 0;
+    rating_count: number | 0;
 };
 
 export type GetMoviesResponse = {
