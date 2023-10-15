@@ -5,11 +5,15 @@
     >
         <span class="text-4xl font-bold">Movie not found</span>
     </main>
-    <main v-else class="flex-1 flex justify-center py-4 md:py-8 px-8 md:px-0">
+    <main
+        v-else
+        :class="`flex-1 flex justify-center py-4 md:py-8 px-8 md:px-0 w-full
+         md:w-2/3 self-center flex-col gap-16`"
+    >
         <loading v-show="getMovie.isFetching.value" class="self-center" />
         <section
             v-show="!getMovie.isFetching.value"
-            class="w-full md:w-2/3 flex flex-col items-center gap-8"
+            class="flex flex-col items-center gap-8"
         >
             <h1 class="text-4xl font-bold">
                 {{ getMovie.data.value?.title }}
@@ -60,6 +64,14 @@
                 {{ getMovie.data.value?.description }}
             </p>
         </section>
+        <section class="flex flex-col gap-4">
+            <h1 class="text-4xl font-bold">Reviews</h1>
+            <hr class="border-b border-black" />
+            <ul class="flex flex-col gap-4">
+                <ReviewCard />
+                <ReviewCard />
+            </ul>
+        </section>
     </main>
 </template>
 
@@ -69,6 +81,7 @@ import { useGetMovie } from "../composables/Movie";
 import { onMounted } from "vue";
 import Loading from "../components/Loading.vue";
 import RatingStarDisplay from "../components/RatingStarDisplay.vue";
+import ReviewCard from "../components/ReviewCard.vue";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;

@@ -1,6 +1,6 @@
 <template>
     <svg
-        class="w-12 aspect-square"
+        :class="`${props.class || 'w-12 aspect-square'}`"
         stroke="currentColor"
         stroke-width="1"
         viewBox="0 0 24 24"
@@ -28,6 +28,6 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ id: string; value: number }>();
+const props = defineProps<{ id: string; value: number; class?: string }>();
 console.log(props.value);
 </script>
