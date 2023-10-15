@@ -27,6 +27,9 @@ class MovieReviewTest extends TestCase
 
         $response->assertJsonStructure(["message", "movieReview"]);
         $response->assertStatus(200);
+
+        $movie_response = $this->get("/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9");
+        $movie_response->assertJson(["movie" => ["avg_rating" => 3, "rating_count" => 1]]);
     }
 
     public function test_create_movie_review_unauthorized(): void
@@ -94,6 +97,26 @@ class MovieReviewTest extends TestCase
 
         $response->assertJson(["message" => "Movie review already exists"]);
         $response->assertStatus(409);
+
+    }
+
+    public function test_create_movie_review_update_movie_rating(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "user321",
+            "password" => "123456"
+        ]);
+
+        $movieReviewResponse = $this->post('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddff8', [
+            "comment" => "This is test comment",
+            "rating" => 2
+        ], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+        $movieReviewResponse->assertStatus(200);
+
+        $movieResponse = $this->get("/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff8");
+        $movieResponse->assertJson(["movie" => ["avg_rating" => 2.5, "rating_count" => 2]]);
     }
 
     protected function setUp(): void
@@ -117,6 +140,11 @@ class MovieReviewTest extends TestCase
         DB::table("users")->insert([
             "id" => "958f2234-bd68-4546-942d-ed1aaa535d33",
             "username" => "user123",
+            "password" => Hash::make("123456")
+        ]);
+        DB::table("users")->insert([
+            "id" => "958f2234-bd68-4546-942d-ed1aaa535d32",
+            "username" => "user321",
             "password" => Hash::make("123456")
         ]);
 

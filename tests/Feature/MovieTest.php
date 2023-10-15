@@ -15,7 +15,7 @@ class MovieTest extends TestCase
         $response = $this->get('/api/movies');
 
         $response->assertJsonStructure([
-            "movies" => ["*" => ["id", "title", "description", "picture_url", "video_url"]]
+            "movies" => ["*" => ["id", "title", "description", "picture_url", "video_url", "avg_rating", "rating_count"]]
         ]);
         $response->assertStatus(200);
     }
@@ -30,7 +30,9 @@ class MovieTest extends TestCase
                 "title" => "Test Movie",
                 "description" => "This is test movie",
                 "picture_url" => "https://picture.com/test.png",
-                "video_url" => "https://youtube.com/test"
+                "video_url" => "https://youtube.com/test",
+                "avg_rating" => 0,
+                "rating_count" => 0
             ]
         ]);
         $response->assertStatus(200);
@@ -54,7 +56,7 @@ class MovieTest extends TestCase
             "title" => "Test Movie",
             "description" => "This is test movie",
             "picture_url" => "https://picture.com/test.png",
-            "video_url" => "https://youtube.com/test"
+            "video_url" => "https://youtube.com/test",
         ]);
     }
 }
