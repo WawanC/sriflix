@@ -36,4 +36,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', [AuthController::class, 'get_me'])->middleware('auth:sanctum');
 });
 
-Route::post("/reviews/{movieId}", [MovieReviewController::class, 'create'])->middleware('auth:sanctum');
+Route::prefix('reviews')->group(function () {
+    Route::post("/{movieId}", [MovieReviewController::class, 'create'])->middleware('auth:sanctum');
+    Route::get('/{movieId}', [MovieReviewController::class, 'get_by_movie']);
+});

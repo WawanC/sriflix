@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\MovieReview;
+use Illuminate\Support\Collection;
 
 class MovieReviewRepository
 {
@@ -14,6 +15,11 @@ class MovieReviewRepository
             "movie_id" => $movieId,
             "user_id" => $userId
         ]);
+    }
+
+    public function get_by_movie(string $movieId): Collection
+    {
+        return MovieReview::where("movie_id", $movieId)->get();
     }
 
     public function find(string $movieId, string $userId): MovieReview|null

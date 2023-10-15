@@ -48,7 +48,24 @@ class MovieReviewController extends Controller
 
         return response()->json([
             "message" => "Success",
-            "movieReview" => $newMovieReview
+            "review" => $newMovieReview
+        ]);
+    }
+
+    public function get_by_movie(string $movieId)
+    {
+        $validMovieId = Str::isUuid($movieId);
+        if (!$validMovieId) {
+            return response()->json([
+                "message" => "Invalid movie id"
+            ], 400);
+        }
+
+        $reviews = $this->movieReviewRepository->get_by_movie($movieId);
+
+        return response()->json([
+            "message" => "Success",
+            "reviews" => $reviews
         ]);
     }
 }

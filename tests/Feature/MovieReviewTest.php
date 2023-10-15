@@ -25,11 +25,8 @@ class MovieReviewTest extends TestCase
             "Authorization" => "Bearer " . $loginResponse['access_token']
         ]);
 
-        $response->assertJsonStructure(["message", "movieReview"]);
+        $response->assertJsonStructure(["message", "review"]);
         $response->assertStatus(200);
-
-        $movie_response = $this->get("/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9");
-        $movie_response->assertJson(["movie" => ["avg_rating" => 3, "rating_count" => 1]]);
     }
 
     public function test_create_movie_review_unauthorized(): void

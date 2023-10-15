@@ -241,7 +241,7 @@ paths:
                   message:
                     type: string
                     example: Success
-                  movieReview:
+                  review:
                     $ref: "#/components/schemas/MovieReview"
         400:
           description: Invalid movie id (UUID)
