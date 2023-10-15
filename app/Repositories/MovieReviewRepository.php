@@ -20,4 +20,18 @@ class MovieReviewRepository
     {
         return MovieReview::where("movie_id", $movieId)->where('user_id', $userId)->first();
     }
+
+    public function get_average_rating(string $movieId): float
+    {
+        $avg = MovieReview::where("movie_id", $movieId)->avg("rating");
+        if (!$avg) return 0;
+        return $avg;
+    }
+
+    public function get_rating_count(string $movieId): int
+    {
+        $count = MovieReview::where("movie_id", $movieId)->count();
+        if (!$count) return 0;
+        return $count;
+    }
 }

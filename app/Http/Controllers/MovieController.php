@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\MovieRepository;
+use App\Repositories\MovieReviewRepository;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
     private MovieRepository $movieRepository;
+    private MovieReviewRepository $movieReviewRepository;
 
-    public function __construct(MovieRepository $repository)
+    public function __construct(MovieRepository $movieRepository, MovieReviewRepository $movieReviewRepository)
     {
-        $this->movieRepository = $repository;
+        $this->movieRepository = $movieRepository;
+        $this->movieReviewRepository = $movieReviewRepository;
     }
 
     public function get_all()
     {
         $movies = $this->movieRepository->get_movies();
+
+        foreach ($movies as $movie) {
+            $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);
+            $movie['rating_count'] = $this->movieReviewRepository->get_rating_count($movie['id']);
+        }
 
         return response()->json([
             "movies" => $movies
@@ -38,6 +46,9 @@ class MovieController extends Controller
                 "message" => "Movie not found"
             ], 404);
         }
+
+        $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);
+        $movie['rating_count'] = $this->movieReviewRepository->get_rating_count($movie['id']);
 
         return response()->json([
             "movie" => $movie
