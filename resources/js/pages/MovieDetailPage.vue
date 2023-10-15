@@ -67,9 +67,20 @@
         <section class="flex flex-col gap-4">
             <h1 class="text-4xl font-bold">Reviews</h1>
             <hr class="border-b border-black" />
-            <ul class="flex flex-col gap-4">
-                <ReviewCard />
-                <ReviewCard />
+            <ul class="flex flex-col gap-4 py-4">
+                <li
+                    v-if="getMovieReview.data.value.length <= 0"
+                    class="text-xl italic text-center"
+                >
+                    No Reviews Yet
+                </li>
+                <ReviewCard
+                    v-for="review in getMovieReview.data.value"
+                    v-else
+                    :comment="review.comment"
+                    :rating="review.rating"
+                    :username="review.user_id"
+                />
             </ul>
         </section>
     </main>
@@ -82,13 +93,16 @@ import { onMounted } from "vue";
 import Loading from "../components/Loading.vue";
 import RatingStarDisplay from "../components/RatingStarDisplay.vue";
 import ReviewCard from "../components/ReviewCard.vue";
+import { useGetMovieReviews } from "../composables/MovieReview";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;
 
 const getMovie = useGetMovie(movieId);
+const getMovieReview = useGetMovieReviews(movieId);
 
 onMounted(async () => {
     await getMovie.fetchMovie();
+    await getMovieReview.fetch();
 });
 </script>
