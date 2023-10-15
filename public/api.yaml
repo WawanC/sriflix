@@ -305,6 +305,12 @@ components:
         video_url:
           type: string
           example: https://source.com/video.mp4
+        avg_rating:
+          type: number
+          example: 3.5
+        rating_count:
+          type: number
+          example: 23
     User:
       type: object
       properties:
