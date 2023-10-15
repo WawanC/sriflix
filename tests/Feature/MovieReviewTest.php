@@ -116,6 +116,22 @@ class MovieReviewTest extends TestCase
         $movieResponse->assertJson(["movie" => ["avg_rating" => 2.5, "rating_count" => 2]]);
     }
 
+    public function test_get_movie_reviews_success(): void
+    {
+        $response = $this->get('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddff9');
+
+        $response->assertJsonStructure(["message", "reviews" => ["*" => ["id", "comment", "rating", "movie_id", "user_id", "created_at", "updated_at"]]]);
+        $response->assertStatus(200);
+    }
+
+    public function test_get_movie_reviews_invalid_movie_id(): void
+    {
+        $response = $this->get('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddfx');
+
+        $response->assertJson(["message" => "Invalid movie id"]);
+        $response->assertStatus(400);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
