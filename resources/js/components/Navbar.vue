@@ -6,7 +6,12 @@
         <ul class="hidden md:flex gap-8 text-xl underline underline-offset-8">
             <template v-if="authStore.user">
                 <li>{{ authStore.user?.username }}</li>
-                <li class="hover:cursor-pointer">Logout</li>
+                <li
+                    class="hover:cursor-pointer"
+                    @click="authStore.logoutUser()"
+                >
+                    Logout
+                </li>
             </template>
             <template v-else>
                 <router-link to="/login">Login</router-link>

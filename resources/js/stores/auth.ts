@@ -31,5 +31,22 @@ export const useAuthStore = defineStore("auth", () => {
         }
     };
 
-    return { user, fetchUser, isFetching };
+    const logoutUser = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) return;
+        await axios.post(
+            "/api/auth/logout",
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+
+        localStorage.removeItem("access_token");
+        user.value = null;
+    };
+
+    return { user, fetchUser, isFetching, logoutUser };
 });
