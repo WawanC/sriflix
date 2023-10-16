@@ -19,7 +19,7 @@ class MovieReviewRepository
 
     public function get_by_movie(string $movieId): Collection
     {
-        return MovieReview::where("movie_id", $movieId)->get();
+        return MovieReview::with("user:id,username")->where("movie_id", $movieId)->get();
     }
 
     public function find(string $movieId, string $userId): MovieReview|null

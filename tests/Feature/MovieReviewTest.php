@@ -120,7 +120,16 @@ class MovieReviewTest extends TestCase
     {
         $response = $this->get('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddff9');
 
-        $response->assertJsonStructure(["message", "reviews" => ["*" => ["id", "comment", "rating", "movie_id", "user_id", "created_at", "updated_at"]]]);
+        $response->assertJsonStructure(["message", "reviews" => ["*" => [
+            "id",
+            "comment",
+            "rating",
+            "movie_id",
+            "user" => [
+                "id", "username"
+            ],
+            "created_at",
+            "updated_at"]]]);
         $response->assertStatus(200);
     }
 

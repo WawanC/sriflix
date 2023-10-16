@@ -381,10 +381,15 @@ components:
           type: string
           format: uuid
           example: c387e062-69b3-4d7b-b758-59264c24de60
-        user_id:
-          type: string
-          format: uuid
-          example: c387e062-69b3-4d7b-b758-59264c24de60
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              example: c387e062-69b3-4d7b-b758-59264c24de77
+            username:
+              type: string
+              example: user123
         created_at:
           type: string
           example: 2023-10-14T06:34:36.000000Z
