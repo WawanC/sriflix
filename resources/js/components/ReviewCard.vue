@@ -19,6 +19,16 @@
                 class="text-sm md:text-base text-center font-semibold self-end"
                 >{{ props.username }}</span
             >
+            <span
+                class="text-xs md:text-sm text-center font-light italic self-end"
+                >{{
+                    new Date(props.createdAt).toLocaleTimeString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                    })
+                }}</span
+            >
         </div>
     </article>
 </template>
@@ -29,5 +39,6 @@ const props = defineProps<{
     comment: string;
     username: string;
     rating: number;
+    createdAt: string;
 }>();
 </script>

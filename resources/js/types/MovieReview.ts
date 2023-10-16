@@ -3,7 +3,10 @@ export type MovieReview = {
     comment: string;
     rating: number;
     movie_id: string;
-    user_id: string;
+    user: {
+        id: string;
+        username: string;
+    };
     created_at: string;
 };
 

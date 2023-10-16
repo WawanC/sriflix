@@ -78,8 +78,9 @@
                     v-for="review in getMovieReview.data.value"
                     v-else
                     :comment="review.comment"
+                    :created-at="review.created_at"
                     :rating="review.rating"
-                    :username="review.user_id"
+                    :username="review.user.username"
                 />
             </ul>
         </section>
