@@ -197,6 +197,34 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout and revoke current user access
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Logout user success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
 
   /reviews/{movieId}:
     get:

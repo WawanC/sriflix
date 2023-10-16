@@ -103,6 +103,29 @@ class AuthTest extends TestCase
         $response->assertStatus(401);
     }
 
+    public function test_logout_success(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "user123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->post('/api/auth/logout', [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Success"]);
+        $response->assertStatus(200);
+    }
+
+    public function test_logout_unauthorized(): void
+    {
+        $response = $this->post('/api/auth/logout');
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
