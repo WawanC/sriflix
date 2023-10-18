@@ -1,8 +1,9 @@
 import { createWebHistory, RouterOptions } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import MovieDetailPage from "./pages/MovieDetailPage.vue";
-import RegisterPage from "./pages/RegisterPage.vue";
+import PrivateRoute from "./guards/PrivateRoute.vue";
 import LoginPage from "./pages/LoginPage.vue";
+import RegisterPage from "./pages/RegisterPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -21,12 +22,25 @@ export const routerOptions: RouterOptions = {
         {
             path: "/register",
             name: "Register | Sriflix",
-            component: RegisterPage,
+            component: PrivateRoute,
+            children: [
+                {
+                    path: "",
+                    name: "Register | Sriflix",
+                    component: RegisterPage,
+                },
+            ],
         },
         {
             path: "/login",
-            name: "Login | Sriflix",
-            component: LoginPage,
+            component: PrivateRoute,
+            children: [
+                {
+                    path: "",
+                    name: "Login | Sriflix",
+                    component: LoginPage,
+                },
+            ],
         },
     ],
 };
