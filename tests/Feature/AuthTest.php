@@ -63,7 +63,7 @@ class AuthTest extends TestCase
             "password" => "123456"
         ]);
 
-        $response->assertJsonStructure(["message", "access_token"]);
+        $response->assertJsonStructure(["message", "access_token", "role"]);
         $response->assertStatus(200);
     }
 
@@ -88,7 +88,7 @@ class AuthTest extends TestCase
             "Authorization" => "Bearer " . $loginResponse['access_token']
         ]);
 
-        $response->assertJsonStructure(["message", "user" => ["username"]]);
+        $response->assertJsonStructure(["message", "user" => ["username", "role"]]);
         $response->assertStatus(200);
     }
 

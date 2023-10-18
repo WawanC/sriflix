@@ -157,6 +157,12 @@ paths:
                   access_token:
                     type: string
                     example: abcdefghijklmn
+                  role:
+                    type: string
+                    enum:
+                      - user
+                      - admin
+                    example: user
         401:
           description: Wrong username or password info
           content:
@@ -392,6 +398,12 @@ components:
         username:
           type: string
           example: user123
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          example: user
     MovieReview:
       type: object
       properties:

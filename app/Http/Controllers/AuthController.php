@@ -54,14 +54,16 @@ class AuthController extends Controller
 
         return response()->json([
             "message" => "Success",
-            "access_token" => $accessToken
+            "access_token" => $accessToken,
+            "role" => $user['role']
         ]);
     }
 
     public function get_me(Request $request)
     {
         $userData = [
-            "username" => $request->user()['username']
+            "username" => $request->user()['username'],
+            "role" => $request->user()['role']
         ];
 
         return response()->json([

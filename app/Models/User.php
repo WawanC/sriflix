@@ -13,7 +13,7 @@ class User extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ["username", "password"];
+    protected $fillable = ["username", "password", "role"];
 
     public function movie_reviews(): HasMany
     {
