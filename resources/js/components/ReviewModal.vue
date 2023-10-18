@@ -69,7 +69,7 @@ const submitFormHandler = async () => {
     if (!rating.value) return;
 
     await createReview.mutate({
-        comment: comment.value.trim(),
+        comment: comment.value.trim().length > 0 ? comment.value.trim() : null,
         rating: rating.value,
     });
 

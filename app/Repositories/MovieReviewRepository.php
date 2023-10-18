@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class MovieReviewRepository
 {
-    public function create_movie_review(string $comment, int $rating, string $movieId, string $userId)
+    public function create_movie_review(string|null $comment, int $rating, string $movieId, string $userId)
     {
         return MovieReview::create([
             "comment" => $comment,
@@ -31,7 +31,7 @@ class MovieReviewRepository
     {
         $avg = MovieReview::where("movie_id", $movieId)->avg("rating");
         if (!$avg) return 0;
-        return $avg;
+        return round($avg, 2);
     }
 
     public function get_rating_count(string $movieId): int

@@ -18,7 +18,7 @@ class CreateMovieReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "comment" => ["required", "string"],
+            "comment" => ["nullable", "string"],
             "rating" => ["required", "int", "min:1", "max:5"],
         ];
     }
@@ -26,7 +26,7 @@ class CreateMovieReviewRequest extends FormRequest
     protected function passedValidation(): void
     {
         $this->merge([
-            "comment" => trim($this['comment'])
+            "comment" => $this->exists('comment') ? trim($this['comment']) : null
         ]);
     }
 

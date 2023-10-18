@@ -23,7 +23,7 @@ export const useCreateMovieReview = (movieId: string) => {
     const isLoading = ref(false);
     const error = ref<string | null>(null);
     const { api } = usePrivateAxios();
-    const mutate = async (data: { comment: string; rating: number }) => {
+    const mutate = async (data: { comment: string | null; rating: number }) => {
         try {
             error.value = null;
             isLoading.value = true;

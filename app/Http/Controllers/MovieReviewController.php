@@ -21,7 +21,8 @@ class MovieReviewController extends Controller
 
     public function create(CreateMovieReviewRequest $request, string $movieId)
     {
-        $validated = $request->validated();
+        $request->validated();
+        $body = $request->all();
 
         $validMovieId = Str::isUuid($movieId);
         if (!$validMovieId) {
@@ -44,7 +45,7 @@ class MovieReviewController extends Controller
             ], 409);
         }
 
-        $newMovieReview = $this->movieReviewRepository->create_movie_review($validated['comment'], $validated['rating'], $movie['id'], $request->user()['id']);
+        $newMovieReview = $this->movieReviewRepository->create_movie_review($body['comment'], $body['rating'], $movie['id'], $request->user()['id']);
 
         return response()->json([
             "message" => "Success",

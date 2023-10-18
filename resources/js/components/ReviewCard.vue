@@ -12,7 +12,7 @@
             <span class="font-semibold">{{ props.rating }}</span>
         </div>
         <div class="flex flex-col justify-center gap-2 w-full">
-            <p class="italic text-justify">
+            <p v-if="props.comment" class="italic text-justify">
                 {{ props.comment }}
             </p>
             <span
@@ -36,7 +36,7 @@
 import StarIcon from "../icons/StarIcon.vue";
 
 const props = defineProps<{
-    comment: string;
+    comment?: string;
     username: string;
     rating: number;
     createdAt: string;

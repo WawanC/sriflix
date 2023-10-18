@@ -1,6 +1,6 @@
 export type MovieReview = {
     id: string;
-    comment: string;
+    comment?: string;
     rating: number;
     movie_id: string;
     user: {

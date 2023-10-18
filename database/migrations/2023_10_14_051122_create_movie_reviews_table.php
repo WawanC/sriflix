@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('movie_reviews', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string("comment");
+            $table->string("comment")->nullable(true);
             $table->integer("rating");
             $table->uuid("movie_id");
             $table->foreign("movie_id")->references("id")->on("movies");

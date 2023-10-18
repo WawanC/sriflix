@@ -61,7 +61,7 @@
                 </div>
                 <button
                     class="bg-green-700 px-4 py-2 rounded text-white"
-                    @click="isShowReviewModal = true"
+                    @click="openReviewModal"
                 >
                     Give Review
                 </button>
@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useGetMovie } from "../composables/Movie";
 import { onMounted, ref } from "vue";
 import Loading from "../components/Loading.vue";
@@ -114,14 +114,22 @@ import RatingStarDisplay from "../components/RatingStarDisplay.vue";
 import ReviewCard from "../components/ReviewCard.vue";
 import { useGetMovieReviews } from "../composables/MovieReview";
 import ReviewModal from "../components/ReviewModal.vue";
+import { useAuthStore } from "../stores/auth";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;
+const authStore = useAuthStore();
+const router = useRouter();
 
 const getMovie = useGetMovie(movieId);
 const getMovieReview = useGetMovieReviews(movieId);
 
 const isShowReviewModal = ref(false);
+
+const openReviewModal = () => {
+    if (!authStore.user) return router.push("/login");
+    isShowReviewModal.value = true;
+};
 
 onMounted(async () => {
     await getMovie.fetch();

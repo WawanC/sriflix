@@ -298,7 +298,7 @@ paths:
                 comment:
                   type: string
                   example: This is test comment
-                  required: true
+                  required: false
                 rating:
                   type: number
                   example: 3
