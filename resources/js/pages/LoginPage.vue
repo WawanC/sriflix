@@ -43,10 +43,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { useLogin } from "../composables/Auth";
 import Loading from "../components/Loading.vue";
+import { useAuthStore } from "../stores/auth";
 
 const username = ref("");
 const password = ref("");
@@ -54,14 +55,27 @@ const password = ref("");
 const login = useLogin();
 const router = useRouter();
 
+const { user } = useAuthStore();
+
 const clearForm = () => {
     username.value = "";
     password.value = "";
 };
 
 const formSubmitHandler = async () => {
-    await login.mutate({ username: username.value, password: password.value });
-    if (!login.error.value) await router.push("/");
-    clearForm();
+    await login.mutate({
+        username: username.value,
+        password: password.value,
+    });
+    if (login.error.value) clearForm();
 };
+
+watchEffect(async () => {
+    if (!user) return;
+    if (user.role === "user") {
+        await router.push("/");
+    } else {
+        await router.push("/admin");
+    }
+});
 </script>

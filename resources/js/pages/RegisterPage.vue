@@ -97,7 +97,7 @@ const formSubmitHandler = async () => {
         password: password.value,
     });
 
-    if (!register.error.value) await router.push("/");
+    if (!register.error.value) await router.push("/login");
     clearForm();
 };
 </script>
