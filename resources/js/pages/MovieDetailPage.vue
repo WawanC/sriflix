@@ -59,6 +59,17 @@
                         >
                     </template>
                 </div>
+                <button
+                    class="bg-green-700 px-4 py-2 rounded text-white"
+                    @click="isShowReviewModal = true"
+                >
+                    Give Review
+                </button>
+                <ReviewModal
+                    v-if="isShowReviewModal && getMovie.data.value"
+                    :close-modal-handler="() => (isShowReviewModal = false)"
+                    :movie-title="getMovie.data.value.title"
+                />
             </div>
             <p class="text-xl italic indent-8 md:indent-16">
                 {{ getMovie.data.value?.description }}
@@ -90,17 +101,20 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import { useGetMovie } from "../composables/Movie";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import Loading from "../components/Loading.vue";
 import RatingStarDisplay from "../components/RatingStarDisplay.vue";
 import ReviewCard from "../components/ReviewCard.vue";
 import { useGetMovieReviews } from "../composables/MovieReview";
+import ReviewModal from "../components/ReviewModal.vue";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;
 
 const getMovie = useGetMovie(movieId);
 const getMovieReview = useGetMovieReviews(movieId);
+
+const isShowReviewModal = ref(false);
 
 onMounted(async () => {
     await getMovie.fetchMovie();
