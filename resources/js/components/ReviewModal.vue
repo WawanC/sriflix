@@ -13,6 +13,11 @@
                 <span class="text-2xl font-semibold">{{
                     props.movieTitle
                 }}</span>
+                <span
+                    v-if="createReview.error.value"
+                    class="text-red-500 text-xl text-center"
+                    >{{ createReview.error.value }}</span
+                >
             </div>
             <div class="flex flex-col gap-4 items-center">
                 <span class="flex gap-4">
@@ -30,6 +35,7 @@
             </div>
             <textarea
                 id="comment"
+                v-model="comment"
                 class="border w-full p-2 rounded text-xl"
                 placeholder="Enter your review comment"
                 rows="3"
@@ -48,14 +54,30 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import StarIcon from "../icons/StarIcon.vue";
+import { useCreateMovieReview } from "../composables/MovieReview";
 
 const props = defineProps<{
+    movieId: string;
     movieTitle: string;
     closeModalHandler: () => void;
 }>();
 const rating = ref<number | null>(null);
+const comment = ref("");
+const createReview = useCreateMovieReview(props.movieId);
 
-const submitFormHandler = () => {
-    props.closeModalHandler();
+const submitFormHandler = async () => {
+    if (!rating.value) return;
+
+    await createReview.mutate({
+        comment: comment.value.trim(),
+        rating: rating.value,
+    });
+
+    if (createReview.error.value) {
+        rating.value = null;
+        comment.value = "";
+    } else {
+        props.closeModalHandler();
+    }
 };
 </script>

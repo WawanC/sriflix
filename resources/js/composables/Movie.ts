@@ -21,7 +21,7 @@ export const useGetMovie = (movieId: string) => {
     const isFetching = ref(false);
     const error = ref<string | null>(null);
 
-    const fetchMovie = async () => {
+    const fetch = async () => {
         try {
             isFetching.value = true;
             const response = await axios.get<GetMovieResponse>(
@@ -37,5 +37,5 @@ export const useGetMovie = (movieId: string) => {
         }
     };
 
-    return { data, isFetching, error, fetchMovie };
+    return { data, isFetching, error, fetch };
 };

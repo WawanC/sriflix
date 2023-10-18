@@ -67,7 +67,14 @@
                 </button>
                 <ReviewModal
                     v-if="isShowReviewModal && getMovie.data.value"
-                    :close-modal-handler="() => (isShowReviewModal = false)"
+                    :close-modal-handler="
+                        async () => {
+                            isShowReviewModal = false;
+                            await getMovie.fetch();
+                            await getMovieReview.fetch();
+                        }
+                    "
+                    :movie-id="getMovie.data.value.id"
                     :movie-title="getMovie.data.value.title"
                 />
             </div>
@@ -117,7 +124,7 @@ const getMovieReview = useGetMovieReviews(movieId);
 const isShowReviewModal = ref(false);
 
 onMounted(async () => {
-    await getMovie.fetchMovie();
+    await getMovie.fetch();
     await getMovieReview.fetch();
 });
 </script>

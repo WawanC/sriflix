@@ -29,5 +29,4 @@
 
 <script lang="ts" setup>
 const props = defineProps<{ id: string; value: number; class?: string }>();
-console.log(props.value);
 </script>
