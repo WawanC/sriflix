@@ -15,9 +15,12 @@
             </span>
         </div>
         <div class="flex gap-2">
-            <button class="bg-neutral-200 p-2 rounded">
+            <router-link
+                :to="`/admin/edit-movie/${props.movie.id}`"
+                class="bg-neutral-200 p-2 rounded"
+            >
                 <PencilIcon class="w-6 aspect-square stroke-2" />
-            </button>
+            </router-link>
             <button
                 class="bg-neutral-200 p-2 rounded"
                 @click="() => deleteHandler(props.movie.id)"

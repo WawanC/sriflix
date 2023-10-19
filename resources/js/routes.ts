@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
 import AdminPage from "./pages/AdminPage.vue";
 import AdminRoute from "./guards/AdminRoute.vue";
+import MovieFormPage from "./pages/MovieFormPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -54,6 +55,16 @@ export const routerOptions: RouterOptions = {
                     component: AdminPage,
                 },
             ],
+        },
+        {
+            path: "/admin/create-movie",
+            component: MovieFormPage,
+            props: { mode: "create" },
+        },
+        {
+            path: "/admin/edit-movie/:movieId",
+            component: MovieFormPage,
+            props: { mode: "edit" },
         },
     ],
 };
