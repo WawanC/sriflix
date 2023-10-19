@@ -3,17 +3,29 @@
         <h1 class="text-2xl md:text-4xl font-bold">
             {{ props.mode === "edit" ? "Edit" : "Create" }} Movie
         </h1>
-        <Loading v-if="props.mode === 'edit' && getMovie.isFetching.value" />
+        <Loading
+            v-if="
+                props.mode === 'edit' &&
+                (getMovie.isFetching.value || updateMovie.isLoading.value)
+            "
+        />
         <form
             v-else
             class="flex flex-col gap-8 text-xl w-full md:w-1/2"
             @submit.prevent="submitFormHandler"
         >
+            <h2
+                v-if="error"
+                class="text-2xl font-semibold text-red-500 text-center"
+            >
+                {{ error }}
+            </h2>
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="title">Title :</label>
                 <input
                     v-model="title"
                     class="border-b-2 border-black p-2 outline-none"
+                    required
                     type="text"
                 />
             </div>
@@ -25,6 +37,7 @@
                     id="description"
                     v-model="description"
                     class="border-2 border-black p-4 outline-none"
+                    required
                     rows="5"
                 />
             </div>
@@ -36,6 +49,7 @@
                     id="picture_url"
                     v-model="pictureUrl"
                     class="border-b-2 border-black p-2 outline-none"
+                    required
                     type="text"
                 />
             </div>
@@ -45,6 +59,7 @@
                     id="video_url"
                     v-model="videoUrl"
                     class="border-b-2 border-black p-2 outline-none"
+                    required
                     type="text"
                 />
             </div>
@@ -61,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useGetMovie } from "../composables/Movie";
+import { useGetMovie, useUpdateMovie } from "../composables/Movie";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref, watchEffect } from "vue";
 import Loading from "../components/Loading.vue";
@@ -80,9 +95,33 @@ const title = ref("");
 const description = ref("");
 const pictureUrl = ref("");
 const videoUrl = ref("");
+const error = ref<string | null>(null);
 
-const submitFormHandler = () => {
-    router.push("/admin");
+const updateMovie = useUpdateMovie();
+
+const submitFormHandler = async () => {
+    error.value = null;
+
+    if (
+        title.value.trim().length < 1 ||
+        description.value.trim().length < 1 ||
+        pictureUrl.value.trim().length < 1 ||
+        videoUrl.value.trim().length < 1
+    ) {
+        error.value = "All fields is required";
+        return;
+    }
+
+    if (props.mode === "edit") {
+        if (!getMovie.data.value) return;
+        await updateMovie.mutate(getMovie.data.value.id, {
+            title: title.value.trim(),
+            description: description.value.trim(),
+            picture_url: pictureUrl.value.trim(),
+            video_url: videoUrl.value.trim(),
+        });
+    }
+    await router.push("/admin");
 };
 
 watchEffect(() => {

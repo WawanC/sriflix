@@ -62,3 +62,33 @@ export const useDeleteMovie = () => {
 
     return { mutate, isLoading, error };
 };
+
+export const useUpdateMovie = () => {
+    const isLoading = ref(false);
+    const error = ref<string | null>(null);
+    const { api } = usePrivateAxios();
+
+    const mutate = async (
+        movieId: string,
+        data: {
+            title: string;
+            description: string;
+            picture_url: string;
+            video_url: string;
+        },
+    ) => {
+        try {
+            error.value = null;
+            isLoading.value = true;
+            await api.put(`/movies/${movieId}`, data);
+        } catch (e) {
+            if (axios.isAxiosError(e) && e.response) {
+                error.value = e.response.data.message;
+            }
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    return { mutate, isLoading, error };
+};
