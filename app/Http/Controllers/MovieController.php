@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateMovieRequest;
 use App\Repositories\MovieRepository;
 use App\Repositories\MovieReviewRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
@@ -56,7 +56,7 @@ class MovieController extends Controller
         ]);
     }
 
-    public function delete(string $id, Request $request)
+    public function delete(string $id)
     {
         $validId = Str::isUuid($id);
         if (!$validId) {
@@ -75,8 +75,37 @@ class MovieController extends Controller
         $this->movieRepository->delete_movie($movie['id']);
 
         return response()->json(
-            ["message" => "Success"]
+            [
+                "message" => "Success"
+            ]
         );
+    }
 
+    public function update(string $id, UpdateMovieRequest $request)
+    {
+        $validId = Str::isUuid($id);
+        if (!$validId) {
+            return response()->json([
+                "message" => "Invalid movie id"
+            ], 400);
+        }
+
+        $movie = $this->movieRepository->get_movie_by_id($id);
+        if (!$movie) {
+            return response()->json([
+                "message" => "Movie not found"
+            ], 404);
+        }
+
+        $request->validated();
+        $body = $request->all();
+
+        $this->movieRepository->update_movie($id, $body);
+
+        return response()->json(
+            [
+                "message" => "Success"
+            ]
+        );
     }
 }

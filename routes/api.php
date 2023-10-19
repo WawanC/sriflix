@@ -30,6 +30,7 @@ Route::prefix("movies")->group(function () {
     Route::get("/", [MovieController::class, "get_all"]);
     Route::get("/{id}", [MovieController::class, "get_by_id"]);
     Route::delete('/{id}', [MovieController::class, 'delete'])->middleware(['auth:sanctum', IsAdmin::class]);
+    Route::put('/{id}', [MovieController::class, 'update'])->middleware(['auth:sanctum', IsAdmin::class]);
 });
 
 Route::prefix('auth')->group(function () {

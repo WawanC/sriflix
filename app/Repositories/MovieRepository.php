@@ -22,4 +22,9 @@ class MovieRepository
     {
         Movie::find($id)->delete();
     }
+
+    public function update_movie(string $id, array $data): void
+    {
+        Movie::find($id)->update($data);
+    }
 }
