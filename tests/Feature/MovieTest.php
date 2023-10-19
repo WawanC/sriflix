@@ -117,6 +117,85 @@ class MovieTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_update_movie_success(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9', [
+            "title" => "Test Update Title"
+        ], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Success"]);
+        $response->assertStatus(200);
+    }
+
+    public function test_update_movie_unauthorized(): void
+    {
+        $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9');
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
+    public function test_update_movie_not_admin(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "user123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9',
+            [
+                "title" => "Test Update Title"
+            ], [
+                "Authorization" => "Bearer " . $loginResponse['access_token']
+            ]);
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
+    public function test_update_movie_invalid_id(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddf',
+            [
+                "title" => "Test Update Title"
+            ], [
+                "Authorization" => "Bearer " . $loginResponse['access_token']
+            ]);
+
+        $response->assertJson(["message" => "Invalid movie id"]);
+        $response->assertStatus(400);
+    }
+
+    public function test_update_movie_not_found(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff7',
+            [
+                "title" => "Test Update Title"
+            ], [
+                "Authorization" => "Bearer " . $loginResponse['access_token']
+            ]);
+
+        $response->assertJson(["message" => "Movie not found"]);
+        $response->assertStatus(404);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
