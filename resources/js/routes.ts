@@ -4,6 +4,7 @@ import MovieDetailPage from "./pages/MovieDetailPage.vue";
 import PrivateRoute from "./guards/PrivateRoute.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
+import AdminPage from "./pages/AdminPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -39,6 +40,16 @@ export const routerOptions: RouterOptions = {
                     path: "",
                     name: "Login | Sriflix",
                     component: LoginPage,
+                },
+            ],
+        },
+        {
+            path: "/admin",
+            children: [
+                {
+                    path: "",
+                    name: "Admin Dashboard | Sriflix",
+                    component: AdminPage,
                 },
             ],
         },
