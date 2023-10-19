@@ -6,7 +6,9 @@
         <Loading
             v-if="
                 props.mode === 'edit' &&
-                (getMovie.isFetching.value || updateMovie.isLoading.value)
+                (getMovie.isFetching.value ||
+                    updateMovie.isLoading.value ||
+                    createMovie.isLoading.value)
             "
         />
         <form
@@ -15,10 +17,14 @@
             @submit.prevent="submitFormHandler"
         >
             <h2
-                v-if="error"
+                v-if="
+                    error || updateMovie.error.value || createMovie.error.value
+                "
                 class="text-2xl font-semibold text-red-500 text-center"
             >
-                {{ error }}
+                {{
+                    error || updateMovie.error.value || createMovie.error.value
+                }}
             </h2>
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="title">Title :</label>
@@ -76,10 +82,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useGetMovie, useUpdateMovie } from "../composables/Movie";
+import {
+    useCreateMovie,
+    useGetMovie,
+    useUpdateMovie,
+} from "../composables/Movie";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref, watchEffect } from "vue";
 import Loading from "../components/Loading.vue";
+import { useAuthStore } from "../stores/auth";
 
 const props = defineProps<{
     mode: "create" | "edit";
@@ -88,6 +99,7 @@ const props = defineProps<{
 const route = useRoute();
 const router = useRouter();
 const movieId = route.params.movieId as string;
+const { user } = useAuthStore();
 
 const getMovie = useGetMovie(movieId);
 
@@ -98,6 +110,7 @@ const videoUrl = ref("");
 const error = ref<string | null>(null);
 
 const updateMovie = useUpdateMovie();
+const createMovie = useCreateMovie();
 
 const submitFormHandler = async () => {
     error.value = null;
@@ -120,8 +133,16 @@ const submitFormHandler = async () => {
             picture_url: pictureUrl.value.trim(),
             video_url: videoUrl.value.trim(),
         });
+    } else {
+        await createMovie.mutate({
+            title: title.value.trim(),
+            description: description.value.trim(),
+            picture_url: pictureUrl.value.trim(),
+            video_url: videoUrl.value.trim(),
+        });
     }
-    await router.push("/admin");
+    if (!updateMovie.error.value || !createMovie.error.value)
+        await router.push("/admin");
 };
 
 watchEffect(() => {
@@ -138,6 +159,6 @@ watchEffect(() => {
 });
 
 onMounted(async () => {
-    if (props.mode === "edit") await getMovie.fetch();
+    if (user && props.mode === "edit") await getMovie.fetch();
 });
 </script>

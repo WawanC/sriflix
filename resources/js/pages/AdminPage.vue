@@ -1,9 +1,12 @@
 <template>
     <main class="flex-1 flex flex-col py-8 px-4 items-center gap-8">
         <h1 class="text-2xl md:text-4xl font-bold">Manage Data</h1>
-        <button class="bg-green-700 text-white px-4 py-2 rounded">
+        <router-link
+            class="bg-green-700 text-white px-4 py-2 rounded"
+            to="/admin/create-movie"
+        >
             Add New Movie
-        </button>
+        </router-link>
         <Loading
             v-if="getMovies.isFetching.value || deleteMovie.isLoading.value"
         />

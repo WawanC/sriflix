@@ -92,3 +92,30 @@ export const useUpdateMovie = () => {
 
     return { mutate, isLoading, error };
 };
+
+export const useCreateMovie = () => {
+    const isLoading = ref(false);
+    const error = ref<string | null>(null);
+    const { api } = usePrivateAxios();
+
+    const mutate = async (data: {
+        title: string;
+        description: string;
+        picture_url: string;
+        video_url: string;
+    }) => {
+        try {
+            error.value = null;
+            isLoading.value = true;
+            await api.post(`/movies`, data);
+        } catch (e) {
+            if (axios.isAxiosError(e) && e.response) {
+                error.value = e.response.data.message;
+            }
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    return { mutate, isLoading, error };
+};

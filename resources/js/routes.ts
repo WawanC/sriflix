@@ -58,13 +58,25 @@ export const routerOptions: RouterOptions = {
         },
         {
             path: "/admin/create-movie",
-            component: MovieFormPage,
-            props: { mode: "create" },
+            component: AdminRoute,
+            children: [
+                {
+                    path: "",
+                    component: MovieFormPage,
+                    props: { mode: "create" },
+                },
+            ],
         },
         {
             path: "/admin/edit-movie/:movieId",
-            component: MovieFormPage,
-            props: { mode: "edit" },
+            component: AdminRoute,
+            children: [
+                {
+                    path: "",
+                    component: MovieFormPage,
+                    props: { mode: "edit" },
+                },
+            ],
         },
     ],
 };
