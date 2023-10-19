@@ -36,6 +36,79 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Movie"
+    post:
+      tags:
+        - Movie
+      summary: Create new movie (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Test Movie Title
+                  required: true
+                description:
+                  type: string
+                  example: Test Movie Description
+                  required: true
+                picture_url:
+                  type: string
+                  example: Test Movie Picture URL
+                  required: true
+                video_url:
+                  type: string
+                  example: Test Movie Video URL
+                  required: true
+      responses:
+        200:
+          description: Create movie success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  movie:
+                    $ref: "#/components/schemas/Movie"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        400:
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Title field is required
+        409:
+          description: Movie title already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Movie title already exists
+
   /movies/{movieId}:
     get:
       tags:

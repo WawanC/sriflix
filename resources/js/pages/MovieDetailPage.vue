@@ -18,7 +18,9 @@
             <h1 class="text-4xl font-bold">
                 {{ getMovie.data.value?.title }}
             </h1>
-            <div class="flex flex-wrap md:flex-nowrap justify-center gap-8">
+            <div
+                class="flex flex-wrap md:flex-nowrap justify-center gap-8 w-full md:w-4/5"
+            >
                 <div class="w-3/5 md:w-1/4 rounded overflow-hidden">
                     <img
                         :alt="getMovie.data.value?.title"

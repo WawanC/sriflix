@@ -20,7 +20,7 @@ class MovieRepository
 
     public function get_movie_by_title(string $title): Movie|null
     {
-        return Movie::whereRaw("LOWER(`title`) LIKE ?", strtolower($title))->first();
+        return Movie::whereRaw("LOWER(title) LIKE ?", strtolower($title))->first();
 
     }
 
