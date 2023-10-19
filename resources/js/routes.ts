@@ -1,10 +1,11 @@
 import { createWebHistory, RouterOptions } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import MovieDetailPage from "./pages/MovieDetailPage.vue";
-import PrivateRoute from "./guards/PrivateRoute.vue";
+import PublicRoute from "./guards/PublicRoute.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import RegisterPage from "./pages/RegisterPage.vue";
 import AdminPage from "./pages/AdminPage.vue";
+import AdminRoute from "./guards/AdminRoute.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -23,7 +24,7 @@ export const routerOptions: RouterOptions = {
         {
             path: "/register",
             name: "Register | Sriflix",
-            component: PrivateRoute,
+            component: PublicRoute,
             children: [
                 {
                     path: "",
@@ -34,7 +35,7 @@ export const routerOptions: RouterOptions = {
         },
         {
             path: "/login",
-            component: PrivateRoute,
+            component: PublicRoute,
             children: [
                 {
                     path: "",
@@ -45,6 +46,7 @@ export const routerOptions: RouterOptions = {
         },
         {
             path: "/admin",
+            component: AdminRoute,
             children: [
                 {
                     path: "",
