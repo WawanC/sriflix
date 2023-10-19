@@ -4,50 +4,34 @@
         <button class="bg-green-700 text-white px-4 py-2 rounded">
             Add New Movie
         </button>
-        <Loading v-if="getMovies.isFetching.value" />
+        <Loading
+            v-if="getMovies.isFetching.value || deleteMovie.isLoading.value"
+        />
         <ul v-else class="flex flex-col gap-2 min-w-full md:min-w-[50%]">
-            <li
+            <AdminMovieItem
                 v-for="movie in getMovies.data.value"
-                class="flex items-center justify-between gap-2 p-2 border rounded shadow"
-            >
-                <div
-                    class="flex gap-2 items-center flex-1 w-1/2 overflow-hidden"
-                >
-                    <div class="w-16 aspect-square">
-                        <img
-                            :alt="movie.id"
-                            :src="movie.picture_url"
-                            class="w-full h-full object-contain"
-                        />
-                    </div>
-                    <span
-                        class="flex-1 font-semibold text-xl line-clamp-2 break-all"
-                        >{{ movie.title }}
-                    </span>
-                </div>
-                <div class="flex gap-2">
-                    <button class="bg-neutral-200 p-2 rounded">
-                        <PencilIcon class="w-6 aspect-square stroke-2" />
-                    </button>
-                    <button class="bg-neutral-200 p-2 rounded">
-                        <CrossIcon class="w-6 aspect-square stroke-2" />
-                    </button>
-                </div>
-            </li>
+                :delete-handler="deleteMovieHandler"
+                :movie="movie"
+            />
         </ul>
     </main>
 </template>
 
 <script lang="ts" setup>
-import { useGetMovies } from "../composables/Movie";
+import { useDeleteMovie, useGetMovies } from "../composables/Movie";
 import { onMounted } from "vue";
-import CrossIcon from "../icons/CrossIcon.vue";
-import PencilIcon from "../icons/PencilIcon.vue";
 import Loading from "../components/Loading.vue";
+import AdminMovieItem from "../components/AdminMovieItem.vue";
 
 const getMovies = useGetMovies();
+const deleteMovie = useDeleteMovie();
 
 onMounted(async () => {
     await getMovies.fetchMovies();
 });
+
+const deleteMovieHandler = async (movieId: string) => {
+    await deleteMovie.mutate(movieId);
+    await getMovies.fetchMovies();
+};
 </script>

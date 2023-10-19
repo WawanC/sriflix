@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { GetMovieResponse, GetMoviesResponse, Movie } from "../types/Movie";
 import axios, { AxiosError } from "axios";
+import { usePrivateAxios } from "./Axios";
 
 export const useGetMovies = () => {
     const data = ref<Movie[]>([]);
@@ -38,4 +39,26 @@ export const useGetMovie = (movieId: string) => {
     };
 
     return { data, isFetching, error, fetch };
+};
+
+export const useDeleteMovie = () => {
+    const isLoading = ref(false);
+    const error = ref<string | null>(null);
+    const { api } = usePrivateAxios();
+
+    const mutate = async (movieId: string) => {
+        try {
+            error.value = null;
+            isLoading.value = true;
+            await api.delete(`/movies/${movieId}`);
+        } catch (e) {
+            if (axios.isAxiosError(e) && e.response) {
+                error.value = e.response.data.message;
+            }
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    return { mutate, isLoading, error };
 };
