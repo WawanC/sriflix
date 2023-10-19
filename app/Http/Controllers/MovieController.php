@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Repositories\MovieRepository;
 use App\Repositories\MovieReviewRepository;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
@@ -105,6 +107,25 @@ class MovieController extends Controller
         return response()->json(
             [
                 "message" => "Success"
+            ]
+        );
+    }
+
+    public function create(CreateMovieRequest $request)
+    {
+        $request->validated();
+        $body = $request->all();
+
+        $existingMovie = $this->movieRepository->get_movie_by_title($body['title']);
+        if ($existingMovie)
+            throw new HttpResponseException(response(["message" => "Movie title already exists"], 409));
+
+        $movie = $this->movieRepository->create_movie($body);
+
+        return response()->json(
+            [
+                "message" => "Success",
+                "movie" => $movie
             ]
         );
     }

@@ -18,6 +18,12 @@ class MovieRepository
         return Movie::find($id);
     }
 
+    public function get_movie_by_title(string $title): Movie|null
+    {
+        return Movie::where("title", $title)->first();
+
+    }
+
     public function delete_movie(string $id): void
     {
         Movie::find($id)->delete();
@@ -26,5 +32,15 @@ class MovieRepository
     public function update_movie(string $id, array $data): void
     {
         Movie::find($id)->update($data);
+    }
+
+    public function create_movie(array $data): Movie
+    {
+        return Movie::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'video_url' => $data['video_url'],
+            'picture_url' => $data['picture_url']
+        ]);
     }
 }
