@@ -126,7 +126,8 @@ class MovieController extends Controller
             [
                 "message" => "Success",
                 "movie" => $movie
-            ]
+            ], 201
         );
     }
+
 }
