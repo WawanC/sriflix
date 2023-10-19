@@ -17,4 +17,9 @@ class MovieRepository
     {
         return Movie::find($id);
     }
+
+    public function delete_movie(string $id): void
+    {
+        Movie::find($id)->delete();
+    }
 }

@@ -14,6 +14,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieReviewController;
+use App\Http\Middleware\IsAdmin;
 
 Route::get('/docs', function () {
     return view('swagger');
@@ -28,6 +29,7 @@ Route::get('/hello', function () {
 Route::prefix("movies")->group(function () {
     Route::get("/", [MovieController::class, "get_all"]);
     Route::get("/{id}", [MovieController::class, "get_by_id"]);
+    Route::delete('/{id}', [MovieController::class, 'delete'])->middleware(['auth:sanctum', IsAdmin::class]);
 });
 
 Route::prefix('auth')->group(function () {

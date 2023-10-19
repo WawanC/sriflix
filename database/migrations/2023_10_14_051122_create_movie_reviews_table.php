@@ -15,9 +15,9 @@ return new class extends Migration {
             $table->string("comment")->nullable(true);
             $table->integer("rating");
             $table->uuid("movie_id");
-            $table->foreign("movie_id")->references("id")->on("movies");
+            $table->foreign("movie_id")->references("id")->on("movies")->onDelete('cascade');
             $table->uuid("user_id");
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("user_id")->references("id")->on("users")->onDelete('cascade');
             $table->timestamps();
         });
     }

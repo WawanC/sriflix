@@ -4,7 +4,8 @@
         <button class="bg-green-700 text-white px-4 py-2 rounded">
             Add New Movie
         </button>
-        <ul class="flex flex-col gap-2 min-w-full md:min-w-[50%]">
+        <Loading v-if="getMovies.isFetching.value" />
+        <ul v-else class="flex flex-col gap-2 min-w-full md:min-w-[50%]">
             <li
                 v-for="movie in getMovies.data.value"
                 class="flex items-center justify-between gap-2 p-2 border rounded shadow"
@@ -42,6 +43,7 @@ import { useGetMovies } from "../composables/Movie";
 import { onMounted } from "vue";
 import CrossIcon from "../icons/CrossIcon.vue";
 import PencilIcon from "../icons/PencilIcon.vue";
+import Loading from "../components/Loading.vue";
 
 const getMovies = useGetMovies();
 
