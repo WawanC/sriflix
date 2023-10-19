@@ -47,26 +47,45 @@
                     rows="5"
                 />
             </div>
-            <div class="flex flex-col gap-2">
-                <label class="font-semibold" for="picture_url"
+            <div class="flex flex-col items-center gap-2">
+                <label class="font-semibold w-full" for="picture_url"
                     >Picture URL :</label
                 >
-                <input
-                    id="picture_url"
-                    v-model="pictureUrl"
-                    class="border-b-2 border-black p-2 outline-none"
-                    required
-                    type="text"
-                />
+                <div
+                    class="flex flex-col items-center md:flex-row gap-4 w-full"
+                >
+                    <img
+                        v-if="isPicValid"
+                        :src="pictureUrl"
+                        alt="movie_pic"
+                        class="w-1/2 md:w-1/3 aspect-square object-contain"
+                    />
+                    <input
+                        id="picture_url"
+                        v-model="pictureUrl"
+                        class="border-b-2 border-black p-2 outline-none w-full"
+                        required
+                        type="text"
+                        @input="checkPictureValidity"
+                    />
+                </div>
             </div>
-            <div class="flex flex-col gap-2">
-                <label class="font-semibold" for="video_url">Video URL :</label>
+            <div class="flex flex-col gap-4 items-center">
+                <label class="font-semibold w-full" for="video_url"
+                    >Video URL :</label
+                >
+                <iframe
+                    v-if="isVidValid"
+                    :src="videoUrl"
+                    class="w-full md:w-3/4 aspect-video"
+                ></iframe>
                 <input
                     id="video_url"
                     v-model="videoUrl"
-                    class="border-b-2 border-black p-2 outline-none"
+                    class="border-b-2 border-black p-2 outline-none w-full"
                     required
                     type="text"
+                    @input="checkVideoValidity"
                 />
             </div>
             <div class="flex justify-center">
@@ -88,7 +107,7 @@ import {
     useUpdateMovie,
 } from "../composables/Movie";
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
 
@@ -108,6 +127,8 @@ const description = ref("");
 const pictureUrl = ref("");
 const videoUrl = ref("");
 const error = ref<string | null>(null);
+const isPicValid = ref(false);
+const isVidValid = ref(false);
 
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
@@ -122,6 +143,15 @@ const submitFormHandler = async () => {
         videoUrl.value.trim().length < 1
     ) {
         error.value = "All fields is required";
+        return;
+    }
+
+    if (!isPicValid) {
+        error.value = "Valid picture url is required";
+        return;
+    }
+    if (!isVidValid) {
+        error.value = "Valid youtube url is required";
         return;
     }
 
@@ -145,20 +175,39 @@ const submitFormHandler = async () => {
         await router.push("/admin");
 };
 
-watchEffect(() => {
-    if (props.mode === "create") return;
-    if (getMovie.error.value) {
-        router.replace("/admin");
-    }
-    if (getMovie.data.value) {
-        title.value = getMovie.data.value.title;
-        description.value = getMovie.data.value.description;
-        pictureUrl.value = getMovie.data.value.picture_url;
-        videoUrl.value = getMovie.data.value.video_url;
-    }
-});
+const checkPictureValidity = () => {
+    isPicValid.value = false;
+    if (pictureUrl.value.length < 1) return;
+    const img = new Image();
+    img.src = pictureUrl.value;
+    img.onload = () => (isPicValid.value = true);
+};
 
+const checkVideoValidity = () => {
+    isVidValid.value = false;
+    if (videoUrl.value.length < 1) return;
+    const youtubeEmbedUrlRegex =
+        /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
+
+    if (youtubeEmbedUrlRegex.test(videoUrl.value)) {
+        isVidValid.value = true;
+    }
+};
 onMounted(async () => {
-    if (user && props.mode === "edit") await getMovie.fetch();
+    if (user && props.mode === "edit") {
+        await getMovie.fetch();
+        if (getMovie.error.value) {
+            return await router.replace("/admin");
+        }
+        if (getMovie.data.value) {
+            title.value = getMovie.data.value.title;
+            description.value = getMovie.data.value.description;
+            pictureUrl.value = getMovie.data.value.picture_url;
+            videoUrl.value = getMovie.data.value.video_url;
+
+            checkPictureValidity();
+            checkVideoValidity();
+        }
+    }
 });
 </script>
