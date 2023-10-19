@@ -131,6 +131,77 @@ paths:
                   message:
                     type: string
                     example: "Movie not found"
+    put:
+      tags:
+        - Movie
+      summary: Update single movie info (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Test Movie Title
+                description:
+                  type: string
+                  example: Test Movie Description
+                picture_url:
+                  type: string
+                  example: Test Movie Picture URL
+                video_url:
+                  type: string
+                  example: Test Movie Video URL
+      responses:
+        200:
+          description: Update movie success
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { message: "Success" }
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        400:
+          description: Invalid movie id (UUID)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid movie id
+        404:
+          description: Movie not found response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Movie not found"
 
   /auth/register:
     post:
