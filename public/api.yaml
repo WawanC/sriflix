@@ -79,15 +79,7 @@ paths:
                   movie:
                     $ref: "#/components/schemas/Movie"
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
         400:
           description: Validation Failed
           content:
@@ -130,28 +122,15 @@ paths:
               schema:
                 type: object
                 properties:
+                  message:
+                    type: string
+                    example: Success
                   movie:
                     $ref: "#/components/schemas/Movie"
         400:
-          description: Invalid movie id (UUID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid movie id
+          $ref: "#/components/responses/InvalidMovieId"
         404:
-          description: Movie not found response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Movie not found"
+          $ref: "#/components/responses/MovieNotFound"
     delete:
       tags:
         - Movie
@@ -168,42 +147,13 @@ paths:
           description: Movie id in UUID format
       responses:
         200:
-          description: Delete movie success
-          content:
-            application/json:
-              schema:
-                type: object
-                example: { message: "Success" }
+          $ref: "#/components/responses/SuccessMessage"
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
         400:
-          description: Invalid movie id (UUID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid movie id
+          $ref: "#/components/responses/InvalidMovieId"
         404:
-          description: Movie not found response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Movie not found"
+          $ref: "#/components/responses/MovieNotFound"
     put:
       tags:
         - Movie
@@ -239,42 +189,13 @@ paths:
                   example: Test Movie Video URL
       responses:
         200:
-          description: Update movie success
-          content:
-            application/json:
-              schema:
-                type: object
-                example: { message: "Success" }
+          $ref: "#/components/responses/SuccessMessage"
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
         400:
-          description: Invalid movie id (UUID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid movie id
+          $ref: "#/components/responses/InvalidMovieId"
         404:
-          description: Movie not found response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Movie not found"
+          $ref: "#/components/responses/MovieNotFound"
 
   /auth/register:
     post:
@@ -300,15 +221,7 @@ paths:
                   minLength: 6
       responses:
         200:
-          description: Register success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Success
+          $ref: "#/components/responses/SuccessMessage"
         400:
           description: Validation failed
           content:
@@ -400,15 +313,7 @@ paths:
                   user:
                     $ref: "#/components/schemas/User"
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
   /auth/logout:
     post:
       tags:
@@ -418,25 +323,9 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: Logout user success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Success
+          $ref: "#/components/responses/SuccessMessage"
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
 
   /reviews/{movieId}:
     get:
@@ -453,7 +342,7 @@ paths:
           description: Movie id in UUID format
       responses:
         200:
-          description: Create new review success
+          description: Get reviews success
           content:
             application/json:
               schema:
@@ -467,25 +356,9 @@ paths:
                     items:
                       $ref: "#/components/schemas/MovieReview"
         400:
-          description: Invalid movie id (UUID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid movie id
+          $ref: "#/components/responses/InvalidMovieId"
         404:
-          description: Movie not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Movie not found
+          $ref: "#/components/responses/MovieNotFound"
     post:
       tags:
         - Movie Review
@@ -531,25 +404,9 @@ paths:
                   review:
                     $ref: "#/components/schemas/MovieReview"
         400:
-          description: Invalid movie id (UUID)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid movie id
+          $ref: "#/components/responses/InvalidMovieId"
         404:
-          description: Selected movie not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Movie not found
+          $ref: "#/components/responses/MovieNotFound"
         409:
           description: Movie review already exists
           content:
@@ -561,15 +418,7 @@ paths:
                     type: string
                     example: Movie review already exists
         401:
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Unauthorized
+          $ref: "#/components/responses/Unauthorized"
 
 components:
   schemas:
@@ -642,6 +491,47 @@ components:
         updated_at:
           type: string
           example: 2023-10-14T06:34:36.000000Z
+  responses:
+    Unauthorized:
+      description: Unauthorized Access
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+    MovieNotFound:
+      description: Movie not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Movie not found
+    InvalidMovieId:
+      description: Movie not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid movie id
+    SuccessMessage:
+      description: Success message response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Success
 
   securitySchemes:
     bearerAuth:
