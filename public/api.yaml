@@ -25,7 +25,7 @@ paths:
         - Movie
       summary: Returns all movies.
       responses:
-        "200":
+        200:
           description: Get all movies response
           content:
             application/json:
@@ -50,7 +50,7 @@ paths:
           required: true
           description: Movie id in UUID format
       responses:
-        "200":
+        200:
           description: Get single movie response
           content:
             application/json:
@@ -59,7 +59,69 @@ paths:
                 properties:
                   movie:
                     $ref: "#/components/schemas/Movie"
-        "404":
+        400:
+          description: Invalid movie id (UUID)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid movie id
+        404:
+          description: Movie not found response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Movie not found"
+    delete:
+      tags:
+        - Movie
+      summary: Delete single movie (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      responses:
+        200:
+          description: Delete movie success
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { message: "Success" }
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        400:
+          description: Invalid movie id (UUID)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid movie id
+        404:
           description: Movie not found response
           content:
             application/json:
