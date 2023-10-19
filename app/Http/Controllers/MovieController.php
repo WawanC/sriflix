@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Models\Movie;
 use App\Repositories\MovieRepository;
 use App\Repositories\MovieReviewRepository;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -36,19 +37,9 @@ class MovieController extends Controller
 
     public function get_by_id(string $id)
     {
-        $validId = Str::isUuid($id);
-        if (!$validId) {
-            return response()->json([
-                "message" => "Invalid movie id"
-            ], 400);
-        }
+        $this->check_movie_id($id);
 
-        $movie = $this->movieRepository->get_movie_by_id($id);
-        if (!$movie) {
-            return response()->json([
-                "message" => "Movie not found"
-            ], 404);
-        }
+        $movie = $this->check_movie_exists($id);
 
         $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);
         $movie['rating_count'] = $this->movieReviewRepository->get_rating_count($movie['id']);
@@ -58,23 +49,34 @@ class MovieController extends Controller
         ]);
     }
 
-    public function delete(string $id)
+    private function check_movie_id(string $id): void
     {
         $validId = Str::isUuid($id);
         if (!$validId) {
-            return response()->json([
+            throw new HttpResponseException(response([
                 "message" => "Invalid movie id"
-            ], 400);
+            ], 400));
         }
+    }
 
+    private function check_movie_exists(string $id): Movie
+    {
         $movie = $this->movieRepository->get_movie_by_id($id);
         if (!$movie) {
-            return response()->json([
+            throw new HttpResponseException(response([
                 "message" => "Movie not found"
-            ], 404);
+            ], 404));
         }
 
-        $this->movieRepository->delete_movie($movie['id']);
+        return $movie;
+    }
+
+    public function delete(string $id)
+    {
+        $this->check_movie_id($id);
+        $this->check_movie_exists($id);
+
+        $this->movieRepository->delete_movie($id);
 
         return response()->json(
             [
@@ -85,19 +87,8 @@ class MovieController extends Controller
 
     public function update(string $id, UpdateMovieRequest $request)
     {
-        $validId = Str::isUuid($id);
-        if (!$validId) {
-            return response()->json([
-                "message" => "Invalid movie id"
-            ], 400);
-        }
-
-        $movie = $this->movieRepository->get_movie_by_id($id);
-        if (!$movie) {
-            return response()->json([
-                "message" => "Movie not found"
-            ], 404);
-        }
+        $this->check_movie_id($id);
+        $this->check_movie_exists($id);
 
         $request->validated();
         $body = $request->all();
@@ -129,5 +120,4 @@ class MovieController extends Controller
             ], 201
         );
     }
-
 }
