@@ -42,6 +42,24 @@ class MovieReviewTest extends TestCase
         $response->assertStatus(401);
     }
 
+    public function test_create_movie_review_user_only(): void
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->post('/api/reviews/405c4942-ac0e-4539-83cc-cc54798ddff9', [
+            "comment" => "This is test comment",
+            "rating" => 3
+        ], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
     public function test_create_movie_review_not_found(): void
     {
         $loginResponse = $this->post('/api/auth/login', [
@@ -176,6 +194,12 @@ class MovieReviewTest extends TestCase
             "id" => "958f2234-bd68-4546-942d-ed1aaa535d32",
             "username" => "user321",
             "password" => Hash::make("123456")
+        ]);
+        DB::table("users")->insert([
+            "id" => "958f2234-bd68-4546-942d-ed1aaa535d34",
+            "username" => "admin123",
+            "password" => Hash::make("123456"),
+            "role" => "admin"
         ]);
 
         DB::table("movie_reviews")->insert([

@@ -15,6 +15,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieReviewController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsUser;
 
 Route::get('/docs', function () {
     return view('swagger');
@@ -42,6 +43,6 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('reviews')->group(function () {
-    Route::post("/{movieId}", [MovieReviewController::class, 'create'])->middleware('auth:sanctum');
+    Route::post("/{movieId}", [MovieReviewController::class, 'create'])->middleware(['auth:sanctum', IsUser::class]);
     Route::get('/{movieId}', [MovieReviewController::class, 'get_by_movie']);
 });

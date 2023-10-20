@@ -362,7 +362,7 @@ paths:
     post:
       tags:
         - Movie Review
-      summary: Create new review for selected movie
+      summary: Create new review for selected movie (user only)
       security:
         - bearerAuth: []
       parameters:

@@ -62,7 +62,8 @@
                     </template>
                 </div>
                 <button
-                    class="bg-green-700 px-4 py-2 rounded text-white"
+                    :disabled="authStore.user?.role === 'admin'"
+                    class="bg-green-700 px-4 py-2 rounded text-white disabled:bg-neutral-500"
                     @click="openReviewModal"
                 >
                     Give Review
