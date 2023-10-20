@@ -8,6 +8,7 @@
     <template v-else>
         <Navbar />
         <router-view></router-view>
+        <BottomNav />
     </template>
 </template>
 
@@ -16,6 +17,7 @@ import { useAuthStore } from "./stores/auth";
 import { onMounted } from "vue";
 import Loading from "./components/Loading.vue";
 import Navbar from "./components/Navbar.vue";
+import BottomNav from "./components/BottomNav.vue";
 
 const authStore = useAuthStore();
 
