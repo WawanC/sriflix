@@ -1,5 +1,6 @@
 <template>
-    <li
+    <router-link
+        :to="`/movies/${props.movie.id}`"
         class="flex items-center justify-between gap-2 p-2 border rounded shadow"
     >
         <div class="flex gap-2 items-center flex-1 w-1/2 overflow-hidden">
@@ -23,12 +24,12 @@
             </router-link>
             <button
                 class="bg-neutral-200 p-2 rounded"
-                @click="() => deleteHandler(props.movie.id)"
+                @click.prevent="() => deleteHandler(props.movie.id)"
             >
                 <CrossIcon class="w-6 aspect-square stroke-2" />
             </button>
         </div>
-    </li>
+    </router-link>
 </template>
 
 <script lang="ts" setup>
