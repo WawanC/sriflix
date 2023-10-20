@@ -1,5 +1,7 @@
 <template>
-    <aside class="fixed inset-0 flex justify-center items-end md:items-center">
+    <aside
+        class="fixed z-10 inset-0 flex justify-center items-end md:items-center"
+    >
         <div
             class="absolute inset-0 bg-black opacity-50"
             @click="props.closeModalHandler()"
