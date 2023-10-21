@@ -11,6 +11,8 @@ class MovieGenre extends Model
 
     protected $fillable = ['name'];
 
+    protected $hidden = ['pivot'];
+
     public function movies(): BelongsToMany
     {
         return $this->belongsToMany(Movie::class, 'movie_genres_pivot');

@@ -22,7 +22,7 @@ class Movie extends Model
         return $this->hasMany(MovieReview::class);
     }
 
-    public function movie_genres(): BelongsToMany
+    public function genres(): BelongsToMany
     {
         return $this->belongsToMany(MovieGenre::class, "movie_genres_pivot");
     }

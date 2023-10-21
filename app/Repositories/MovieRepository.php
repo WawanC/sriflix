@@ -10,12 +10,12 @@ class MovieRepository
 {
     public function get_movies(): Collection
     {
-        return Movie::all();
+        return Movie::with(['genres'])->get();
     }
 
     public function get_movie_by_id(string $id): Movie|null
     {
-        return Movie::find($id);
+        return Movie::with(['genres'])->find($id);
     }
 
     public function get_movie_by_title(string $title): Movie|null
