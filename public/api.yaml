@@ -447,6 +447,11 @@ components:
         rating_count:
           type: number
           example: 23
+        genres:
+          type: array
+          items:
+            $ref: "#/components/schemas/Genres"
+
     User:
       type: object
       properties:
@@ -491,6 +496,15 @@ components:
         updated_at:
           type: string
           example: 2023-10-14T06:34:36.000000Z
+    Genres:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Action
   responses:
     Unauthorized:
       description: Unauthorized Access
