@@ -16,7 +16,16 @@ class MovieTest extends TestCase
         $response = $this->get('/api/movies');
 
         $response->assertJsonStructure([
-            "movies" => ["*" => ["id", "title", "description", "picture_url", "video_url", "avg_rating", "rating_count"]]
+            "movies" => ["*" => [
+                "id",
+                "title",
+                "description",
+                "picture_url",
+                "video_url",
+                "avg_rating",
+                "rating_count",
+                "genres" => ["*" => ["id", "name"]]
+            ]]
         ]);
         $response->assertStatus(200);
     }
@@ -33,7 +42,17 @@ class MovieTest extends TestCase
                 "picture_url" => "https://picture.com/test.png",
                 "video_url" => "https://youtube.com/test",
                 "avg_rating" => 0,
-                "rating_count" => 0
+                "rating_count" => 0,
+                "genres" => [
+                    [
+                        "id" => 1,
+                        "name" => "Action"
+                    ],
+                    [
+                        "id" => 2,
+                        "name" => "Adventure"
+                    ]
+                ]
             ]
         ]);
         $response->assertStatus(200);
@@ -297,12 +316,30 @@ class MovieTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        DB::table("movie_genres")->insert([
+            "id" => 1,
+            "name" => "Action"
+        ]);
+        DB::table("movie_genres")->insert([
+            "id" => 2,
+            "name" => "Adventure"
+        ]);
+
         DB::table('movies')->insert([
             "id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
             "title" => "Test Movie",
             "description" => "This is test movie",
             "picture_url" => "https://picture.com/test.png",
             "video_url" => "https://youtube.com/test",
+        ]);
+
+        DB::table("movie_genres_pivot")->insert([
+            "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+            "movie_genre_id" => 1
+        ]);
+        DB::table("movie_genres_pivot")->insert([
+            "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+            "movie_genre_id" => 2
         ]);
 
         DB::table("users")->insert([
