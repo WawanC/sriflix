@@ -39,10 +39,11 @@ class MovieRepository
             "video_url" => $data['video_url'] ?? $movie['video_url'],
             "picture_url" => $data['picture_url'] ?? $movie['picture_url']
         ]);
-        $movie->genres()->sync(array_map(function ($gName) {
-            $genre = MovieGenre::where(['name' => $gName])->first();
-            return $genre['id'];
-        }, $data['genre']));
+        if (array_key_exists('genre', $data))
+            $movie->genres()->sync(array_map(function ($gName) {
+                $genre = MovieGenre::where(['name' => $gName])->first();
+                return $genre['id'];
+            }, $data['genre']));
     }
 
     public function create_movie(array $data): Movie

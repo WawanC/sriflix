@@ -46,11 +46,11 @@ class MovieTest extends TestCase
                 "genres" => [
                     [
                         "id" => 1,
-                        "name" => "Action"
+                        "name" => "action"
                     ],
                     [
                         "id" => 2,
-                        "name" => "Adventure"
+                        "name" => "adventure"
                     ]
                 ]
             ]
@@ -225,12 +225,15 @@ class MovieTest extends TestCase
         $response = $this->post('/api/movies',
             [
                 "title" => "Batman",
+                "genre" => ["action", "superhero"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ], [
                 "Authorization" => "Bearer " . $loginResponse['access_token']
             ]);
+
+        var_dump($response->json());
 
         $response->assertJsonStructure(["message", "movie"]);
         $response->assertStatus(201);
@@ -302,6 +305,7 @@ class MovieTest extends TestCase
         $response = $this->post('/api/movies',
             [
                 "title" => "test movie",
+                "genre" => ["action", "superhero"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
@@ -318,11 +322,15 @@ class MovieTest extends TestCase
         parent::setUp();
         DB::table("movie_genres")->insert([
             "id" => 1,
-            "name" => "Action"
+            "name" => "action"
         ]);
         DB::table("movie_genres")->insert([
             "id" => 2,
-            "name" => "Adventure"
+            "name" => "adventure"
+        ]);
+        DB::table("movie_genres")->insert([
+            "id" => 3,
+            "name" => "superhero"
         ]);
 
         DB::table('movies')->insert([
