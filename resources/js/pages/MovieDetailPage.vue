@@ -6,7 +6,7 @@
         <span class="text-4xl font-bold">Movie not found</span>
     </main>
     <main
-        v-else
+        v-else-if="getMovie.data.value"
         :class="`flex-1 flex justify-center py-4 md:py-8 px-8 md:px-0 w-full
          md:w-2/3 self-center flex-col gap-16`"
     >
@@ -16,45 +16,45 @@
             class="flex flex-col items-center gap-8"
         >
             <h1 class="text-4xl font-bold">
-                {{ getMovie.data.value?.title }}
+                {{ getMovie.data.value.title }}
             </h1>
             <div
                 class="flex flex-wrap md:flex-nowrap justify-center gap-8 w-full md:w-4/5"
             >
                 <div class="w-3/5 md:w-1/4 rounded overflow-hidden">
                     <img
-                        :alt="getMovie.data.value?.title"
-                        :src="getMovie.data.value?.picture_url"
+                        :alt="getMovie.data.value.title"
+                        :src="getMovie.data.value.picture_url"
                         class="w-full h-full object-cover"
                     />
                 </div>
                 <iframe
-                    :src="getMovie.data.value?.video_url"
+                    :src="getMovie.data.value.video_url"
                     class="w-full md:w-3/4 aspect-video"
                 ></iframe>
             </div>
             <div class="flex flex-col items-center gap-4">
                 <RatingStarDisplay
-                    :rating="getMovie.data.value?.avg_rating || 0"
+                    :rating="getMovie.data.value.avg_rating || 0"
                 />
                 <div class="flex flex-col items-center gap-2">
                     <span
                         v-if="
-                            (getMovie.data.value?.avg_rating || 0) <= 0 &&
-                            (getMovie.data.value?.rating_count || 0) <= 0
+                            (getMovie.data.value.avg_rating || 0) <= 0 &&
+                            (getMovie.data.value.rating_count || 0) <= 0
                         "
                         class="text-xl font-bold"
                         >No Review yet</span
                     >
                     <template v-else>
                         <span class="text-4xl font-semibold">{{
-                            getMovie.data.value?.avg_rating
+                            getMovie.data.value.avg_rating
                         }}</span
                         ><span class="text-sm">
                             from
-                            {{ getMovie.data.value?.rating_count }}
+                            {{ getMovie.data.value.rating_count }}
                             {{
-                                (getMovie.data.value?.rating_count || 0) > 1
+                                (getMovie.data.value.rating_count || 0) > 1
                                     ? "reviews"
                                     : "review"
                             }}</span
@@ -81,8 +81,16 @@
                     :movie-title="getMovie.data.value.title"
                 />
             </div>
+            <ul class="flex gap-2 md:gap-4 flex-wrap justify-center w-full">
+                <li
+                    v-for="genre in getMovie.data.value.genres"
+                    class="bg-green-700 px-4 py-2 rounded-full text-white shadow capitalize"
+                >
+                    {{ genre.name }}
+                </li>
+            </ul>
             <p class="text-xl italic indent-8 md:indent-16">
-                {{ getMovie.data.value?.description }}
+                {{ getMovie.data.value.description }}
             </p>
         </section>
         <section class="flex flex-col gap-4">

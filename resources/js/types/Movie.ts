@@ -1,3 +1,5 @@
+import { Genre } from "./Genre";
+
 export type Movie = {
     id: string;
     title: string;
@@ -6,6 +8,7 @@ export type Movie = {
     video_url: string;
     avg_rating: number | 0;
     rating_count: number | 0;
+    genres: Genre[];
 };
 
 export type GetMoviesResponse = {
