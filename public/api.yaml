@@ -17,6 +17,8 @@ tags:
     description: API about Authentication
   - name: Movie Review
     description: API about Movie Review
+  - name: Genre
+    description: API about Movie Genre
 
 paths:
   /movies:
@@ -104,7 +106,6 @@ paths:
                   message:
                     type: string
                     example: Movie title already exists
-
   /movies/{movieId}:
     get:
       tags:
@@ -426,6 +427,24 @@ paths:
                     example: Movie review already exists
         401:
           $ref: "#/components/responses/Unauthorized"
+
+  /genres:
+    get:
+      tags:
+        - Genre
+      summary: Get all available movie genres
+      responses:
+        200:
+          description: Get data success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  genres:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Genres"
 
 components:
   schemas:
