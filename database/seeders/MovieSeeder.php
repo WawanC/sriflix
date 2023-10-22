@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Genre;
 use App\Models\Movie;
-use App\Models\MovieGenre;
 use Illuminate\Database\Seeder;
 
 class MovieSeeder extends Seeder
@@ -42,7 +42,7 @@ class MovieSeeder extends Seeder
 
             $genreIds = [];
             foreach ($movie['genre'] as $gName) {
-                $genre = MovieGenre::where(['name' => $gName])->first();
+                $genre = Genre::where(['name' => $gName])->first();
                 if (!$genre) continue;
                 $genreIds[] = $genre['id'];
             }

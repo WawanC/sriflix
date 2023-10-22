@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\MovieGenre;
+use App\Models\Genre;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -12,7 +12,7 @@ class CreateMovieRequest extends FormRequest
 {
     public function rules(): array
     {
-        $genres = MovieGenre::all();
+        $genres = Genre::all();
 
 
         return [

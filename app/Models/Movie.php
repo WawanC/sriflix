@@ -24,6 +24,6 @@ class Movie extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(MovieGenre::class, "movie_genres_pivot");
+        return $this->belongsToMany(Genre::class, "movie_genres_pivot");
     }
 }

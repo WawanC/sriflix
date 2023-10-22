@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('movie_genres_pivot', function (Blueprint $table) {
             $table->uuid("movie_id");
-            $table->integer("movie_genre_id");
+            $table->integer("genre_id");
             $table->foreign("movie_id")->references("id")->on("movies")->onDelete("cascade")->onUpdate("cascade");
-            $table->foreign("movie_genre_id")->references("id")->on("movie_genres")->onDelete("cascade")->onUpdate("cascade");
+            $table->foreign("genre_id")->references("id")->on("genres")->onDelete("cascade")->onUpdate("cascade");
 
         });
     }

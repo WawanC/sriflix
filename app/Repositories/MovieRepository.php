@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Genre;
 use App\Models\Movie;
-use App\Models\MovieGenre;
 use Illuminate\Support\Collection;
 
 
@@ -41,7 +41,7 @@ class MovieRepository
         ]);
         if (array_key_exists('genre', $data))
             $movie->genres()->sync(array_map(function ($gName) {
-                $genre = MovieGenre::where(['name' => $gName])->first();
+                $genre = Genre::where(['name' => $gName])->first();
                 return $genre['id'];
             }, $data['genre']));
     }
@@ -56,7 +56,7 @@ class MovieRepository
         ]);
 
         $newMovie->genres()->attach(array_map(function ($gName) {
-            $genre = MovieGenre::where(['name' => $gName])->first();
+            $genre = Genre::where(['name' => $gName])->first();
             return $genre['id'];
         }, $data['genre']));
 

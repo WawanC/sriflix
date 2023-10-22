@@ -18,7 +18,6 @@ class GenreController extends Controller
         $genres = $this->genreRepository->get_all();
 
         return response()->json([
-            "message" => "Success",
             "genres" => $genres
         ]);
     }

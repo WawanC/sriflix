@@ -320,15 +320,15 @@ class MovieTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DB::table("movie_genres")->insert([
+        DB::table("genres")->insert([
             "id" => 1,
             "name" => "action"
         ]);
-        DB::table("movie_genres")->insert([
+        DB::table("genres")->insert([
             "id" => 2,
             "name" => "adventure"
         ]);
-        DB::table("movie_genres")->insert([
+        DB::table("genres")->insert([
             "id" => 3,
             "name" => "superhero"
         ]);
@@ -343,11 +343,11 @@ class MovieTest extends TestCase
 
         DB::table("movie_genres_pivot")->insert([
             "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "movie_genre_id" => 1
+            "genre_id" => 1
         ]);
         DB::table("movie_genres_pivot")->insert([
             "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "movie_genre_id" => 2
+            "genre_id" => 2
         ]);
 
         DB::table("users")->insert([

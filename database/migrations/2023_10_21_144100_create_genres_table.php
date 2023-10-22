@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('movie_genres', function (Blueprint $table) {
+        Schema::create('genres', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string("name");
         });
@@ -21,7 +21,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('movie_genres');
+        Schema::dropIfExists('genres');
     }
 
 };
