@@ -2,16 +2,21 @@
 
 namespace App\Http\Requests;
 
+use App\Models\MovieGenre;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class UpdateMovieRequest extends FormRequest
 {
     public function rules(): array
     {
+        $genres = MovieGenre::all();
+
         return [
             "title" => ['nullable', 'string'],
+            "genre" => ["nullable", 'array', Rule::in(array_map(fn($g) => $g['name'], $genres->toArray()))],
             'description' => ['nullable', 'string'],
             'picture_url' => ['nullable', 'string'],
             'video_url' => ['nullable', 'string']
@@ -30,6 +35,8 @@ class UpdateMovieRequest extends FormRequest
             $input['picture_url'] = trim($this['picture_url']);
         if ($this->exists('video_url') && strlen(trim($this['video_url'])) > 0)
             $input['video_url'] = trim($this['video_url']);
+        if ($this->exists('genre'))
+            $input['genre'] = $this['genre'];
 
         $this->replace($input);
     }

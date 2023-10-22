@@ -2,16 +2,22 @@
 
 namespace App\Http\Requests;
 
+use App\Models\MovieGenre;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class CreateMovieRequest extends FormRequest
 {
     public function rules(): array
     {
+        $genres = MovieGenre::all();
+
+
         return [
             "title" => ['required', 'string'],
+            "genre" => ["required", 'array', Rule::in(array_map(fn($g) => $g['name'], $genres->toArray()))],
             'description' => ['required', 'string'],
             'picture_url' => ['required', 'string'],
             'video_url' => ['required', 'string']
@@ -26,6 +32,7 @@ class CreateMovieRequest extends FormRequest
         $input['description'] = trim($this['description']);
         $input['picture_url'] = trim($this['picture_url']);
         $input['video_url'] = trim($this['video_url']);
+        $input['genre'] = $this['genre'];
 
         $this->replace($input);
     }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Movie;
+use App\Models\MovieGenre;
 use Illuminate\Support\Collection;
 
 
@@ -31,16 +32,33 @@ class MovieRepository
 
     public function update_movie(string $id, array $data): void
     {
-        Movie::find($id)->update($data);
+        $movie = Movie::find($id);
+        $movie->update([
+            "title" => $data['title'] ?? $movie['title'],
+            "description" => $data['description'] ?? $movie['description'],
+            "video_url" => $data['video_url'] ?? $movie['video_url'],
+            "picture_url" => $data['picture_url'] ?? $movie['picture_url']
+        ]);
+        $movie->genres()->sync(array_map(function ($gName) {
+            $genre = MovieGenre::where(['name' => $gName])->first();
+            return $genre['id'];
+        }, $data['genre']));
     }
 
     public function create_movie(array $data): Movie
     {
-        return Movie::create([
+        $newMovie = Movie::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'video_url' => $data['video_url'],
             'picture_url' => $data['picture_url']
         ]);
+
+        $newMovie->genres()->attach(array_map(function ($gName) {
+            $genre = MovieGenre::where(['name' => $gName])->first();
+            return $genre['id'];
+        }, $data['genre']));
+
+        return Movie::with(['genres'])->find($newMovie['id']);
     }
 }

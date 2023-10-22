@@ -52,7 +52,7 @@ class MovieSeeder extends Seeder
                 "description" => $movie['description'],
                 'picture_url' => $movie['picture_url'],
                 "video_url" => $movie['video_url'],
-            ])->movie_genres()->attach($genreIds);
+            ])->genres()->attach($genreIds);
         }
     }
 }
