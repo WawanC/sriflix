@@ -15,7 +15,7 @@
             v-show="!getMovie.isFetching.value"
             class="flex flex-col items-center gap-8"
         >
-            <h1 class="text-4xl font-bold">
+            <h1 class="text-4xl font-bold text-center">
                 {{ getMovie.data.value.title }}
             </h1>
             <div
