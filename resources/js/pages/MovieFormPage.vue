@@ -16,7 +16,7 @@
             class="flex flex-col gap-8 text-xl w-full md:w-1/2"
             @submit.prevent="submitFormHandler"
         >
-            <div class="relative">
+            <div v-if="props.mode === 'create'" class="relative">
                 <input
                     v-model="titleInputSearchApi"
                     class="border-b-2 outline-none w-full border-black p-2"
@@ -24,7 +24,10 @@
                     type="text"
                 />
                 <ul
-                    v-if="searchMoviesApi.data.value.length > 0"
+                    v-if="
+                        searchMoviesApi.data.value.length > 0 &&
+                        titleInputSearchApi.length > 3
+                    "
                     class="absolute top-[110%] left-0 right-0 shadow border rounded overflow-hidden"
                 >
                     <li
@@ -38,6 +41,7 @@
                             v-for="movie in searchMoviesApi.data.value"
                             :class="`w-full p-2 bg-white
                         hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
+                            @click="selectApiMovieHandler(movie)"
                         >
                             <div class="w-8 aspect-square">
                                 <img
@@ -148,6 +152,7 @@ import { onMounted, ref, watch } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
 import { useSearchMoviesApi } from "../composables/Api";
+import { ApiMovie } from "../types/Api";
 
 const props = defineProps<{
     mode: "create" | "edit";
@@ -262,4 +267,15 @@ watch(titleInputSearchApi, async (_, __, onCleanup) => {
         await searchMoviesApi.searchMovies(titleInputSearchApi.value.trim());
     }, 1000);
 });
+
+const selectApiMovieHandler = (movie: ApiMovie) => {
+    titleInputSearchApi.value = "";
+
+    title.value = movie.title;
+    description.value = movie.overview;
+    pictureUrl.value = movie.poster_path
+        ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+        : "";
+    checkPictureValidity();
+};
 </script>

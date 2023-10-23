@@ -28,9 +28,9 @@ export const useSearchMoviesApi = () => {
                 id: x.id,
                 title: x.title,
                 poster_path: x.poster_path,
+                overview: x.overview,
             }))
             .splice(0, 3);
-        console.log(data.value);
         isFetching.value = false;
     };
 
