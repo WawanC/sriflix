@@ -5,8 +5,8 @@ namespace App\Services;
 
 class TmdbApiService
 {
+    public array $genreData;
     private $context;
-    private array $genreData;
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class TmdbApiService
         );
         $data = json_decode($response, true);
         if (count($data['results']) < 1) {
-            var_dump("ID: " . $movieId);
+//            var_dump("ID: " . $movieId);
             return 'xxx';
         }
         return $data['results'][0]['key'];

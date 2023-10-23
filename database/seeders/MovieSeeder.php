@@ -32,17 +32,16 @@ class MovieSeeder extends Seeder
 
             $newMovie = [
                 "title" => $movie['title'],
-                "genre" => ["action"],
                 "description" => $movie["overview"],
                 "picture_url" => "https://image.tmdb.org/t/p/original" . $movie["poster_path"],
                 "video_url" => "https://www.youtube.com/embed/" . $videoId
             ];
 
             $genreIds = [];
-            foreach ($newMovie['genre'] as $gName) {
-                $genre = Genre::all()->where(['name' => $gName])->first();
+            foreach ($movie['genre_ids'] as $genreId) {
+                $genre = Genre::all()->find($genreId);
                 if (!$genre) continue;
-                $genreIds[] = $genre['id'];
+                $genreIds[] = $genreId;
             }
 
             Movie::create([
