@@ -24,24 +24,32 @@
                     type="text"
                 />
                 <ul
-                    v-if="apiMovies.length > 0"
+                    v-if="searchMoviesApi.data.value.length > 0"
                     class="absolute top-[110%] left-0 right-0 shadow border rounded overflow-hidden"
                 >
                     <li
-                        v-for="movie in apiMovies"
-                        :class="`w-full p-2 bg-white
-                        hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
+                        v-if="searchMoviesApi.isFetching.value"
+                        class="py-8 flex justify-center items-center bg-white"
                     >
-                        <div class="w-8 aspect-square">
-                            <img
-                                :alt="movie.poster_path"
-                                :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
-                            />
-                        </div>
-                        <span>
-                            {{ movie.title }}
-                        </span>
+                        Fetching...
                     </li>
+                    <template v-else>
+                        <li
+                            v-for="movie in searchMoviesApi.data.value"
+                            :class="`w-full p-2 bg-white
+                        hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
+                        >
+                            <div class="w-8 aspect-square">
+                                <img
+                                    :alt="movie.poster_path"
+                                    :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
+                                />
+                            </div>
+                            <span>
+                                {{ movie.title }}
+                            </span>
+                        </li>
+                    </template>
                 </ul>
             </div>
 
@@ -136,11 +144,10 @@ import {
     useUpdateMovie,
 } from "../composables/Movie";
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
-import axios from "axios";
-import { ApiMovie, GetSearchResponse } from "../types/Api";
+import { useSearchMoviesApi } from "../composables/Api";
 
 const props = defineProps<{
     mode: "create" | "edit";
@@ -162,8 +169,8 @@ const isPicValid = ref(false);
 const isVidValid = ref(false);
 
 const titleInputSearchApi = ref("");
-const apiMovies = ref<ApiMovie[]>([]);
 const searchApiTimerID = ref<number | null>();
+const searchMoviesApi = useSearchMoviesApi();
 
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
@@ -247,34 +254,12 @@ onMounted(async () => {
     }
 });
 
-watchEffect(async () => {
-    if (searchApiTimerID.value) clearTimeout(searchApiTimerID.value);
-
-    if (
-        !import.meta.env.VITE_TMDB_API_KEY ||
-        titleInputSearchApi.value.length < 3
-    ) {
-        apiMovies.value = [];
-        return;
-    }
-
+watch(titleInputSearchApi, async (_, __, onCleanup) => {
+    onCleanup(
+        () => searchApiTimerID.value && clearTimeout(searchApiTimerID.value),
+    );
     searchApiTimerID.value = setTimeout(async () => {
-        const response = await axios.get<GetSearchResponse>(
-            `https://api.themoviedb.org/3/search/movie`,
-            {
-                params: {
-                    query: titleInputSearchApi.value,
-                    api_key: import.meta.env.VITE_TMDB_API_KEY,
-                },
-            },
-        );
-        apiMovies.value = response.data.results
-            .map((x) => ({
-                id: x.id,
-                title: x.title,
-                poster_path: x.poster_path,
-            }))
-            .splice(0, 3);
+        await searchMoviesApi.searchMovies(titleInputSearchApi.value.trim());
     }, 1000);
 });
 </script>
