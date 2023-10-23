@@ -22,8 +22,7 @@ class GenreSeeder extends Seeder
     {
         $this->tmdbApiService = $tmdbApiService;
     }
-
-
+    
     public function run(): void
     {
         foreach ($this->genres as $genre) {

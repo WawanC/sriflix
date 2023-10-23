@@ -16,6 +16,35 @@
             class="flex flex-col gap-8 text-xl w-full md:w-1/2"
             @submit.prevent="submitFormHandler"
         >
+            <div class="relative">
+                <input
+                    v-model="titleInputSearchApi"
+                    class="border-b-2 outline-none w-full border-black p-2"
+                    placeholder="Search from TMDB API"
+                    type="text"
+                />
+                <ul
+                    v-if="apiMovies.length > 0"
+                    class="absolute top-[110%] left-0 right-0 shadow border rounded overflow-hidden"
+                >
+                    <li
+                        v-for="movie in apiMovies"
+                        :class="`w-full p-2 bg-white
+                        hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
+                    >
+                        <div class="w-8 aspect-square">
+                            <img
+                                :alt="movie.poster_path"
+                                :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
+                            />
+                        </div>
+                        <span>
+                            {{ movie.title }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
             <h2
                 v-if="
                     error || updateMovie.error.value || createMovie.error.value
@@ -107,9 +136,11 @@ import {
     useUpdateMovie,
 } from "../composables/Movie";
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
+import axios from "axios";
+import { ApiMovie, GetSearchResponse } from "../types/Api";
 
 const props = defineProps<{
     mode: "create" | "edit";
@@ -129,6 +160,10 @@ const videoUrl = ref("");
 const error = ref<string | null>(null);
 const isPicValid = ref(false);
 const isVidValid = ref(false);
+
+const titleInputSearchApi = ref("");
+const apiMovies = ref<ApiMovie[]>([]);
+const searchApiTimerID = ref<number | null>();
 
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
@@ -193,6 +228,7 @@ const checkVideoValidity = () => {
         isVidValid.value = true;
     }
 };
+
 onMounted(async () => {
     if (user && props.mode === "edit") {
         await getMovie.fetch();
@@ -209,5 +245,36 @@ onMounted(async () => {
             checkVideoValidity();
         }
     }
+});
+
+watchEffect(async () => {
+    if (searchApiTimerID.value) clearTimeout(searchApiTimerID.value);
+
+    if (
+        !import.meta.env.VITE_TMDB_API_KEY ||
+        titleInputSearchApi.value.length < 3
+    ) {
+        apiMovies.value = [];
+        return;
+    }
+
+    searchApiTimerID.value = setTimeout(async () => {
+        const response = await axios.get<GetSearchResponse>(
+            `https://api.themoviedb.org/3/search/movie`,
+            {
+                params: {
+                    query: titleInputSearchApi.value,
+                    api_key: import.meta.env.VITE_TMDB_API_KEY,
+                },
+            },
+        );
+        apiMovies.value = response.data.results
+            .map((x) => ({
+                id: x.id,
+                title: x.title,
+                poster_path: x.poster_path,
+            }))
+            .splice(0, 3);
+    }, 1000);
 });
 </script>
