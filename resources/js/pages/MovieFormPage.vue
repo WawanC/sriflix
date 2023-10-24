@@ -80,12 +80,21 @@
             </div>
             <div class="flex flex-col gap-4">
                 <label class="font-semibold" for="genre">Genre :</label>
-                <div class="flex gap-4">
-                    <span
-                        v-for="genreName in genre"
-                        class="bg-green-700 px-4 py-2 rounded-full shadow text-white"
-                        >{{ genreName }}</span
+                <div class="flex gap-4 justify-center">
+                    <button
+                        v-for="genreName in getGenresApi.data.value"
+                        :class="`
+                        ${
+                            genre.includes(genreName)
+                                ? `bg-green-700 text-white border-0`
+                                : `bg-white border-2 border-green-700 text-green-700`
+                        }
+                        px-4 py-2 rounded-full shadow`"
+                        type="button"
+                        @click="toggleGenreHandler(genreName)"
                     >
+                        {{ genreName }}
+                    </button>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
@@ -199,6 +208,14 @@ const getGenresApi = useGetGenresApi();
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
 
+const toggleGenreHandler = (genreName: string) => {
+    if (genre.value.includes(genreName)) {
+        genre.value = genre.value.filter((g) => g != genreName);
+    } else {
+        genre.value = [...genre.value, genreName];
+    }
+};
+
 const submitFormHandler = async () => {
     error.value = null;
 
@@ -275,6 +292,7 @@ onMounted(async () => {
         }
         if (getMovie.data.value) {
             title.value = getMovie.data.value.title;
+            genre.value = getMovie.data.value?.genres.map((g) => g.name);
             description.value = getMovie.data.value.description;
             pictureUrl.value = getMovie.data.value.picture_url;
             videoUrl.value = getMovie.data.value.video_url;
