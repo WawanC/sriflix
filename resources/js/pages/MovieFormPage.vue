@@ -5,10 +5,11 @@
         </h1>
         <Loading
             v-if="
-                props.mode === 'edit' &&
-                (getMovie.isFetching.value ||
-                    updateMovie.isLoading.value ||
-                    createMovie.isLoading.value)
+                (props.mode === 'edit' &&
+                    (getMovie.isFetching.value ||
+                        updateMovie.isLoading.value ||
+                        createMovie.isLoading.value)) ||
+                getMovieVideoApi.isFetching.value
             "
         />
         <form
@@ -45,8 +46,8 @@
                         >
                             <div class="w-8 aspect-square">
                                 <img
-                                    :alt="movie.poster_path"
-                                    :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
+                                    :alt="movie.picture_url"
+                                    :src="`https://image.tmdb.org/t/p/original/${movie.picture_url}`"
                                 />
                             </div>
                             <span>
@@ -151,7 +152,7 @@ import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
-import { useSearchMoviesApi } from "../composables/Api";
+import { useGetMovieVideoApi, useSearchMoviesApi } from "../composables/Api";
 import { ApiMovie } from "../types/Api";
 
 const props = defineProps<{
@@ -174,8 +175,9 @@ const isPicValid = ref(false);
 const isVidValid = ref(false);
 
 const titleInputSearchApi = ref("");
-const searchApiTimerID = ref<number | null>();
+
 const searchMoviesApi = useSearchMoviesApi();
+const getMovieVideoApi = useGetMovieVideoApi();
 
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
@@ -259,23 +261,24 @@ onMounted(async () => {
     }
 });
 
-watch(titleInputSearchApi, async (_, __, onCleanup) => {
-    onCleanup(
-        () => searchApiTimerID.value && clearTimeout(searchApiTimerID.value),
-    );
-    searchApiTimerID.value = setTimeout(async () => {
-        await searchMoviesApi.searchMovies(titleInputSearchApi.value.trim());
-    }, 1000);
+watch(titleInputSearchApi, async () => {
+    await searchMoviesApi.searchMovies(titleInputSearchApi.value.trim());
 });
 
-const selectApiMovieHandler = (movie: ApiMovie) => {
+const selectApiMovieHandler = async (movie: ApiMovie) => {
     titleInputSearchApi.value = "";
 
+    const movieVideoKey = await getMovieVideoApi.fetch(movie.id);
+
     title.value = movie.title;
-    description.value = movie.overview;
-    pictureUrl.value = movie.poster_path
-        ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+    description.value = movie.description;
+    pictureUrl.value = movie.picture_url
+        ? `https://image.tmdb.org/t/p/original/${movie.picture_url}`
+        : "";
+    videoUrl.value = movieVideoKey
+        ? `https://www.youtube.com/embed/${movieVideoKey}`
         : "";
     checkPictureValidity();
+    checkVideoValidity();
 };
 </script>
