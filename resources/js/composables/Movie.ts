@@ -72,6 +72,7 @@ export const useUpdateMovie = () => {
         movieId: string,
         data: {
             title: string;
+            genre: string[];
             description: string;
             picture_url: string;
             video_url: string;

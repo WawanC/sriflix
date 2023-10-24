@@ -63,6 +63,7 @@ export const routerOptions: RouterOptions = {
                 {
                     path: "",
                     component: MovieFormPage,
+                    name: "Create Movie | Sriflix",
                     props: { mode: "create" },
                 },
             ],
@@ -74,6 +75,7 @@ export const routerOptions: RouterOptions = {
                 {
                     path: "",
                     component: MovieFormPage,
+                    name: "Edit Movie | Sriflix",
                     props: { mode: "edit" },
                 },
             ],

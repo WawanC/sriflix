@@ -80,16 +80,16 @@
             </div>
             <div class="flex flex-col gap-4">
                 <label class="font-semibold" for="genre">Genre :</label>
-                <div class="flex gap-4 justify-center">
+                <div class="flex gap-4 justify-center flex-wrap">
                     <button
                         v-for="genreName in getGenresApi.data.value"
                         :class="`
                         ${
                             genre.includes(genreName)
-                                ? `bg-green-700 text-white border-0`
-                                : `bg-white border-2 border-green-700 text-green-700`
+                                ? `bg-green-700 text-white`
+                                : `bg-white text-green-700`
                         }
-                        px-4 py-2 rounded-full shadow`"
+                        px-4 py-2 rounded-full shadow text-sm md:text-base border-2 border-green-700`"
                         type="button"
                         @click="toggleGenreHandler(genreName)"
                     >
@@ -247,6 +247,7 @@ const submitFormHandler = async () => {
         if (!getMovie.data.value) return;
         await updateMovie.mutate(getMovie.data.value.id, {
             title: title.value.trim(),
+            genre: genre.value,
             description: description.value.trim(),
             picture_url: pictureUrl.value.trim(),
             video_url: videoUrl.value.trim(),

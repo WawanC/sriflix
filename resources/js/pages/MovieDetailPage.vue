@@ -145,5 +145,8 @@ const openReviewModal = () => {
 onMounted(async () => {
     await getMovie.fetch();
     await getMovieReview.fetch();
+    if (getMovie.data.value) {
+        document.title = getMovie.data.value.title;
+    }
 });
 </script>
