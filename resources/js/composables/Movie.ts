@@ -100,6 +100,7 @@ export const useCreateMovie = () => {
 
     const mutate = async (data: {
         title: string;
+        genre: string[];
         description: string;
         picture_url: string;
         video_url: string;
@@ -109,6 +110,7 @@ export const useCreateMovie = () => {
             isLoading.value = true;
             await api.post(`/movies`, data);
         } catch (e) {
+            console.log(e);
             if (axios.isAxiosError(e) && e.response) {
                 error.value = e.response.data.message;
             }

@@ -3,7 +3,7 @@ export type ApiMovie = {
     title: string;
     picture_url: string;
     description: string;
-    video_url: string;
+    genre_ids: number[];
 };
 
 export type GetSearchResponse = {
@@ -12,7 +12,15 @@ export type GetSearchResponse = {
         title: string;
         poster_path: string;
         overview: string;
+        genre_ids: number[];
     }[];
 };
 
 export type GetVideoResponse = { results: { key: string }[] };
+
+export type GetGenresResponse = {
+    genres: {
+        id: number;
+        name: string;
+    }[];
+};

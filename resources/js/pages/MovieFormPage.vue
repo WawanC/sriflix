@@ -71,11 +71,22 @@
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="title">Title :</label>
                 <input
+                    id="title"
                     v-model="title"
                     class="border-b-2 border-black p-2 outline-none"
                     required
                     type="text"
                 />
+            </div>
+            <div class="flex flex-col gap-4">
+                <label class="font-semibold" for="genre">Genre :</label>
+                <div class="flex gap-4">
+                    <span
+                        v-for="genreName in genre"
+                        class="bg-green-700 px-4 py-2 rounded-full shadow text-white"
+                        >{{ genreName }}</span
+                    >
+                </div>
             </div>
             <div class="flex flex-col gap-2">
                 <label class="font-semibold" for="description"
@@ -152,7 +163,11 @@ import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import Loading from "../components/Loading.vue";
 import { useAuthStore } from "../stores/auth";
-import { useGetMovieVideoApi, useSearchMoviesApi } from "../composables/Api";
+import {
+    useGetGenresApi,
+    useGetMovieVideoApi,
+    useSearchMoviesApi,
+} from "../composables/Api";
 import { ApiMovie } from "../types/Api";
 
 const props = defineProps<{
@@ -167,6 +182,7 @@ const { user } = useAuthStore();
 const getMovie = useGetMovie(movieId);
 
 const title = ref("");
+const genre = ref<string[]>([]);
 const description = ref("");
 const pictureUrl = ref("");
 const videoUrl = ref("");
@@ -178,6 +194,7 @@ const titleInputSearchApi = ref("");
 
 const searchMoviesApi = useSearchMoviesApi();
 const getMovieVideoApi = useGetMovieVideoApi();
+const getGenresApi = useGetGenresApi();
 
 const updateMovie = useUpdateMovie();
 const createMovie = useCreateMovie();
@@ -204,6 +221,11 @@ const submitFormHandler = async () => {
         return;
     }
 
+    if (genre.value.length < 1) {
+        error.value = "Valid movie genre is required";
+        return;
+    }
+
     if (props.mode === "edit") {
         if (!getMovie.data.value) return;
         await updateMovie.mutate(getMovie.data.value.id, {
@@ -215,6 +237,7 @@ const submitFormHandler = async () => {
     } else {
         await createMovie.mutate({
             title: title.value.trim(),
+            genre: genre.value,
             description: description.value.trim(),
             picture_url: pictureUrl.value.trim(),
             video_url: videoUrl.value.trim(),
@@ -244,6 +267,7 @@ const checkVideoValidity = () => {
 };
 
 onMounted(async () => {
+    await getGenresApi.fetch();
     if (user && props.mode === "edit") {
         await getMovie.fetch();
         if (getMovie.error.value) {
@@ -271,6 +295,9 @@ const selectApiMovieHandler = async (movie: ApiMovie) => {
     const movieVideoKey = await getMovieVideoApi.fetch(movie.id);
 
     title.value = movie.title;
+    genre.value = movie.genre_ids
+        .map((id) => getGenresApi.data.value[id])
+        .filter((g) => g);
     description.value = movie.description;
     pictureUrl.value = movie.picture_url
         ? `https://image.tmdb.org/t/p/original/${movie.picture_url}`

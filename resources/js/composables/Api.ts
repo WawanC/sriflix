@@ -1,6 +1,11 @@
 import { ref } from "vue";
 import axios from "axios";
-import { ApiMovie, GetSearchResponse, GetVideoResponse } from "../types/Api";
+import {
+    ApiMovie,
+    GetGenresResponse,
+    GetSearchResponse,
+    GetVideoResponse,
+} from "../types/Api";
 
 export const useSearchMoviesApi = () => {
     const data = ref<ApiMovie[]>([]);
@@ -30,7 +35,7 @@ export const useSearchMoviesApi = () => {
                     title: x.title,
                     description: x.overview,
                     picture_url: x.poster_path,
-                    video_url: "",
+                    genre_ids: x.genre_ids,
                 };
 
                 return movie;
@@ -66,4 +71,35 @@ export const useGetMovieVideoApi = () => {
     };
 
     return { isFetching, fetch };
+};
+
+export const useGetGenresApi = () => {
+    const data = ref<{ [key: number]: string }>({});
+    const isFetching = ref(false);
+    const allowedGenres = ["action", "comedy", "horror", "romance", "mystery"];
+
+    const fetch = async () => {
+        isFetching.value = true;
+        if (!import.meta.env.VITE_TMDB_API_KEY) {
+            return;
+        }
+
+        const response = await axios.get<GetGenresResponse>(
+            `https://api.themoviedb.org/3/genre/movie/list?language=en`,
+            {
+                params: {
+                    api_key: import.meta.env.VITE_TMDB_API_KEY,
+                },
+            },
+        );
+
+        response.data.genres
+            .filter((genre) => allowedGenres.includes(genre.name.toLowerCase()))
+            .forEach((genre) => {
+                data.value[genre.id] = genre.name;
+            });
+        isFetching.value = false;
+    };
+
+    return { isFetching, fetch, data };
 };
