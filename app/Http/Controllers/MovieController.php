@@ -8,6 +8,7 @@ use App\Models\Movie;
 use App\Repositories\MovieRepository;
 use App\Repositories\MovieReviewRepository;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
@@ -21,9 +22,17 @@ class MovieController extends Controller
         $this->movieReviewRepository = $movieReviewRepository;
     }
 
-    public function get_all()
+    public function get_all(Request $request)
     {
-        $movies = $this->movieRepository->get_movies();
+        $genreQuery = $request->query("genre");
+
+        if ($genreQuery) {
+            $selected_genres = array_map(fn($x) => ucfirst($x), explode(",", $genreQuery));
+            $movies = $this->movieRepository->get_movies_by_genre($selected_genres);
+        } else {
+            $movies = $this->movieRepository->get_movies();
+        }
+
 
         foreach ($movies as $movie) {
             $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);
