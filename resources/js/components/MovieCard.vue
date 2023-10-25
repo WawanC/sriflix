@@ -2,7 +2,8 @@
     <router-link :to="`/movies/${props.movie.id}`">
         <article
             ref="cardRef"
-            class="w-[100px] md:w-[200px] h-[150px] md:h-[300px] flex relative rounded overflow-hidden shadow"
+            :class="`w-[100px] md:w-[200px] h-[150px] md:h-[300px]
+            flex relative rounded overflow-hidden shadow`"
         >
             <img
                 :alt="props.movie.id"
@@ -10,7 +11,7 @@
             />
             <div
                 v-if="!isImageLoaded"
-                class="w-full h-full bg-neutral-300"
+                class="w-full h-full bg-neutral-400 animate-pulse"
             ></div>
             <div class="absolute bottom-0 w-full h-1/4">
                 <div class="bg-black w-full h-full opacity-75" />
@@ -41,7 +42,6 @@ const observer = ref<IntersectionObserver>(
     new IntersectionObserver((entries, obs) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            console.log("intersecting...");
 
             const targetImage = entry.target.querySelector(
                 ".card_image",
