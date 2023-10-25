@@ -5,16 +5,18 @@ namespace App\Repositories;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use LaravelIdea\Helper\App\Models\_IH_Movie_C;
 
 
 class MovieRepository
 {
-    public function get_movies(): \Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_Movie_C|array
+    public function get_movies(): Collection|_IH_Movie_C|array
     {
         return Movie::with(['genres'])->get();
     }
 
-    public function get_movies_by_genre(array $genres): \Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_Movie_C|array
+    public function get_movies_by_genre(array $genres): Collection|_IH_Movie_C|array
     {
         return Movie::whereHas('genres',
             fn(Builder $q) => $q->whereIn('name', $genres),

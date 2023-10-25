@@ -33,7 +33,6 @@ class MovieController extends Controller
             $movies = $this->movieRepository->get_movies();
         }
 
-
         foreach ($movies as $movie) {
             $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);
             $movie['rating_count'] = $this->movieReviewRepository->get_rating_count($movie['id']);

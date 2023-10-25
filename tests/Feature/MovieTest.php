@@ -46,11 +46,11 @@ class MovieTest extends TestCase
                 "genres" => [
                     [
                         "id" => 1,
-                        "name" => "action"
+                        "name" => "Action"
                     ],
                     [
                         "id" => 2,
-                        "name" => "adventure"
+                        "name" => "Adventure"
                     ]
                 ]
             ]
@@ -225,7 +225,7 @@ class MovieTest extends TestCase
         $response = $this->post('/api/movies',
             [
                 "title" => "Batman",
-                "genre" => ["action", "superhero"],
+                "genre" => ["Action", "Superhero"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
@@ -305,7 +305,7 @@ class MovieTest extends TestCase
         $response = $this->post('/api/movies',
             [
                 "title" => "test movie",
-                "genre" => ["action", "superhero"],
+                "genre" => ["Action", "Superhero"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
@@ -317,50 +317,87 @@ class MovieTest extends TestCase
         $response->assertStatus(409);
     }
 
+    public function test_get_movies_by_genres_success(): void
+    {
+        $response = $this->get('/api/movies?genre=comedy');
+
+        $json = $response->json();
+        var_dump($json['movies'][0]['genres']);
+
+        $this->assertTrue(in_array(["id" => 4, "name" => "Comedy"], $json['movies'][0]['genres']));
+        $response->assertStatus(200);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
-        DB::table("genres")->insert([
-            "id" => 1,
-            "name" => "action"
-        ]);
-        DB::table("genres")->insert([
-            "id" => 2,
-            "name" => "adventure"
-        ]);
-        DB::table("genres")->insert([
-            "id" => 3,
-            "name" => "superhero"
-        ]);
+        DB::table("genres")
+            ->insert([
+                "id" => 1,
+                "name" => "Action"
+            ]);
+        DB::table("genres")
+            ->insert([
+                "id" => 2,
+                "name" => "Adventure"
+            ]);
+        DB::table("genres")
+            ->insert([
+                "id" => 3,
+                "name" => "Superhero"
+            ]);
+        DB::table("genres")
+            ->insert([
+                "id" => 4,
+                "name" => "Comedy"
+            ]);
 
-        DB::table('movies')->insert([
-            "id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "title" => "Test Movie",
-            "description" => "This is test movie",
-            "picture_url" => "https://picture.com/test.png",
-            "video_url" => "https://youtube.com/test",
-        ]);
+        DB::table('movies')
+            ->insert([
+                "id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+                "title" => "Test Movie",
+                "description" => "This is test movie",
+                "picture_url" => "https://picture.com/test.png",
+                "video_url" => "https://youtube.com/test",
+            ]);
+        DB::table('movies')
+            ->insert([
+                "id" => "405c4942-ac0e-4539-83cc-cc54798ddfa8",
+                "title" => "Test Movie 2",
+                "description" => "This is test movie 2",
+                "picture_url" => "https://picture.com/test.png",
+                "video_url" => "https://youtube.com/test",
+            ]);
 
-        DB::table("movie_genres_pivot")->insert([
-            "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "genre_id" => 1
-        ]);
-        DB::table("movie_genres_pivot")->insert([
-            "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "genre_id" => 2
-        ]);
+        DB::table("movie_genres_pivot")
+            ->insert([
+                "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+                "genre_id" => 1
+            ]);
+        DB::table("movie_genres_pivot")
+            ->insert([
+                "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+                "genre_id" => 2
+            ]);
+        DB::table("movie_genres_pivot")
+            ->insert([
+                "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddfa8",
+                "genre_id" => 4
+            ]);
 
-        DB::table("users")->insert([
-            "id" => "958f2234-bd68-4546-942d-ed1aaa535d31",
-            "username" => "user123",
-            "password" => Hash::make("123456"),
-        ]);
+        DB::table("users")
+            ->insert([
+                "id" => "958f2234-bd68-4546-942d-ed1aaa535d31",
+                "username" => "user123",
+                "password" => Hash::make("123456"),
+            ]);
 
-        DB::table("users")->insert([
-            "id" => "958f2234-bd68-4546-942d-ed1aaa535d34",
-            "username" => "admin123",
-            "password" => Hash::make("123456"),
-            "role" => "admin"
-        ]);
+        DB::table("users")
+            ->insert([
+                "id" => "958f2234-bd68-4546-942d-ed1aaa535d34",
+                "username" => "admin123",
+                "password" => Hash::make("123456"),
+                "role" => "admin"
+            ]);
     }
 }
