@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage.vue";
 import AdminPage from "./pages/AdminPage.vue";
 import AdminRoute from "./guards/AdminRoute.vue";
 import MovieFormPage from "./pages/MovieFormPage.vue";
+import SearchPage from "./pages/SearchPage.vue";
 
 export const routerOptions: RouterOptions = {
     history: createWebHistory(),
@@ -79,6 +80,11 @@ export const routerOptions: RouterOptions = {
                     props: { mode: "edit" },
                 },
             ],
+        },
+        {
+            path: "/search",
+            component: SearchPage,
+            name: "Search Movies | Sriflix",
         },
     ],
 };
