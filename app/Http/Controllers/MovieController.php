@@ -25,13 +25,14 @@ class MovieController extends Controller
     public function get_all(Request $request)
     {
         $genreQuery = $request->query("genre");
+        $searchQuery = $request->query("search");
 
+        $genres = null;
         if ($genreQuery) {
-            $selected_genres = array_map(fn($x) => ucfirst($x), explode(",", $genreQuery));
-            $movies = $this->movieRepository->get_movies_by_genre($selected_genres);
-        } else {
-            $movies = $this->movieRepository->get_movies();
+            $genres = array_map(fn($x) => ucfirst($x), explode(",", $genreQuery));
         }
+
+        $movies = $this->movieRepository->get_movies($searchQuery, $genres);
 
         foreach ($movies as $movie) {
             $movie['avg_rating'] = $this->movieReviewRepository->get_average_rating($movie['id']);

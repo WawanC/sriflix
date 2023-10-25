@@ -11,34 +11,42 @@ use LaravelIdea\Helper\App\Models\_IH_Movie_C;
 
 class MovieRepository
 {
-    public function get_movies(): Collection|_IH_Movie_C|array
+    public function get_movies(string|null $keyword = null, array|null $genres = null): Collection|_IH_Movie_C|array
     {
-        return Movie::with(['genres'])->get();
-    }
+        $query = Movie::query();
 
-    public function get_movies_by_genre(array $genres): Collection|_IH_Movie_C|array
-    {
-        return Movie::whereHas('genres',
-            fn(Builder $q) => $q->whereIn('name', $genres),
-            '>=',
-            count($genres))
-            ->with("genres")->get();
-    }
+        if ($keyword) {
+            $query->whereRaw("LOWER(title) LIKE ?", "%" . strtolower($keyword) . "%");
+        }
+        if ($genres) {
+            $query->whereHas('genres',
+                fn(Builder $q) => $q->whereIn('name', $genres),
+                '>=',
+                count($genres));
+        }
 
+        $query->with('genres');
+
+        return $query->get();
+    }
+    
     public function get_movie_by_id(string $id): Movie|null
     {
-        return Movie::with(['genres'])->find($id);
+        return Movie::with(['genres'])
+            ->find($id);
     }
 
     public function get_movie_by_title(string $title): Movie|null
     {
-        return Movie::whereRaw("LOWER(title) LIKE ?", strtolower($title))->first();
+        return Movie::whereRaw("LOWER(title) LIKE ?", strtolower($title))
+            ->first();
 
     }
 
     public function delete_movie(string $id): void
     {
-        Movie::find($id)->delete();
+        Movie::find($id)
+            ->delete();
     }
 
     public function update_movie(string $id, array $data): void
@@ -51,10 +59,12 @@ class MovieRepository
             "picture_url" => $data['picture_url'] ?? $movie['picture_url']
         ]);
         if (array_key_exists('genre', $data))
-            $movie->genres()->sync(array_map(function ($gName) {
-                $genre = Genre::where(['name' => $gName])->first();
-                return $genre['id'];
-            }, $data['genre']));
+            $movie->genres()
+                ->sync(array_map(function ($gName) {
+                    $genre = Genre::where(['name' => $gName])
+                        ->first();
+                    return $genre['id'];
+                }, $data['genre']));
     }
 
     public function create_movie(array $data): Movie
@@ -66,11 +76,14 @@ class MovieRepository
             'picture_url' => $data['picture_url']
         ]);
 
-        $newMovie->genres()->attach(array_map(function ($gName) {
-            $genre = Genre::where(['name' => $gName])->first();
-            return $genre['id'];
-        }, $data['genre']));
+        $newMovie->genres()
+            ->attach(array_map(function ($gName) {
+                $genre = Genre::where(['name' => $gName])
+                    ->first();
+                return $genre['id'];
+            }, $data['genre']));
 
-        return Movie::with(['genres'])->find($newMovie['id']);
+        return Movie::with(['genres'])
+            ->find($newMovie['id']);
     }
 }
