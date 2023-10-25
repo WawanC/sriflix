@@ -322,9 +322,18 @@ class MovieTest extends TestCase
         $response = $this->get('/api/movies?genre=comedy');
 
         $json = $response->json();
-        var_dump($json['movies'][0]['genres']);
 
         $this->assertTrue(in_array(["id" => 4, "name" => "Comedy"], $json['movies'][0]['genres']));
+        $response->assertStatus(200);
+    }
+
+    public function test_get_movies_by_search_success(): void
+    {
+        $response = $this->get('/api/movies?search=2');
+
+        $json = $response->json();
+
+        $this->assertTrue($json['movies'][0]['title'] == "Test Movie 2");
         $response->assertStatus(200);
     }
 

@@ -32,7 +32,13 @@ paths:
           schema:
             type: string
             default: null
-          description: Specific genre filter for movies (separated by comma)
+            description: Specific genre filter for movies (separated by comma)
+        - in: query
+          name: search
+          schema:
+            type: string
+            default: null
+            description: Specific keyword filter for movies search
       responses:
         200:
           description: Get all movies response
