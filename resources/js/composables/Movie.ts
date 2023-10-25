@@ -3,18 +3,24 @@ import { GetMovieResponse, GetMoviesResponse, Movie } from "../types/Movie";
 import axios, { AxiosError } from "axios";
 import { usePrivateAxios } from "./Axios";
 
-export const useGetMovies = (options: { genre?: string[]; limit?: number }) => {
+export const useGetMovies = (options?: {
+    genre?: string[];
+    limit?: number;
+}) => {
     const data = ref<Movie[]>([]);
     const isFetching = ref(false);
 
-    const fetchMovies = async () => {
-        let fetchUrl = "/api/movies";
-        if (options.genre) fetchUrl += "?genre=" + options.genre.join(",");
+    const fetchMovies = async (search?: string) => {
         isFetching.value = true;
+
+        let fetchUrl = "/api/movies";
+        if (options?.genre) fetchUrl += "?genre=" + options?.genre.join(",");
+        if (search) fetchUrl += "?search=" + search.trim();
+
         const response = await axios.get<GetMoviesResponse>(fetchUrl);
         isFetching.value = false;
 
-        if (options.limit) {
+        if (options?.limit) {
             data.value = response.data.movies.splice(0, options.limit);
         } else {
             data.value = response.data.movies;
@@ -129,3 +135,35 @@ export const useCreateMovie = () => {
 
     return { mutate, isLoading, error };
 };
+
+// export const useSearchMovies = () => {
+//     const data = ref<Movie[]>([]);
+//     const isFetching = ref(false);
+//
+//     const searchMovies = async (keyword: string) => {
+//         isFetching.value = true;
+//
+//         const response = await axios.get<GetMoviesResponse>(`/api/movies`, {
+//             params: {
+//                 search: "",
+//             },
+//         });
+//
+//         data.value = response.data.results
+//             .map((x) => {
+//                 const movie: ApiMovie = {
+//                     id: x.id,
+//                     title: x.title,
+//                     description: x.overview,
+//                     picture_url: x.poster_path,
+//                     genre_ids: x.genre_ids,
+//                 };
+//
+//                 return movie;
+//             })
+//             .splice(0, 3);
+//         isFetching.value = false;
+//     };
+//
+//     return { data, isFetching, searchMovies };
+// };

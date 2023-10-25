@@ -16,7 +16,7 @@
             to="/search"
         >
             <SearchIcon class="w-8 aspect-square" />
-            <span>Search</span>
+            <span>Discover</span>
         </router-link>
         <router-link
             v-if="user?.role === 'admin'"

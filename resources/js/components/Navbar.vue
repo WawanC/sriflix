@@ -2,7 +2,7 @@
     <nav
         :class="`w-full flex justify-between p-2 md:px-16 pl-8 pr-4 bg-green-700 text-white`"
     >
-        <router-link class="text-2xl font-bold" to="/">Sriflix</router-link>
+        <a class="text-2xl font-bold" href="/">Sriflix </a>
         <button
             class="md:hidden"
             @click="

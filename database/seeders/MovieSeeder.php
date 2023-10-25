@@ -27,7 +27,11 @@ class MovieSeeder extends Seeder
 
 
         foreach ($movies as $movie) {
-            if (!array_key_exists("id", $movie)) continue;
+            $existMovie = Movie::whereRaw("LOWER(title) LIKE ?", strtolower($movie['title']))
+                ->first();
+            if (!array_key_exists("id", $movie) || $existMovie) continue;
+
+
             $videoId = $this->tmdbApiService->get_movie_video_id($movie['id']);
 
             $newMovie = [
@@ -39,7 +43,8 @@ class MovieSeeder extends Seeder
 
             $genreIds = [];
             foreach ($movie['genre_ids'] as $genreId) {
-                $genre = Genre::all()->find($genreId);
+                $genre = Genre::all()
+                    ->find($genreId);
                 if (!$genre) continue;
                 $genreIds[] = $genreId;
             }
@@ -49,7 +54,9 @@ class MovieSeeder extends Seeder
                 "description" => $newMovie['description'],
                 'picture_url' => $newMovie['picture_url'],
                 "video_url" => $newMovie['video_url'],
-            ])->genres()->attach($genreIds);
+            ])
+                ->genres()
+                ->attach($genreIds);
         }
     }
 }
