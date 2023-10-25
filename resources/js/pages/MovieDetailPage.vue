@@ -82,12 +82,13 @@
                 />
             </div>
             <ul class="flex gap-2 md:gap-4 flex-wrap justify-center w-full">
-                <li
+                <router-link
                     v-for="genre in getMovie.data.value.genres"
+                    :to="`/movies?genre=${genre.name}`"
                     class="bg-green-700 px-4 py-2 rounded-full text-white shadow capitalize"
                 >
                     {{ genre.name }}
-                </li>
+                </router-link>
             </ul>
             <p class="text-xl italic indent-8 md:indent-16">
                 {{ getMovie.data.value.description }}
