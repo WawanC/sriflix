@@ -26,6 +26,13 @@ paths:
       tags:
         - Movie
       summary: Returns all movies.
+      parameters:
+        - in: query
+          name: genre
+          schema:
+            type: string
+            default: null
+          description: Specific genre filter for movies (separated by comma)
       responses:
         200:
           description: Get all movies response
