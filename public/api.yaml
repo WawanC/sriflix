@@ -39,6 +39,18 @@ paths:
             type: string
             default: null
             description: Specific keyword filter for movies search
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: null
+            description: Specific page filter for movies pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: null
+            description: Specific limit count filter for movies pagination
       responses:
         200:
           description: Get all movies response

@@ -337,6 +337,25 @@ class MovieTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_get_movies_pagination_success(): void
+    {
+        $response = $this->get('/api/movies?limit=1&page=2');
+
+        $json = $response->json();
+
+
+        $this->assertTrue(count($json['movies']) === 1);
+        $response->assertStatus(200);
+    }
+
+    public function test_get_movies_pagination_invalid_query(): void
+    {
+        $response = $this->get('/api/movies?limit=1');
+        
+        $response->assertJsonStructure(['message']);
+        $response->assertStatus(400);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
