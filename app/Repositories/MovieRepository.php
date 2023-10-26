@@ -6,12 +6,13 @@ use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use LaravelIdea\Helper\App\Models\_IH_Movie_C;
 
 
 class MovieRepository
 {
-    public function get_movies(string|null $keyword = null, array|null $genres = null): Collection|_IH_Movie_C|array
+    public function get_movies(string|null $keyword = null, array|null $genres = null, int|null $limit = null, int|null $page = null): Collection|_IH_Movie_C|array
     {
         $query = Movie::query();
 
@@ -25,11 +26,22 @@ class MovieRepository
                 count($genres));
         }
 
+        if ($limit || $page) {
+            if (!$limit || !$page) {
+                throw new HttpResponseException(response([
+                    "message" => "Valid limit and page query is required"
+                ], 400));
+            } else {
+                $query->offset((($page - 1) * $limit))
+                    ->limit($limit);
+            }
+        }
+
         $query->with('genres');
 
         return $query->get();
     }
-    
+
     public function get_movie_by_id(string $id): Movie|null
     {
         return Movie::with(['genres'])
