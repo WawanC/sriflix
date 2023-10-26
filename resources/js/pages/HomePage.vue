@@ -28,7 +28,7 @@
                     v-for="genre in genres"
                     :class="`bg-green-700 rounded w-[125px] h-[50px] text-xl font-semibold text-white
                 text-center flex justify-center items-center capitalize shadow`"
-                    :to="`/movies?genre=${genre}`"
+                    :to="`/movies?genre=${genre}&page=1&limit=12`"
                 >
                     {{ genre }}
                 </router-link>
@@ -131,19 +131,19 @@ const genres = ref(["action", "romance", "comedy", "mystery"]);
 const searchInput = ref("");
 
 const getSearchMovies = useGetMovies();
-const getActionMovies = useGetMovies({ genre: ["action"], limit: 10 });
-const getRomanceMovies = useGetMovies({ genre: ["romance"], limit: 10 });
-const getComedyMovies = useGetMovies({ genre: ["comedy"], limit: 10 });
-const getMysteryMovies = useGetMovies({ genre: ["mystery"], limit: 10 });
+const getActionMovies = useGetMovies();
+const getRomanceMovies = useGetMovies();
+const getComedyMovies = useGetMovies();
+const getMysteryMovies = useGetMovies();
 
 onMounted(async () => {
-    await getActionMovies.fetchMovies();
-    await getRomanceMovies.fetchMovies();
-    await getComedyMovies.fetchMovies();
-    await getMysteryMovies.fetchMovies();
+    await getActionMovies.fetchMovies({ genre: ["action"], limit: 10 });
+    await getRomanceMovies.fetchMovies({ genre: ["romance"], limit: 10 });
+    await getComedyMovies.fetchMovies({ genre: ["comedy"], limit: 10 });
+    await getMysteryMovies.fetchMovies({ genre: ["mystery"], limit: 10 });
 });
 
 watch(searchInput, async () => {
-    await getSearchMovies.fetchMovies(searchInput.value);
+    await getSearchMovies.fetchMovies({ search: searchInput.value });
 });
 </script>

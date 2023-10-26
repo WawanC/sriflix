@@ -3,19 +3,23 @@ import { GetMovieResponse, GetMoviesResponse, Movie } from "../types/Movie";
 import axios, { AxiosError } from "axios";
 import { usePrivateAxios } from "./Axios";
 
-export const useGetMovies = (options?: {
-    genre?: string[];
-    limit?: number;
-}) => {
+export const useGetMovies = () => {
     const data = ref<Movie[]>([]);
     const isFetching = ref(false);
 
-    const fetchMovies = async (search?: string) => {
+    const fetchMovies = async (options?: {
+        genre?: string[];
+        search?: string;
+        page?: number;
+        limit?: number;
+    }) => {
         isFetching.value = true;
 
         let fetchUrl = "/api/movies";
         if (options?.genre) fetchUrl += "?genre=" + options?.genre.join(",");
-        if (search) fetchUrl += "?search=" + search.trim();
+        if (options?.page && options?.limit)
+            fetchUrl += `&page=${options.page}&limit=${options.limit}`;
+        if (options?.search) fetchUrl += "?search=" + options.search.trim();
 
         const response = await axios.get<GetMoviesResponse>(fetchUrl);
         isFetching.value = false;
