@@ -1,5 +1,5 @@
 <template>
-    <div :class="`overflow-hidden rounded ${props.class}`">
+    <div :class="`overflow-hidden rounded shadow ${props.class}`">
         <div
             v-if="!isMediaLoaded"
             class="w-full h-full bg-neutral-400 animate-pulse"
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
 
 const props = defineProps<{
     type: "image" | "video";
@@ -27,11 +27,31 @@ const props = defineProps<{
 const mediaRef = ref<HTMLImageElement | HTMLIFrameElement | null>(null);
 const isMediaLoaded = ref(false);
 
-watchEffect(() => {
+const observer = ref<IntersectionObserver>(
+    new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            mediaRef.value.onload = () => {
+                isMediaLoaded.value = true;
+            };
+            mediaRef.value.src = props.src;
+
+            obs.unobserve(entry.target);
+        });
+    }),
+);
+
+onMounted(() => {
     if (!mediaRef.value) return;
-    mediaRef.value.src = props.src;
-    mediaRef.value.onload = () => {
-        isMediaLoaded.value = true;
-    };
+    observer.value.observe(mediaRef.value);
 });
+
+// watchEffect(() => {
+//     if (!mediaRef.value) return;
+//     mediaRef.value.src = props.src;
+//     mediaRef.value.onload = () => {
+//         isMediaLoaded.value = true;
+//     };
+// });
 </script>

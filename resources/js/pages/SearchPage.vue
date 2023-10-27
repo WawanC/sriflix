@@ -47,7 +47,6 @@ const searchInput = ref(route.query.search || "");
 watch(
     () => route.fullPath,
     async () => {
-        console.log("triggered  ");
         await getMovies.fetchMovies({
             search: `${route.query.search}` || undefined,
             page: route.query.page ? +route.query.page : undefined,

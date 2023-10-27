@@ -5,14 +5,13 @@
             :class="`w-[100px] md:w-[200px] h-[150px] md:h-[300px]
             flex relative rounded overflow-hidden shadow`"
         >
-            <img
-                :alt="props.movie.id"
-                class="w-full h-full object-cover hidden card_image"
+            <MediaView
+                :alt="`card_picture_${props.movie.title}`"
+                :src="props.movie.picture_url"
+                class="w-full h-full"
+                type="image"
             />
-            <div
-                v-if="!isImageLoaded"
-                class="w-full h-full bg-neutral-400 animate-pulse"
-            ></div>
+
             <div class="absolute bottom-0 w-full h-1/4">
                 <div class="bg-black w-full h-full opacity-75" />
                 <div
@@ -30,37 +29,9 @@
 
 <script lang="ts" setup>
 import { Movie } from "../types/Movie";
-import { onMounted, ref } from "vue";
+import MediaView from "./MediaView.vue";
 
 const props = defineProps<{
     movie: Movie;
 }>();
-
-const isImageLoaded = ref(false);
-const cardRef = ref<HTMLDivElement | null>(null);
-const observer = ref<IntersectionObserver>(
-    new IntersectionObserver((entries, obs) => {
-        entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-
-            const targetImage = entry.target.querySelector(
-                ".card_image",
-            ) as HTMLImageElement;
-            if (!targetImage) return;
-
-            targetImage.onload = () => {
-                isImageLoaded.value = true;
-                targetImage.style.display = "block";
-            };
-            targetImage.src = props.movie.picture_url;
-
-            obs.unobserve(entry.target);
-        });
-    }),
-);
-
-onMounted(() => {
-    if (!cardRef.value) return;
-    observer.value.observe(cardRef.value);
-});
 </script>

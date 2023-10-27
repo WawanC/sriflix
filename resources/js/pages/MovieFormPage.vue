@@ -41,14 +41,12 @@
                         hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
                             @click="selectApiMovieHandler(movie)"
                         >
-                            <div
-                                class="w-8 aspect-square overflow-hidden rounded"
-                            >
-                                <img
-                                    :alt="movie.picture_url"
-                                    :src="`https://image.tmdb.org/t/p/original/${movie.picture_url}`"
-                                />
-                            </div>
+                            <MediaView
+                                :alt="`picture_${movie.id}`"
+                                :src="`https://image.tmdb.org/t/p/w92/${movie.picture_url}`"
+                                class="w-8 aspect-square"
+                                type="image"
+                            />
                             <span>
                                 {{ movie.title }}
                             </span>
@@ -115,11 +113,12 @@
                 <div
                     class="flex flex-col items-center md:flex-row gap-4 w-full"
                 >
-                    <img
-                        v-if="isPicValid"
+                    <MediaView
+                        v-if="pictureUrl.length > 0"
                         :src="pictureUrl"
-                        alt="movie_pic"
+                        alt="movie_form_picture"
                         class="w-1/2 md:w-1/3 aspect-square object-contain"
+                        type="image"
                     />
                     <input
                         id="picture_url"
@@ -135,11 +134,18 @@
                 <label class="font-semibold w-full" for="video_url"
                     >Video URL :</label
                 >
-                <iframe
-                    v-if="isVidValid"
+                <MediaView
+                    v-if="videoUrl.length > 0"
                     :src="videoUrl"
+                    alt="movie_form_video"
                     class="w-full md:w-3/4 aspect-video"
-                ></iframe>
+                    type="video"
+                />
+                <!--                <iframe-->
+                <!--                    v-if="isVidValid"-->
+                <!--                    :src="videoUrl"-->
+                <!--                    class="w-full md:w-3/4 aspect-video"-->
+                <!--                ></iframe>-->
                 <input
                     id="video_url"
                     v-model="videoUrl"
@@ -177,6 +183,7 @@ import {
     useSearchMoviesApi,
 } from "../composables/Api";
 import { ApiMovie } from "../types/Api";
+import MediaView from "../components/MediaView.vue";
 
 const props = defineProps<{
     mode: "create" | "edit";
@@ -318,7 +325,7 @@ const selectApiMovieHandler = async (movie: ApiMovie) => {
         .filter((g) => g);
     description.value = movie.description;
     pictureUrl.value = movie.picture_url
-        ? `https://image.tmdb.org/t/p/original/${movie.picture_url}`
+        ? `https://image.tmdb.org/t/p/w92/${movie.picture_url}`
         : "";
     videoUrl.value = movieVideoKey
         ? `https://www.youtube.com/embed/${movieVideoKey}`

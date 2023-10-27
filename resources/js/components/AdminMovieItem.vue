@@ -4,13 +4,12 @@
         class="flex items-center justify-between gap-2 p-2 border rounded shadow"
     >
         <div class="flex gap-2 items-center flex-1 w-1/2 overflow-hidden">
-            <div class="w-16 aspect-square">
-                <img
-                    :alt="props.movie.id"
-                    :src="props.movie.picture_url"
-                    class="w-full h-full object-contain"
-                />
-            </div>
+            <MediaView
+                :alt="`picture_${props.movie.id}`"
+                :src="props.movie.picture_url"
+                class="w-16 aspect-square"
+                type="image"
+            />
             <span class="flex-1 font-semibold text-xl line-clamp-2 break-all"
                 >{{ props.movie.title }}
             </span>
@@ -36,6 +35,7 @@
 import PencilIcon from "../icons/PencilIcon.vue";
 import CrossIcon from "../icons/CrossIcon.vue";
 import { Movie } from "../types/Movie";
+import MediaView from "./MediaView.vue";
 
 const props = defineProps<{
     movie: Movie;

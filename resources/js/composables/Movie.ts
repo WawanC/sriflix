@@ -23,8 +23,6 @@ export const useGetMovies = () => {
         }
         if (options?.search) queryParams["search"] = options.search.trim();
 
-        console.log(queryParams);
-
         const response = await axios.get<GetMoviesResponse>("/api/movies", {
             params: queryParams,
         });
