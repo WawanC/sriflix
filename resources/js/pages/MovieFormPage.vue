@@ -25,10 +25,7 @@
                     type="text"
                 />
                 <ul
-                    v-if="
-                        searchMoviesApi.data.value.length > 0 &&
-                        titleInputSearchApi.length > 3
-                    "
+                    v-if="searchMoviesApi.data.value.length > 0"
                     class="absolute top-[110%] left-0 right-0 shadow border rounded overflow-hidden"
                 >
                     <li
@@ -44,7 +41,9 @@
                         hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
                             @click="selectApiMovieHandler(movie)"
                         >
-                            <div class="w-8 aspect-square">
+                            <div
+                                class="w-8 aspect-square overflow-hidden rounded"
+                            >
                                 <img
                                     :alt="movie.picture_url"
                                     :src="`https://image.tmdb.org/t/p/original/${movie.picture_url}`"

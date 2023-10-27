@@ -13,7 +13,7 @@ export const useSearchMoviesApi = () => {
 
     const searchMovies = async (keyword: string) => {
         isFetching.value = true;
-        if (!import.meta.env.VITE_TMDB_API_KEY || keyword.length < 3) {
+        if (!import.meta.env.VITE_TMDB_API_KEY) {
             data.value = [];
             return;
         }
@@ -40,7 +40,7 @@ export const useSearchMoviesApi = () => {
 
                 return movie;
             })
-            .splice(0, 3);
+            .splice(0, 5);
         isFetching.value = false;
     };
 
