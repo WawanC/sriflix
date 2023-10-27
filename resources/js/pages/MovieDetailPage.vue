@@ -21,26 +21,18 @@
             <div
                 class="flex flex-wrap md:flex-nowrap justify-center gap-8 w-full md:w-4/5"
             >
-                <div class="w-3/5 md:w-1/4 rounded overflow-hidden">
-                    <div
-                        v-if="!isImageLoaded"
-                        class="w-full h-full bg-neutral-400 animate-pulse"
-                    />
-                    <img
-                        ref="imageRef"
-                        :alt="getMovie.data.value.title"
-                        class="w-full h-full object-cover"
-                    />
-                </div>
-                <div
-                    class="w-full md:w-3/4 aspect-video overflow-hidden rounded"
-                >
-                    <div
-                        v-if="!isVideoLoaded"
-                        class="w-full h-full bg-neutral-400 animate-pulse"
-                    />
-                    <iframe ref="videoRef" class="w-full h-full"></iframe>
-                </div>
+                <MediaView
+                    :alt="`image_${getMovie.data.value.title}`"
+                    :src="getMovie.data.value.picture_url"
+                    class="w-3/5 md:w-1/4"
+                    type="image"
+                />
+                <MediaView
+                    :alt="`video_${getMovie.data.value.title}`"
+                    :src="getMovie.data.value.video_url"
+                    class="w-full md:w-3/4 aspect-video"
+                    type="video"
+                />
             </div>
             <div class="flex flex-col items-center gap-4">
                 <RatingStarDisplay
@@ -136,6 +128,7 @@ import ReviewCard from "../components/ReviewCard.vue";
 import { useGetMovieReviews } from "../composables/MovieReview";
 import ReviewModal from "../components/ReviewModal.vue";
 import { useAuthStore } from "../stores/auth";
+import MediaView from "../components/MediaView.vue";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;
@@ -145,9 +138,9 @@ const router = useRouter();
 const getMovie = useGetMovie(movieId);
 const getMovieReview = useGetMovieReviews(movieId);
 
-const imageRef = ref<HTMLImageElement | null>(null);
+// const imageRef = ref<HTMLImageElement | null>(null);
 const videoRef = ref<HTMLIFrameElement | null>(null);
-const isImageLoaded = ref(false);
+// const isImageLoaded = ref(false);
 const isVideoLoaded = ref(false);
 
 const isShowReviewModal = ref(false);
@@ -165,13 +158,13 @@ onMounted(async () => {
     }
 });
 
-watchEffect(() => {
-    if (!imageRef.value || !getMovie.data.value) return;
-    imageRef.value.src = getMovie.data.value.picture_url;
-    imageRef.value.onload = () => {
-        isImageLoaded.value = true;
-    };
-});
+// watchEffect(() => {
+//     if (!imageRef.value || !getMovie.data.value) return;
+//     imageRef.value.src = getMovie.data.value.picture_url;
+//     imageRef.value.onload = () => {
+//         isImageLoaded.value = true;
+//     };
+// });
 
 watchEffect(() => {
     if (!videoRef.value || !getMovie.data.value) return;
