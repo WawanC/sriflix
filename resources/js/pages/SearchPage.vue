@@ -22,7 +22,7 @@
                 v-for="genre in genres"
                 :class="`bg-green-700 rounded w-[150px] h-[100px] text-2xl font-semibold text-white
                 text-center flex justify-center items-center capitalize shadow`"
-                :to="`/movies?genre=${genre}`"
+                :to="`/movies?genre=${genre}&page=1&limit=12`"
             >
                 {{ genre }}
             </router-link>
