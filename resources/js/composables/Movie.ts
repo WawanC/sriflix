@@ -15,20 +15,22 @@ export const useGetMovies = () => {
     }) => {
         isFetching.value = true;
 
-        let fetchUrl = "/api/movies";
-        if (options?.genre) fetchUrl += "?genre=" + options?.genre.join(",");
-        if (options?.page && options?.limit)
-            fetchUrl += `&page=${options.page}&limit=${options.limit}`;
-        if (options?.search) fetchUrl += "?search=" + options.search.trim();
+        const queryParams: { [key: string]: string | number } = {};
+        if (options?.genre) queryParams["genre"] = options?.genre.join(",");
+        if (options?.page && options?.limit) {
+            queryParams["limit"] = options.limit;
+            queryParams["page"] = options.page;
+        }
+        if (options?.search) queryParams["search"] = options.search.trim();
 
-        const response = await axios.get<GetMoviesResponse>(fetchUrl);
+        console.log(queryParams);
+
+        const response = await axios.get<GetMoviesResponse>("/api/movies", {
+            params: queryParams,
+        });
         isFetching.value = false;
 
-        if (options?.limit) {
-            data.value = response.data.movies.splice(0, options.limit);
-        } else {
-            data.value = response.data.movies;
-        }
+        data.value = response.data.movies;
     };
 
     return { data, isFetching, fetchMovies };

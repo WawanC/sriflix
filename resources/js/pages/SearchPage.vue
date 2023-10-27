@@ -1,9 +1,10 @@
 <template>
-    <main class="flex-1 flex flex-col items-center py-16 px-8 gap-12">
+    <main class="flex-1 flex flex-col items-center py-16 px-4 gap-12">
         <h1 class="text-4xl font-bold">Discover Movies</h1>
         <input
             v-model="searchInput"
-            class="border-b-2 border-green-700 w-full md:w-1/2 text-xl p-2 outline-none"
+            autofocus
+            class="border-b-2 border-green-700 w-3/4 md:w-1/2 text-xl p-2 outline-none"
             placeholder="Search movies"
             type="text"
         />
@@ -34,12 +35,34 @@
 import { ref, watch } from "vue";
 import { useGetMovies } from "../composables/Movie";
 import MovieCard from "../components/MovieCard.vue";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
 
 const genres = ref(["action", "romance", "comedy", "mystery"]);
 const getMovies = useGetMovies();
-const searchInput = ref("");
+const searchInput = ref(route.query.search || "");
+
+watch(
+    () => route.fullPath,
+    async () => {
+        console.log("triggered  ");
+        await getMovies.fetchMovies({
+            search: `${route.query.search}` || undefined,
+            page: route.query.page ? +route.query.page : undefined,
+            limit: route.query.limit ? +route.query.limit : undefined,
+        });
+    },
+    {
+        immediate: true,
+    },
+);
 
 watch(searchInput, async () => {
-    await getMovies.fetchMovies(searchInput.value);
+    if (searchInput.value.length <= 0) return;
+    await router.replace(
+        `/discover?search=${searchInput.value}&page=1&limit=12`,
+    );
 });
 </script>

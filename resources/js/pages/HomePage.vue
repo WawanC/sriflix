@@ -12,112 +12,100 @@
             type="text"
         />
 
-        <ul
-            v-if="searchInput.length > 0 && getSearchMovies.data.value"
-            class="flex flex-wrap justify-center items-stretch gap-4 text-center w-full md:w-full"
-        >
-            <MovieCard
-                v-for="movie in getSearchMovies.data.value"
-                :key="movie.id"
-                :movie="movie"
-            />
-        </ul>
-        <template v-else>
-            <ul class="md:flex flex-wrap gap-4 w-full justify-center hidden">
-                <router-link
-                    v-for="genre in genres"
-                    :class="`bg-green-700 rounded w-[125px] h-[50px] text-xl font-semibold text-white
+        <ul class="md:flex flex-wrap gap-4 w-full justify-center hidden">
+            <router-link
+                v-for="genre in genres"
+                :class="`bg-green-700 rounded w-[125px] h-[50px] text-xl font-semibold text-white
                 text-center flex justify-center items-center capitalize shadow`"
-                    :to="`/movies?genre=${genre}&page=1&limit=12`"
-                >
-                    {{ genre }}
-                </router-link>
+                :to="`/movies?genre=${genre}&page=1&limit=12`"
+            >
+                {{ genre }}
+            </router-link>
+        </ul>
+
+        <section class="flex flex-col gap-6">
+            <h1 class="text-2xl font-semibold underline underline-offset-8">
+                Action Movies
+            </h1>
+            <div
+                v-if="getActionMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+            >
+                <MovieCard
+                    v-for="movie in getActionMovies.data.value"
+                    :movie="movie"
+                />
             </ul>
+        </section>
 
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Action Movies
-                </h1>
-                <div
-                    v-if="getActionMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getActionMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
+        <section class="flex flex-col gap-6">
+            <h1 class="text-2xl font-semibold underline underline-offset-8">
+                Romance Movies
+            </h1>
+            <div
+                v-if="getRomanceMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+            >
+                <MovieCard
+                    v-for="movie in getRomanceMovies.data.value"
+                    :movie="movie"
+                />
+            </ul>
+        </section>
 
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Romance Movies
-                </h1>
-                <div
-                    v-if="getRomanceMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getRomanceMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
+        <section class="flex flex-col gap-6">
+            <h1 class="text-2xl font-semibold underline underline-offset-8">
+                Comedy Movies
+            </h1>
+            <div
+                v-if="getComedyMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+            >
+                <MovieCard
+                    v-for="movie in getComedyMovies.data.value"
+                    :movie="movie"
+                />
+            </ul>
+        </section>
 
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Comedy Movies
-                </h1>
-                <div
-                    v-if="getComedyMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getComedyMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Mystery Movies
-                </h1>
-                <div
-                    v-if="getMysteryMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getMysteryMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-        </template>
+        <section class="flex flex-col gap-6">
+            <h1 class="text-2xl font-semibold underline underline-offset-8">
+                Mystery Movies
+            </h1>
+            <div
+                v-if="getMysteryMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+            >
+                <MovieCard
+                    v-for="movie in getMysteryMovies.data.value"
+                    :movie="movie"
+                />
+            </ul>
+        </section>
     </main>
 </template>
 
@@ -126,11 +114,12 @@ import { useGetMovies } from "../composables/Movie";
 import { onMounted, ref, watch } from "vue";
 import MovieCard from "../components/MovieCard.vue";
 import Loading from "../components/Loading.vue";
+import { useRouter } from "vue-router";
 
 const genres = ref(["action", "romance", "comedy", "mystery"]);
 const searchInput = ref("");
+const router = useRouter();
 
-const getSearchMovies = useGetMovies();
 const getActionMovies = useGetMovies();
 const getRomanceMovies = useGetMovies();
 const getComedyMovies = useGetMovies();
@@ -144,6 +133,7 @@ onMounted(async () => {
 });
 
 watch(searchInput, async () => {
-    await getSearchMovies.fetchMovies({ search: searchInput.value });
+    if (searchInput.value.length <= 0) return;
+    await router.push(`/discover?search=${searchInput.value}&page=1&limit=12`);
 });
 </script>

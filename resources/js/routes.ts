@@ -83,7 +83,7 @@ export const routerOptions: RouterOptions = {
             ],
         },
         {
-            path: "/search",
+            path: "/discover",
             component: SearchPage,
             name: "Search Movies | Sriflix",
         },

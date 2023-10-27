@@ -13,7 +13,7 @@
         <router-link
             v-if="user?.role !== 'admin'"
             class="flex-1 flex flex-col justify-center items-center"
-            to="/search"
+            to="/discover"
         >
             <SearchIcon class="w-8 aspect-square" />
             <span>Discover</span>
