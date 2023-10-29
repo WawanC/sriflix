@@ -15,6 +15,6 @@ class FeaturedMovie extends Model
 
     public function movies(): BelongsTo
     {
-        return $this->belongsTo(Movie::class);
+        return $this->belongsTo(Movie::class, "movie_id");
     }
 }
