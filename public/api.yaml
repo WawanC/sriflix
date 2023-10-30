@@ -19,6 +19,8 @@ tags:
     description: API about Movie Review
   - name: Genre
     description: API about Movie Genre
+  - name: Featured Movies
+    description: API about featured movies
 
 paths:
   /movies:
@@ -229,6 +231,24 @@ paths:
           $ref: "#/components/responses/InvalidMovieId"
         404:
           $ref: "#/components/responses/MovieNotFound"
+
+  /featured:
+    get:
+      tags:
+        - Featured Movies
+      summary: Returns all featured movies.
+      responses:
+        200:
+          description: Get all featured movies success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Movie"
 
   /auth/register:
     post:
