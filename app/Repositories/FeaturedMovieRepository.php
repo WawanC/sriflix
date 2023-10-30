@@ -13,4 +13,17 @@ class FeaturedMovieRepository
             ->get()
             ->pluck("movies");
     }
+
+    public function get_by_id(string $movieId): FeaturedMovie|null
+    {
+        return FeaturedMovie::where(["movie_id" => $movieId])
+            ->first();
+    }
+
+    public function insert(string $movieId): void
+    {
+        FeaturedMovie::create([
+            "movie_id" => $movieId
+        ]);
+    }
 }

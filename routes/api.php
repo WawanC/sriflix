@@ -66,4 +66,6 @@ Route::prefix('genres')
 Route::prefix("featured")
     ->group(function () {
         Route::get("/", [FeaturedMovieController::class, 'get_all']);
+        Route::post("/{movieId}", [FeaturedMovieController::class, 'insert'])
+            ->middleware(['auth:sanctum', IsAdmin::class]);
     });
