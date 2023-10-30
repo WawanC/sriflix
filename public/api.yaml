@@ -249,6 +249,26 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Movie"
+  /featured/{movieId}:
+    post:
+      tags:
+        - Featured Movies
+      summary: Insert new featured movies (admin only)
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessMessage"
+        400:
+          $ref: "#/components/responses/InvalidMovieId"
+        404:
+          $ref: "#/components/responses/MovieNotFound"
 
   /auth/register:
     post:
