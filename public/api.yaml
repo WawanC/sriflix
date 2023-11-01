@@ -254,6 +254,39 @@ paths:
       tags:
         - Featured Movies
       summary: Insert new featured movies (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id in UUID format
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessMessage"
+        400:
+          $ref: "#/components/responses/InvalidMovieId"
+        404:
+          $ref: "#/components/responses/MovieNotFound"
+        409:
+          description: Movie already existed in featured movies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Featured movies already exists
+    delete:
+      tags:
+        - Featured Movies
+      summary: Delete existing featured movies (admin only)
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: movieId
