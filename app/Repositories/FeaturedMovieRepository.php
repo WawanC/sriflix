@@ -26,4 +26,10 @@ class FeaturedMovieRepository
             "movie_id" => $movieId
         ]);
     }
+
+    public function delete(string $movieId): void
+    {
+        FeaturedMovie::where(['movie_id' => $movieId])
+            ->delete();
+    }
 }

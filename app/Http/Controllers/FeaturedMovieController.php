@@ -64,6 +64,24 @@ class FeaturedMovieController extends Controller
                 "message" => "Movie not found"
             ], 404));
         }
+    }
 
+    public function delete(string $movieId)
+    {
+        $this->check_movie_id($movieId);
+        $this->check_movie_exists($movieId);
+
+        $featuredMovie = $this->featuredMovieRepository->get_by_id($movieId);
+        if (!$featuredMovie) {
+            throw new HttpResponseException(response([
+                "message" => "Featured movie not found"
+            ], 409));
+        }
+
+        $this->featuredMovieRepository->delete($movieId);
+
+        return response()->json([
+            "message" => "Success"
+        ]);
     }
 }

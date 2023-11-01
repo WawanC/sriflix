@@ -68,4 +68,6 @@ Route::prefix("featured")
         Route::get("/", [FeaturedMovieController::class, 'get_all']);
         Route::post("/{movieId}", [FeaturedMovieController::class, 'insert'])
             ->middleware(['auth:sanctum', IsAdmin::class]);
+        Route::delete("/{movieId}", [FeaturedMovieController::class, 'delete'])
+            ->middleware(['auth:sanctum', IsAdmin::class]);
     });
