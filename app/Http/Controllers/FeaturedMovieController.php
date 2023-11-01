@@ -75,7 +75,7 @@ class FeaturedMovieController extends Controller
         if (!$featuredMovie) {
             throw new HttpResponseException(response([
                 "message" => "Featured movie not found"
-            ], 409));
+            ], 404));
         }
 
         $this->featuredMovieRepository->delete($movieId);

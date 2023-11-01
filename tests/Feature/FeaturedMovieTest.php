@@ -20,7 +20,7 @@ class FeaturedMovieTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_insert_featured_not_success()
+    public function test_insert_featured_success()
     {
         $loginResponse = $this->post('/api/auth/login', [
             "username" => "admin123",
@@ -85,6 +85,104 @@ class FeaturedMovieTest extends TestCase
         ]);
 
         $response->assertJson(["message" => "Movie not found"]);
+        $response->assertStatus(404);
+    }
+
+    public function test_insert_featured_already_exists()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->post("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddff9", [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Featured movie already exists"]);
+        $response->assertStatus(409);
+    }
+
+    public function test_delete_featured_success()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->delete("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddff9", [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Success"]);
+        $response->assertStatus(200);
+    }
+
+    public function test_delete_featured_unauthorized()
+    {
+        $response = $this->delete("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddff9");
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
+    public function test_delete_featured_admin_only()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "user123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->delete("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddff9", [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Unauthorized"]);
+        $response->assertStatus(401);
+    }
+
+    public function test_delete_featured_invalid_id()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->delete("/api/featured/1", [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Invalid movie id"]);
+        $response->assertStatus(400);
+    }
+
+    public function test_delete_featured_movie_not_found()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->delete("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddff1", [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Movie not found"]);
+        $response->assertStatus(404);
+    }
+
+    public function test_delete_featured_not_found()
+    {
+        $loginResponse = $this->post('/api/auth/login', [
+            "username" => "admin123",
+            "password" => "123456"
+        ]);
+
+        $response = $this->delete("/api/featured/405c4942-ac0e-4539-83cc-cc54798ddfa8", [], [
+            "Authorization" => "Bearer " . $loginResponse['access_token']
+        ]);
+
+        $response->assertJson(["message" => "Featured movie not found"]);
         $response->assertStatus(404);
     }
 
