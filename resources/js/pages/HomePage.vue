@@ -24,6 +24,31 @@
         </ul>
 
         <section class="flex flex-col gap-6">
+            <h1
+                class="text-2xl font-semibold underline underline-offset-8 text-center"
+            >
+                Featured Movies
+            </h1>
+            <div
+                v-if="getFeaturedMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                :class="`text-center gap-4 grid
+                grid-rows-2 grid-flow-col overflow-x-auto lg:grid-rows-1
+                place-content-start`"
+            >
+                <MovieCard
+                    v-for="movie in getFeaturedMovies.data.value"
+                    :movie="movie"
+                />
+            </ul>
+        </section>
+
+        <section class="flex flex-col gap-6">
             <h1 class="text-2xl font-semibold underline underline-offset-8">
                 Action Movies
             </h1>
@@ -110,7 +135,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useGetMovies } from "../composables/Movie";
+import { useGetFeaturedMovies, useGetMovies } from "../composables/Movie";
 import { onMounted, ref, watch } from "vue";
 import MovieCard from "../components/MovieCard.vue";
 import Loading from "../components/Loading.vue";
@@ -120,12 +145,14 @@ const genres = ref(["action", "romance", "comedy", "mystery"]);
 const searchInput = ref("");
 const router = useRouter();
 
+const getFeaturedMovies = useGetFeaturedMovies();
 const getActionMovies = useGetMovies();
 const getRomanceMovies = useGetMovies();
 const getComedyMovies = useGetMovies();
 const getMysteryMovies = useGetMovies();
 
 onMounted(async () => {
+    await getFeaturedMovies.fetchMovies();
     await getActionMovies.fetchMovies({ genre: ["action"], limit: 10 });
     await getRomanceMovies.fetchMovies({ genre: ["romance"], limit: 10 });
     await getComedyMovies.fetchMovies({ genre: ["comedy"], limit: 10 });

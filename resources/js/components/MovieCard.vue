@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/movies/${props.movie.id}`">
+    <router-link :to="`/movies/${props.movie.id}`" class="w-fit">
         <article
             ref="cardRef"
             :class="`w-[100px] md:w-[200px] h-[150px] md:h-[300px]

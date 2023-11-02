@@ -139,35 +139,18 @@ export const useCreateMovie = () => {
 
     return { mutate, isLoading, error };
 };
+export const useGetFeaturedMovies = () => {
+    const data = ref<Movie[]>([]);
+    const isFetching = ref(false);
 
-// export const useSearchMovies = () => {
-//     const data = ref<Movie[]>([]);
-//     const isFetching = ref(false);
-//
-//     const searchMovies = async (keyword: string) => {
-//         isFetching.value = true;
-//
-//         const response = await axios.get<GetMoviesResponse>(`/api/movies`, {
-//             params: {
-//                 search: "",
-//             },
-//         });
-//
-//         data.value = response.data.results
-//             .map((x) => {
-//                 const movie: ApiMovie = {
-//                     id: x.id,
-//                     title: x.title,
-//                     description: x.overview,
-//                     picture_url: x.poster_path,
-//                     genre_ids: x.genre_ids,
-//                 };
-//
-//                 return movie;
-//             })
-//             .splice(0, 3);
-//         isFetching.value = false;
-//     };
-//
-//     return { data, isFetching, searchMovies };
-// };
+    const fetchMovies = async () => {
+        isFetching.value = true;
+
+        const response = await axios.get<GetMoviesResponse>("/api/featured");
+        isFetching.value = false;
+
+        data.value = response.data.movies;
+    };
+
+    return { data, isFetching, fetchMovies };
+};
