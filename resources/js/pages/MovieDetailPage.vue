@@ -95,6 +95,25 @@
                 {{ getMovie.data.value.description }}
             </p>
         </section>
+        <section class="flex flex-col gap-2">
+            <h1 class="text-xl md:text-2xl font-bold">Related movies</h1>
+            <hr class="border-b border-black" />
+            <div
+                v-if="getRelatedMovies.isFetching.value"
+                class="flex p-4 justify-center"
+            >
+                <loading />
+            </div>
+            <ul
+                v-else
+                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+            >
+                <MovieCard
+                    v-for="movie in getRelatedMovies.data.value"
+                    :movie="movie"
+                />
+            </ul>
+        </section>
         <section class="flex flex-col gap-4">
             <h1 class="text-4xl font-bold">Reviews</h1>
             <hr class="border-b border-black" />
@@ -120,7 +139,7 @@
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import { useGetMovie } from "../composables/Movie";
+import { useGetMovie, useGetMovies } from "../composables/Movie";
 import { onMounted, ref, watchEffect } from "vue";
 import Loading from "../components/Loading.vue";
 import RatingStarDisplay from "../components/RatingStarDisplay.vue";
@@ -129,6 +148,7 @@ import { useGetMovieReviews } from "../composables/MovieReview";
 import ReviewModal from "../components/ReviewModal.vue";
 import { useAuthStore } from "../stores/auth";
 import MediaView from "../components/MediaView.vue";
+import MovieCard from "../components/MovieCard.vue";
 
 const route = useRoute();
 const movieId = route.params.movieId as string;
@@ -137,10 +157,9 @@ const router = useRouter();
 
 const getMovie = useGetMovie(movieId);
 const getMovieReview = useGetMovieReviews(movieId);
+const getRelatedMovies = useGetMovies();
 
-// const imageRef = ref<HTMLImageElement | null>(null);
 const videoRef = ref<HTMLIFrameElement | null>(null);
-// const isImageLoaded = ref(false);
 const isVideoLoaded = ref(false);
 
 const isShowReviewModal = ref(false);
@@ -155,16 +174,13 @@ onMounted(async () => {
     await getMovieReview.fetch();
     if (getMovie.data.value) {
         document.title = getMovie.data.value.title;
+        await getRelatedMovies.fetchMovies({
+            genre: [getMovie.data.value.genres[0].name],
+            page: 1,
+            limit: 8,
+        });
     }
 });
-
-// watchEffect(() => {
-//     if (!imageRef.value || !getMovie.data.value) return;
-//     imageRef.value.src = getMovie.data.value.picture_url;
-//     imageRef.value.onload = () => {
-//         isImageLoaded.value = true;
-//     };
-// });
 
 watchEffect(() => {
     if (!videoRef.value || !getMovie.data.value) return;

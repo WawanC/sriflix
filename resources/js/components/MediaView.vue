@@ -19,9 +19,9 @@ import { onMounted, ref } from "vue";
 
 const props = defineProps<{
     type: "image" | "video";
-    class: "string";
-    src: "string";
-    alt: "string";
+    class: string;
+    src: string;
+    alt: string;
 }>();
 
 const mediaRef = ref<HTMLImageElement | HTMLIFrameElement | null>(null);
