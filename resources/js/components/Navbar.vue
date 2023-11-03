@@ -1,8 +1,15 @@
 <template>
     <nav
-        :class="`w-full flex justify-between p-2 md:px-16 pl-8 pr-4 bg-green-700 text-white`"
+        :class="`w-full flex justify-between p-2 md:px-16 px-4 bg-green-700 text-white`"
     >
-        <a class="text-2xl font-bold" href="/">Sriflix </a>
+        <a class="text-2xl font-bold flex items-center" href="/">
+            <img
+                alt="sriflix-logo"
+                class="w-12 aspect-square object-cover"
+                src="/sriflix.svg"
+            />
+            <span>Sriflix</span>
+        </a>
         <button
             class="md:hidden"
             @click="
