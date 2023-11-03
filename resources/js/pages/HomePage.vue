@@ -12,125 +12,161 @@
             type="text"
         />
 
-        <ul class="md:flex flex-wrap gap-4 w-full justify-center hidden">
-            <router-link
-                v-for="genre in genres"
-                :class="`bg-green-700 rounded w-[125px] h-[50px] text-xl font-semibold text-white
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <ul class="md:flex flex-wrap gap-4 w-full justify-center hidden">
+                <router-link
+                    v-for="genre in genres"
+                    :class="`bg-green-700 rounded w-[125px] h-[50px] text-xl font-semibold text-white
                 text-center flex justify-center items-center capitalize shadow`"
-                :to="`/movies?genre=${genre}&page=1&limit=12`"
-            >
-                {{ genre }}
-            </router-link>
-        </ul>
+                    :to="`/movies?genre=${genre}&page=1&limit=12`"
+                >
+                    {{ genre }}
+                </router-link>
+            </ul>
+        </Motion>
 
-        <section class="flex flex-col gap-6">
-            <h1
-                class="text-2xl font-semibold underline underline-offset-8 text-center"
-            >
-                Featured Movies
-            </h1>
-            <div
-                v-if="getFeaturedMovies.isFetching.value"
-                class="flex p-4 justify-center"
-            >
-                <loading />
-            </div>
-            <ul
-                v-else
-                :class="`text-center gap-4 grid
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <section class="flex flex-col gap-6">
+                <h1
+                    class="text-2xl font-semibold underline underline-offset-8 text-center"
+                >
+                    Featured Movies
+                </h1>
+                <div
+                    v-if="getFeaturedMovies.isFetching.value"
+                    class="flex p-4 justify-center"
+                >
+                    <loading />
+                </div>
+                <ul
+                    v-else
+                    :class="`text-center gap-4 grid
                 grid-rows-2 grid-flow-col overflow-x-auto lg:grid-rows-1
                 place-content-start`"
-            >
-                <MovieCard
-                    v-for="movie in getFeaturedMovies.data.value"
-                    :movie="movie"
-                />
-            </ul>
-        </section>
+                >
+                    <MovieCard
+                        v-for="movie in getFeaturedMovies.data.value"
+                        :movie="movie"
+                    />
+                </ul>
+            </section>
+        </Motion>
 
-        <section class="flex flex-col gap-6">
-            <h1 class="text-2xl font-semibold underline underline-offset-8">
-                Action Movies
-            </h1>
-            <div
-                v-if="getActionMovies.isFetching.value"
-                class="flex p-4 justify-center"
-            >
-                <loading />
-            </div>
-            <ul
-                v-else
-                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-            >
-                <MovieCard
-                    v-for="movie in getActionMovies.data.value"
-                    :movie="movie"
-                />
-            </ul>
-        </section>
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <section class="flex flex-col gap-6">
+                <h1 class="text-2xl font-semibold underline underline-offset-8">
+                    Action Movies
+                </h1>
+                <div
+                    v-if="getActionMovies.isFetching.value"
+                    class="flex p-4 justify-center"
+                >
+                    <loading />
+                </div>
+                <ul
+                    v-else
+                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                >
+                    <MovieCard
+                        v-for="movie in getActionMovies.data.value"
+                        :movie="movie"
+                    />
+                </ul>
+            </section>
+        </Motion>
 
-        <section class="flex flex-col gap-6">
-            <h1 class="text-2xl font-semibold underline underline-offset-8">
-                Romance Movies
-            </h1>
-            <div
-                v-if="getRomanceMovies.isFetching.value"
-                class="flex p-4 justify-center"
-            >
-                <loading />
-            </div>
-            <ul
-                v-else
-                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-            >
-                <MovieCard
-                    v-for="movie in getRomanceMovies.data.value"
-                    :movie="movie"
-                />
-            </ul>
-        </section>
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <section class="flex flex-col gap-6">
+                <h1 class="text-2xl font-semibold underline underline-offset-8">
+                    Romance Movies
+                </h1>
+                <div
+                    v-if="getRomanceMovies.isFetching.value"
+                    class="flex p-4 justify-center"
+                >
+                    <loading />
+                </div>
+                <ul
+                    v-else
+                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                >
+                    <MovieCard
+                        v-for="movie in getRomanceMovies.data.value"
+                        :movie="movie"
+                    />
+                </ul>
+            </section>
+        </Motion>
 
-        <section class="flex flex-col gap-6">
-            <h1 class="text-2xl font-semibold underline underline-offset-8">
-                Comedy Movies
-            </h1>
-            <div
-                v-if="getComedyMovies.isFetching.value"
-                class="flex p-4 justify-center"
-            >
-                <loading />
-            </div>
-            <ul
-                v-else
-                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-            >
-                <MovieCard
-                    v-for="movie in getComedyMovies.data.value"
-                    :movie="movie"
-                />
-            </ul>
-        </section>
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <section class="flex flex-col gap-6">
+                <h1 class="text-2xl font-semibold underline underline-offset-8">
+                    Comedy Movies
+                </h1>
+                <div
+                    v-if="getComedyMovies.isFetching.value"
+                    class="flex p-4 justify-center"
+                >
+                    <loading />
+                </div>
+                <ul
+                    v-else
+                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                >
+                    <MovieCard
+                        v-for="movie in getComedyMovies.data.value"
+                        :movie="movie"
+                    />
+                </ul>
+            </section>
+        </Motion>
 
-        <section class="flex flex-col gap-6">
-            <h1 class="text-2xl font-semibold underline underline-offset-8">
-                Mystery Movies
-            </h1>
-            <div
-                v-if="getMysteryMovies.isFetching.value"
-                class="flex p-4 justify-center"
-            >
-                <loading />
-            </div>
-            <ul
-                v-else
-                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-            >
-                <MovieCard
-                    v-for="movie in getMysteryMovies.data.value"
-                    :movie="movie"
-                />
-            </ul>
-        </section>
+        <Motion
+            :in-view="{ opacity: 1, y: 0 }"
+            :initial="{ opacity: 0, y: 50 }"
+            :transition="{ duration: 0.5 }"
+        >
+            <section class="flex flex-col gap-6">
+                <h1 class="text-2xl font-semibold underline underline-offset-8">
+                    Mystery Movies
+                </h1>
+                <div
+                    v-if="getMysteryMovies.isFetching.value"
+                    class="flex p-4 justify-center"
+                >
+                    <loading />
+                </div>
+                <ul
+                    v-else
+                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                >
+                    <MovieCard
+                        v-for="movie in getMysteryMovies.data.value"
+                        :movie="movie"
+                    />
+                </ul>
+            </section>
+        </Motion>
     </main>
 </template>
 
@@ -140,6 +176,7 @@ import { onMounted, ref, watch } from "vue";
 import MovieCard from "../components/MovieCard.vue";
 import Loading from "../components/Loading.vue";
 import { useRouter } from "vue-router";
+import { Motion } from "motion/vue";
 
 const genres = ref(["action", "romance", "comedy", "mystery"]);
 const searchInput = ref("");
