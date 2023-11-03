@@ -60,113 +60,22 @@
             </section>
         </Motion>
 
-        <Motion
-            :in-view="{ opacity: 1, y: 0 }"
-            :initial="{ opacity: 0, y: 50 }"
-            :transition="{ duration: 0.5 }"
-        >
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Action Movies
-                </h1>
-                <div
-                    v-if="getActionMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getActionMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-        </Motion>
-
-        <Motion
-            :in-view="{ opacity: 1, y: 0 }"
-            :initial="{ opacity: 0, y: 50 }"
-            :transition="{ duration: 0.5 }"
-        >
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Romance Movies
-                </h1>
-                <div
-                    v-if="getRomanceMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getRomanceMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-        </Motion>
-
-        <Motion
-            :in-view="{ opacity: 1, y: 0 }"
-            :initial="{ opacity: 0, y: 50 }"
-            :transition="{ duration: 0.5 }"
-        >
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Comedy Movies
-                </h1>
-                <div
-                    v-if="getComedyMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getComedyMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-        </Motion>
-
-        <Motion
-            :in-view="{ opacity: 1, y: 0 }"
-            :initial="{ opacity: 0, y: 50 }"
-            :transition="{ duration: 0.5 }"
-        >
-            <section class="flex flex-col gap-6">
-                <h1 class="text-2xl font-semibold underline underline-offset-8">
-                    Mystery Movies
-                </h1>
-                <div
-                    v-if="getMysteryMovies.isFetching.value"
-                    class="flex p-4 justify-center"
-                >
-                    <loading />
-                </div>
-                <ul
-                    v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
-                >
-                    <MovieCard
-                        v-for="movie in getMysteryMovies.data.value"
-                        :movie="movie"
-                    />
-                </ul>
-            </section>
-        </Motion>
+        <MoviesDisplay
+            :data="getActionMovies.data.value"
+            :is-fetching="getActionMovies.isFetching.value"
+        />
+        <MoviesDisplay
+            :data="getRomanceMovies.data.value"
+            :is-fetching="getRomanceMovies.isFetching.value"
+        />
+        <MoviesDisplay
+            :data="getComedyMovies.data.value"
+            :is-fetching="getComedyMovies.isFetching.value"
+        />
+        <MoviesDisplay
+            :data="getMysteryMovies.data.value"
+            :is-fetching="getMysteryMovies.isFetching.value"
+        />
     </main>
 </template>
 
@@ -177,6 +86,7 @@ import MovieCard from "../components/MovieCard.vue";
 import Loading from "../components/Loading.vue";
 import { useRouter } from "vue-router";
 import { Motion } from "motion/vue";
+import MoviesDisplay from "../components/MoviesDisplay.vue";
 
 const genres = ref(["action", "romance", "comedy", "mystery"]);
 const searchInput = ref("");
