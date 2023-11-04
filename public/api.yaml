@@ -562,6 +562,9 @@ components:
         picture_url:
           type: string
           example: https://source.com/picture.png
+        backdrop_url:
+          type: string
+          example: https://source.com/backdrop.png
         video_url:
           type: string
           example: https://source.com/video.mp4
