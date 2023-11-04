@@ -144,7 +144,8 @@ class MovieTest extends TestCase
         ]);
 
         $response = $this->put('/api/movies/405c4942-ac0e-4539-83cc-cc54798ddff9', [
-            "title" => "Test Update Title"
+            "title" => "Test Update Title",
+            "backdrop_url" => "https://test.com/backdrop.png"
         ], [
             "Authorization" => "Bearer " . $loginResponse['access_token']
         ]);
@@ -225,9 +226,10 @@ class MovieTest extends TestCase
         $response = $this->post('/api/movies',
             [
                 "title" => "Batman",
-                "genre" => ["Action", "Superhero"],
+                "genre" => ["Action"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ], [
                 "Authorization" => "Bearer " . $loginResponse['access_token']
@@ -247,6 +249,7 @@ class MovieTest extends TestCase
                 "title" => "Batman",
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ]);
 
@@ -266,6 +269,7 @@ class MovieTest extends TestCase
                 "title" => "Batman",
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ], [
                 "Authorization" => "Bearer " . $loginResponse['access_token']
@@ -287,6 +291,8 @@ class MovieTest extends TestCase
                 "title" => "Batman",
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
+                "backdrop_url" => "https://backdrop.com/test.png",
+                "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ], [
                 "Authorization" => "Bearer " . $loginResponse['access_token']
             ]);
@@ -308,6 +314,7 @@ class MovieTest extends TestCase
                 "genre" => ["Action", "Superhero"],
                 "description" => "Having witnessed his parents' brutal murder as a child, millionaire philanthropist Bruce Wayne (Michael Keaton) fights crime in Gotham City disguised as Batman, a costumed hero who strikes fear into the hearts of villains. But when a deformed madman who calls himself \"The Joker\" (Jack Nicholson) seizes control of Gotham's criminal underworld, Batman must face his most ruthless nemesis ever while protecting both his identity and his love interest, reporter Vicki Vale (Kim Basinger).",
                 "picture_url" => "https://upload.wikimedia.org/wikipedia/en/5/5a/Batman_%281989%29_theatrical_poster.jpg",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://www.youtube.com/embed/dgC9Q0uhX70?si=vP5IlZLng6-j84Vl"
             ], [
                 "Authorization" => "Bearer " . $loginResponse['access_token']
@@ -351,7 +358,7 @@ class MovieTest extends TestCase
     public function test_get_movies_pagination_invalid_query(): void
     {
         $response = $this->get('/api/movies?limit=1');
-        
+
         $response->assertJsonStructure(['message']);
         $response->assertStatus(400);
     }
@@ -386,6 +393,7 @@ class MovieTest extends TestCase
                 "title" => "Test Movie",
                 "description" => "This is test movie",
                 "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://youtube.com/test",
             ]);
         DB::table('movies')
@@ -394,6 +402,7 @@ class MovieTest extends TestCase
                 "title" => "Test Movie 2",
                 "description" => "This is test movie 2",
                 "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://youtube.com/test",
             ]);
 

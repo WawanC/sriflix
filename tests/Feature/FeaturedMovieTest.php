@@ -196,6 +196,7 @@ class FeaturedMovieTest extends TestCase
                 "title" => "Test Movie",
                 "description" => "This is test movie",
                 "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://youtube.com/test",
             ]);
         DB::table('movies')
@@ -204,6 +205,7 @@ class FeaturedMovieTest extends TestCase
                 "title" => "Test Movie 2",
                 "description" => "This is test movie 2",
                 "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
                 "video_url" => "https://youtube.com/test",
             ]);
 

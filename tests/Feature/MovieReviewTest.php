@@ -170,44 +170,52 @@ class MovieReviewTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DB::table('movies')->insert([
-            "id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
-            "title" => "Test Movie",
-            "description" => "This is test movie",
-            "picture_url" => "https://picture.com/test.png",
-            "video_url" => "https://youtube.com/test"
-        ]);
-        DB::table('movies')->insert([
-            "id" => "405c4942-ac0e-4539-83cc-cc54798ddff8",
-            "title" => "Test Movie 2",
-            "description" => "This is test movie 2",
-            "picture_url" => "https://picture.com/test.png",
-            "video_url" => "https://youtube.com/test"
-        ]);
+        DB::table('movies')
+            ->insert([
+                "id" => "405c4942-ac0e-4539-83cc-cc54798ddff9",
+                "title" => "Test Movie",
+                "description" => "This is test movie",
+                "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
+                "video_url" => "https://youtube.com/test"
+            ]);
+        DB::table('movies')
+            ->insert([
+                "id" => "405c4942-ac0e-4539-83cc-cc54798ddff8",
+                "title" => "Test Movie 2",
+                "description" => "This is test movie 2",
+                "picture_url" => "https://picture.com/test.png",
+                "backdrop_url" => "https://backdrop.com/test.png",
+                "video_url" => "https://youtube.com/test"
+            ]);
 
-        DB::table("users")->insert([
-            "id" => "958f2234-bd68-4546-942d-ed1aaa535d33",
-            "username" => "user123",
-            "password" => Hash::make("123456")
-        ]);
-        DB::table("users")->insert([
-            "id" => "958f2234-bd68-4546-942d-ed1aaa535d32",
-            "username" => "user321",
-            "password" => Hash::make("123456")
-        ]);
-        DB::table("users")->insert([
-            "id" => "958f2234-bd68-4546-942d-ed1aaa535d34",
-            "username" => "admin123",
-            "password" => Hash::make("123456"),
-            "role" => "admin"
-        ]);
+        DB::table("users")
+            ->insert([
+                "id" => "958f2234-bd68-4546-942d-ed1aaa535d33",
+                "username" => "user123",
+                "password" => Hash::make("123456")
+            ]);
+        DB::table("users")
+            ->insert([
+                "id" => "958f2234-bd68-4546-942d-ed1aaa535d32",
+                "username" => "user321",
+                "password" => Hash::make("123456")
+            ]);
+        DB::table("users")
+            ->insert([
+                "id" => "958f2234-bd68-4546-942d-ed1aaa535d34",
+                "username" => "admin123",
+                "password" => Hash::make("123456"),
+                "role" => "admin"
+            ]);
 
-        DB::table("movie_reviews")->insert([
-            "id" => "c86b735f-dfe1-4cad-9835-123f3897e88c",
-            "comment" => "This is test review",
-            "rating" => 3,
-            "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff8",
-            "user_id" => "958f2234-bd68-4546-942d-ed1aaa535d33"
-        ]);
+        DB::table("movie_reviews")
+            ->insert([
+                "id" => "c86b735f-dfe1-4cad-9835-123f3897e88c",
+                "comment" => "This is test review",
+                "rating" => 3,
+                "movie_id" => "405c4942-ac0e-4539-83cc-cc54798ddff8",
+                "user_id" => "958f2234-bd68-4546-942d-ed1aaa535d33"
+            ]);
     }
 }

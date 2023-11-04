@@ -19,6 +19,7 @@ class UpdateMovieRequest extends FormRequest
             "genre" => ["nullable", 'array', Rule::in(array_map(fn($g) => $g['name'], $genres->toArray()))],
             'description' => ['nullable', 'string'],
             'picture_url' => ['nullable', 'string'],
+            'backdrop_url' => ['nullable', 'string'],
             'video_url' => ['nullable', 'string']
         ];
     }
@@ -33,6 +34,8 @@ class UpdateMovieRequest extends FormRequest
             $input['description'] = trim($this['description']);
         if ($this->exists('picture_url') && strlen(trim($this['picture_url'])) > 0)
             $input['picture_url'] = trim($this['picture_url']);
+        if ($this->exists('backdrop_url') && strlen(trim($this['backdrop_url'])) > 0)
+            $input['backdrop_url'] = trim($this['backdrop_url']);
         if ($this->exists('video_url') && strlen(trim($this['video_url'])) > 0)
             $input['video_url'] = trim($this['video_url']);
         if ($this->exists('genre'))
@@ -43,6 +46,7 @@ class UpdateMovieRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json(["message" => $validator->errors()->first()], 400));
+        throw new HttpResponseException(response()->json(["message" => $validator->errors()
+            ->first()], 400));
     }
 }

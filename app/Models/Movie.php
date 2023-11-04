@@ -15,7 +15,7 @@ class Movie extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "title", "description", "picture_url", "video_url"
+        "title", "description", "picture_url", "video_url", "backdrop_url"
     ];
 
     public function movie_reviews(): HasMany

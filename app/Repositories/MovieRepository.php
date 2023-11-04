@@ -68,7 +68,8 @@ class MovieRepository
             "title" => $data['title'] ?? $movie['title'],
             "description" => $data['description'] ?? $movie['description'],
             "video_url" => $data['video_url'] ?? $movie['video_url'],
-            "picture_url" => $data['picture_url'] ?? $movie['picture_url']
+            "picture_url" => $data['picture_url'] ?? $movie['picture_url'],
+            "backdrop_url" => $data['backdrop_url'] ?? $movie['backdrop_url']
         ]);
         if (array_key_exists('genre', $data))
             $movie->genres()
@@ -85,6 +86,7 @@ class MovieRepository
             'title' => $data['title'],
             'description' => $data['description'],
             'video_url' => $data['video_url'],
+            'backdrop_url' => $data['backdrop_url'],
             'picture_url' => $data['picture_url']
         ]);
 
