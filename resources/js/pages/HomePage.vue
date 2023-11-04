@@ -61,26 +61,26 @@
         </Motion>
 
         <MoviesDisplay
-            :data="getActionMovies.data.value"
-            :is-fetching="getActionMovies.isFetching.value"
+            :option="{ genre: ['action'], limit: 10 }"
+            title="Action movies"
         />
         <MoviesDisplay
-            :data="getRomanceMovies.data.value"
-            :is-fetching="getRomanceMovies.isFetching.value"
+            :option="{ genre: ['romance'], limit: 10 }"
+            title="Romance movies"
         />
         <MoviesDisplay
-            :data="getComedyMovies.data.value"
-            :is-fetching="getComedyMovies.isFetching.value"
+            :option="{ genre: ['comedy'], limit: 10 }"
+            title="Comedy movies"
         />
         <MoviesDisplay
-            :data="getMysteryMovies.data.value"
-            :is-fetching="getMysteryMovies.isFetching.value"
+            :option="{ genre: ['mystery'], limit: 10 }"
+            title="Mystery movies"
         />
     </main>
 </template>
 
 <script lang="ts" setup>
-import { useGetFeaturedMovies, useGetMovies } from "../composables/Movie";
+import { useGetFeaturedMovies } from "../composables/Movie";
 import { onMounted, ref, watch } from "vue";
 import MovieCard from "../components/MovieCard.vue";
 import Loading from "../components/Loading.vue";
@@ -93,17 +93,9 @@ const searchInput = ref("");
 const router = useRouter();
 
 const getFeaturedMovies = useGetFeaturedMovies();
-const getActionMovies = useGetMovies();
-const getRomanceMovies = useGetMovies();
-const getComedyMovies = useGetMovies();
-const getMysteryMovies = useGetMovies();
 
 onMounted(async () => {
     await getFeaturedMovies.fetchMovies();
-    await getActionMovies.fetchMovies({ genre: ["action"], limit: 10 });
-    await getRomanceMovies.fetchMovies({ genre: ["romance"], limit: 10 });
-    await getComedyMovies.fetchMovies({ genre: ["comedy"], limit: 10 });
-    await getMysteryMovies.fetchMovies({ genre: ["mystery"], limit: 10 });
 });
 
 watch(searchInput, async () => {
