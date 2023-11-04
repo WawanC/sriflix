@@ -38,6 +38,7 @@ class MovieSeeder extends Seeder
                 "title" => $movie['title'],
                 "description" => $movie["overview"],
                 "picture_url" => "https://image.tmdb.org/t/p/original" . $movie["poster_path"],
+                "backdrop_url" => "https://image.tmdb.org/t/p/original" . $movie["backdrop_path"],
                 "video_url" => "https://www.youtube.com/embed/" . $videoId
             ];
 
@@ -49,12 +50,7 @@ class MovieSeeder extends Seeder
                 $genreIds[] = $genreId;
             }
 
-            Movie::create([
-                "title" => $newMovie['title'],
-                "description" => $newMovie['description'],
-                'picture_url' => $newMovie['picture_url'],
-                "video_url" => $newMovie['video_url'],
-            ])
+            Movie::create($newMovie)
                 ->genres()
                 ->attach($genreIds);
         }
