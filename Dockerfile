@@ -1,83 +1,35 @@
-# 2023 update
-FROM php:8.2-fpm
-
-# setup user as root
-USER root
-
-WORKDIR /var/www
-
-# setup node js source will be used later to install node js
-#RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
-#RUN ["sh",  "./nodesource_setup.sh"]
-
-# Install environment dependencies
-RUN apt-get update \
-	# gd
-	&& apt-get install -y npm build-essential  openssl nginx libfreetype6-dev libjpeg-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev gcc g++ make vim unzip curl git jpegoptim optipng pngquant gifsicle locales libonig-dev libpq-dev  \
-	&& docker-php-ext-configure gd  \
-	&& docker-php-ext-install gd \
-	# gmp
-	&& apt-get install -y --no-install-recommends libgmp-dev \
-	&& docker-php-ext-install gmp \
-	# pdo_mysql
-	&& docker-php-ext-install pdo_pgsql mbstring \
-	# pdo
-	&& docker-php-ext-install pdo \
-	# opcache
-	&& docker-php-ext-enable opcache \
-	# exif
-    && docker-php-ext-install exif \
-    && docker-php-ext-install sockets \
-    && docker-php-ext-install pcntl \
-    && docker-php-ext-install bcmath \
-	# zip
-	&& docker-php-ext-install zip \
-	&& apt-get autoclean -y \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& rm -rf /tmp/pear/
-
-# Copy files
-COPY . /var/www
-
-COPY ./deploy/local.ini /usr/local/etc/php/local.ini
-
-COPY ./deploy/conf.d/nginx.conf /etc/nginx/nginx.conf
-
-RUN chmod +rwx /var/www
-
-RUN chmod -R 777 /var/www
-
-# setup FE
+FROM node:alpine AS vue
+WORKDIR /app
+COPY . .
 RUN npm install
 RUN npm run build
 
-# setup composer and laravel
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+FROM composer:latest AS composer
+WORKDIR /app
 
-RUN composer install --working-dir="/var/www"
+FROM php:8.2-fpm-alpine AS php
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+USER root
+WORKDIR /var/www
+RUN apk update
+RUN apk add curl nginx
+COPY . /var/www
 
-RUN composer dump-autoload --working-dir="/var/www"
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions pgsql pdo_pgsql
 
-RUN php artisan optimize
+RUN composer install --no-dev --ignore-platform-reqs --prefer-dist --optimize-autoloader
 
-RUN php artisan route:clear
+COPY --from=vue /app/public/build /var/www/public/build
 
-RUN php artisan route:cache
-
-RUN php artisan config:clear
-
-RUN php artisan config:cache
-
-RUN php artisan view:clear
-
-RUN php artisan view:cache
-
-# remove this line if you do not want to run migrations on each build
-#RUN php artisan migrate --force
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
+COPY deploy/local.ini /usr/local/etc/php/local.ini
 
 EXPOSE 80
 
-RUN ["chmod", "+x", "post_deploy.sh"]
+RUN chmod +rwx /var/www
+RUN chmod -R 777 /var/www
+RUN chmod +x ./deploy/post_deploy.sh
 
-CMD [ "sh", "./post_deploy.sh" ]
-# CMD php artisan serve --host=127.0.0.1 --port=9000
+CMD [ "sh", "./deploy/post_deploy.sh" ]
