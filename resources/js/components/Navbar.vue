@@ -1,6 +1,6 @@
 <template>
     <nav
-        :class="`w-full flex justify-between p-2 md:px-16 px-4 bg-green-700 text-white`"
+        :class="`w-full flex justify-between md:px-16 px-4 bg-green-700 text-white`"
     >
         <a class="text-2xl font-bold flex items-center" href="/">
             <img
@@ -18,22 +18,31 @@
         >
             <LogoutIcon class="w-8 aspect-square" />
         </button>
-        <ul class="hidden md:flex gap-8 text-xl underline underline-offset-8">
+        <ul
+            class="hidden md:flex items-center gap-8 text-lg underline underline-offset-8"
+        >
             <template v-if="authStore.user">
-                <router-link v-if="authStore.user.role === 'admin'" to="/admin"
+                <router-link
+                    v-if="authStore.user.role === 'admin'"
+                    class="hover:font-semibold"
+                    to="/admin"
                     >Dashboard
                 </router-link>
                 <li>{{ authStore.user?.username }}</li>
                 <li
-                    class="hover:cursor-pointer"
+                    class="hover:cursor-pointer hover:font-semibold"
                     @click="authStore.logoutUser()"
                 >
                     Logout
                 </li>
             </template>
             <template v-else>
-                <router-link to="/login">Login</router-link>
-                <router-link to="/register">Register</router-link>
+                <router-link class="hover:font-semibold" to="/login"
+                    >Login</router-link
+                >
+                <router-link class="hover:font-semibold" to="/register"
+                    >Register</router-link
+                >
             </template>
         </ul>
     </nav>
