@@ -1,7 +1,7 @@
 <template>
     <nav
         :class="`sticky md:hidden bottom-0 left-0 right-0 h-[75px] bg-green-700
-        flex justify-around`"
+        flex justify-around z-10`"
     >
         <router-link
             class="flex-1 flex flex-col justify-center items-center"

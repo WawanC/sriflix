@@ -5,6 +5,7 @@ export type Movie = {
     title: string;
     description: string;
     picture_url: string;
+    backdrop_url: string;
     video_url: string;
     avg_rating: number | 0;
     rating_count: number | 0;
