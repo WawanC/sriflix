@@ -1,6 +1,12 @@
 <template>
     <main
-        v-if="getMovie.error.value"
+        v-if="getMovie.isFetching.value"
+        class="flex-1 flex justify-center items-center"
+    >
+        <loading />
+    </main>
+    <main
+        v-else-if="getMovie.error.value"
         class="flex-1 flex justify-center items-center"
     >
         <span class="text-4xl font-bold">Movie not found</span>
