@@ -9,7 +9,7 @@ class FeaturedMovieRepository
 {
     public function get_all(): \Illuminate\Support\Collection
     {
-        return FeaturedMovie::with("movies")
+        return FeaturedMovie::with("movies.genres")
             ->get()
             ->pluck("movies");
     }
