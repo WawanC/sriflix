@@ -2,13 +2,13 @@
     <main
         class="flex-1 flex flex-col py-4 lg:py-8 gap-8 md:gap-12 px-4 md:px-16"
     >
-        <h1 class="text-2xl md:text-4xl font-bold text-center">
-            Welcome to Sriflix!
-        </h1>
-
         <template v-if="getFeaturedMovies.data.value.length > 0">
             <MovieCarousel :movies="getFeaturedMovies.data.value" />
         </template>
+
+        <h1 class="hidden md:block text-2xl md:text-4xl font-bold text-center">
+            Welcome to Sriflix!
+        </h1>
 
         <input
             v-model="searchInput"
