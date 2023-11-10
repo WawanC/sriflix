@@ -9,7 +9,7 @@
     @vite('resources/js/app.ts')
     @vite('resources/css/app.css')
 </head>
-<body class="bg-primary">
+<body class="bg-primary text-secondary">
 <div id="app"></div>
 </body>
 </html>

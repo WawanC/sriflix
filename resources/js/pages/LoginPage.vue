@@ -19,7 +19,7 @@
                 <input
                     id="username"
                     v-model.trim="username"
-                    class="p-2 border-b-2 border-black w-full outline-none"
+                    class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
                     placeholder="Enter your username"
                     type="text"
                 />
@@ -29,14 +29,16 @@
                 <input
                     id="password"
                     v-model.trim="password"
-                    class="p-2 border-b-2 border-black w-full outline-none"
+                    class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
                     placeholder="Enter your password"
                     type="password"
                 />
             </div>
 
             <div class="flex justify-center">
-                <button class="bg-neutral-200 px-4 py-2">Login</button>
+                <button class="bg-secondary text-primary rounded px-4 py-2">
+                    Login
+                </button>
             </div>
         </form>
     </main>

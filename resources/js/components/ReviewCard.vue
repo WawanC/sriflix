@@ -1,7 +1,7 @@
 <template>
     <article
-        :class="`flex flex-col gap-4 text-xl p-4 border rounded shadow
-        md:flex-row md:items-center bg-white`"
+        :class="`flex flex-col gap-4 text-xl p-4 rounded shadow
+        md:flex-row md:items-center bg-black`"
     >
         <div class="flex flex-col items-center">
             <StarIcon

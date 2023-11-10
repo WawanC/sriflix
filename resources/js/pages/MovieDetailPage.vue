@@ -21,7 +21,7 @@
     >
         <div
             :class="`w-full md:w-2/3 relative z-10 before:content=[''] before:-z-10
-            before:absolute before:inset-0 before:bg-white before:opacity-75
+            before:absolute before:inset-0 before:bg-primary before:opacity-75
             md:before:rounded-xl
             py-4 md:py-8 px-4 md:px-16 flex flex-col gap-16`"
         >
@@ -107,7 +107,7 @@
                     </router-link>
                 </ul>
                 <p
-                    class="text-xl italic indent-8 md:indent-16 bg-white p-4 rounded border"
+                    class="text-xl italic indent-8 md:indent-16 bg-black p-4 rounded"
                 >
                     {{ getMovie.data.value.description }}
                 </p>
