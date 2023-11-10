@@ -10,8 +10,7 @@
         <Motion
             id="carousel-bg"
             :class="`w-full h-full
-                bg-cover bg-red-500
-                absolute -z-10 brightness-50`"
+                bg-cover absolute -z-10 brightness-50`"
             :style="{
                 backgroundImage: `url('${props.movies[movieIdx].backdrop_url}')`,
             }"
@@ -62,7 +61,7 @@
             <ul class="flex gap-4 lg:text-xl font-semibold">
                 <li
                     v-for="genre in props.movies[movieIdx].genres"
-                    class="bg-green-800 px-4 py-2 rounded hover:cursor-pointer"
+                    class="bg-accent px-4 py-2 rounded hover:cursor-pointer"
                 >
                     {{ genre.name }}
                 </li>

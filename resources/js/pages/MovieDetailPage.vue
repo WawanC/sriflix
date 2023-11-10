@@ -79,7 +79,7 @@
                     </div>
                     <button
                         :disabled="authStore.user?.role === 'admin'"
-                        class="bg-green-700 px-4 py-2 rounded text-white disabled:bg-neutral-500"
+                        class="bg-accent hover:bg-secondary hover:text-primary px-4 py-2 rounded text-white disabled:bg-neutral-500"
                         @click="openReviewModal"
                     >
                         Give Review
@@ -101,7 +101,7 @@
                     <router-link
                         v-for="genre in getMovie.data.value.genres"
                         :to="`/movies?genre=${genre.name}`"
-                        class="bg-green-700 px-4 py-2 rounded-full text-white shadow capitalize"
+                        class="bg-accent px-4 py-2 rounded-full text-white shadow capitalize"
                     >
                         {{ genre.name }}
                     </router-link>

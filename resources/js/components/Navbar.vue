@@ -1,7 +1,5 @@
 <template>
-    <nav
-        :class="`w-full flex justify-between md:px-16 px-4 bg-green-700 text-white`"
-    >
+    <nav :class="`w-full flex justify-between md:px-16 px-4 bg-accent`">
         <a class="text-2xl font-bold flex items-center" href="/">
             <img
                 alt="sriflix-logo"
@@ -38,11 +36,11 @@
             </template>
             <template v-else>
                 <router-link class="hover:font-semibold" to="/login"
-                    >Login</router-link
-                >
+                    >Login
+                </router-link>
                 <router-link class="hover:font-semibold" to="/register"
-                    >Register</router-link
-                >
+                    >Register
+                </router-link>
             </template>
         </ul>
     </nav>

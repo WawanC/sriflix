@@ -47,7 +47,9 @@
                 />
             </div>
             <div class="flex justify-center">
-                <button class="bg-secondary text-primary rounded px-4 py-2">
+                <button
+                    class="bg-accent hover:bg-secondary hover:text-primary rounded px-4 py-2"
+                >
                     Register
                 </button>
             </div>
