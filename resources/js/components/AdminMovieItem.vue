@@ -1,7 +1,8 @@
 <template>
     <router-link
+        :class="`flex items-center justify-between gap-2 p-2 rounded shadow
+        bg-secondary border border-secondary text-primary`"
         :to="`/movies/${props.movie.id}`"
-        class="flex items-center justify-between gap-2 p-2 border rounded shadow"
     >
         <div class="flex gap-2 items-center flex-1 w-1/2 overflow-hidden">
             <MediaView
@@ -17,12 +18,12 @@
         <div class="flex gap-2">
             <router-link
                 :to="`/admin/edit-movie/${props.movie.id}`"
-                class="bg-neutral-200 p-2 rounded"
+                class="bg-accent text-secondary p-2 rounded"
             >
                 <PencilIcon class="w-6 aspect-square stroke-2" />
             </router-link>
             <button
-                class="bg-neutral-200 p-2 rounded"
+                class="bg-accent text-secondary p-2 rounded"
                 @click.prevent="() => deleteHandler(props.movie.id)"
             >
                 <CrossIcon class="w-6 aspect-square stroke-2" />
