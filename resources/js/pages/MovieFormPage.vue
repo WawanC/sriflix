@@ -20,7 +20,8 @@
             <div v-if="props.mode === 'create'" class="relative">
                 <input
                     v-model="titleInputSearchApi"
-                    class="border-b-2 outline-none w-full border-black p-2"
+                    :class="`border-b-2 outline-none w-full border-secondary p-2
+                    bg-transparent placeholder-secondary`"
                     placeholder="Search from TMDB API"
                     type="text"
                 />
@@ -70,7 +71,7 @@
                 <input
                     id="title"
                     v-model="title"
-                    class="border-b-2 border-black p-2 outline-none"
+                    class="border-b-2 border-secondary p-2 outline-none bg-transparent"
                     required
                     type="text"
                 />
@@ -83,10 +84,10 @@
                         :class="`
                         ${
                             genre.includes(genreName)
-                                ? `bg-green-700 text-white`
-                                : `bg-white text-green-700`
+                                ? `bg-accent text-secondary`
+                                : `bg-secondary text-primary`
                         }
-                        px-4 py-2 rounded-full shadow text-sm md:text-base border-2 border-green-700`"
+                        px-4 py-2 rounded-full shadow text-sm md:text-base border-2 border-primary`"
                         type="button"
                         @click="toggleGenreHandler(genreName)"
                     >
@@ -101,7 +102,7 @@
                 <textarea
                     id="description"
                     v-model="description"
-                    class="border-2 border-black p-4 outline-none"
+                    class="border-2 border-secondary p-4 outline-none bg-transparent rounded-xl"
                     required
                     rows="5"
                 />
@@ -123,7 +124,7 @@
                     <input
                         id="picture_url"
                         v-model="pictureUrl"
-                        class="border-b-2 border-black p-2 outline-none w-full"
+                        class="border-b-2 border-secondary p-2 outline-none w-full bg-transparent"
                         required
                         type="text"
                         @input="checkPictureValidity"
@@ -141,15 +142,10 @@
                     class="w-full md:w-3/4 aspect-video"
                     type="video"
                 />
-                <!--                <iframe-->
-                <!--                    v-if="isVidValid"-->
-                <!--                    :src="videoUrl"-->
-                <!--                    class="w-full md:w-3/4 aspect-video"-->
-                <!--                ></iframe>-->
                 <input
                     id="video_url"
                     v-model="videoUrl"
-                    class="border-b-2 border-black p-2 outline-none w-full"
+                    class="border-b-2 border-secondary p-2 outline-none w-full bg-transparent"
                     required
                     type="text"
                     @input="checkVideoValidity"
@@ -157,7 +153,7 @@
             </div>
             <div class="flex justify-center">
                 <button
-                    class="bg-green-700 text-white px-4 py-2 rounded"
+                    class="bg-accent text-secondary px-4 py-2 rounded"
                     type="submit"
                 >
                     Submit
