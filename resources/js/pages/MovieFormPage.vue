@@ -27,19 +27,20 @@
                 />
                 <ul
                     v-if="searchMoviesApi.data.value.length > 0"
-                    class="absolute top-[110%] left-0 right-0 shadow border rounded overflow-hidden"
+                    :class="`absolute top-[100%] left-0 right-0 shadow
+                    border-r border-l border-b overflow-hidden`"
                 >
                     <li
                         v-if="searchMoviesApi.isFetching.value"
-                        class="py-8 flex justify-center items-center bg-white"
+                        class="py-8 flex justify-center items-center bg-accent"
                     >
                         Fetching...
                     </li>
                     <template v-else>
                         <li
                             v-for="movie in searchMoviesApi.data.value"
-                            :class="`w-full p-2 bg-white
-                        hover:cursor-pointer hover:bg-neutral-200 flex gap-4 items-center`"
+                            :class="`w-full p-2 bg-accent
+                        hover:cursor-pointer hover:bg-primary flex gap-4 items-center`"
                             @click="selectApiMovieHandler(movie)"
                         >
                             <MediaView
