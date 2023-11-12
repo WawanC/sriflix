@@ -36,11 +36,7 @@
             </div>
 
             <div class="flex justify-center">
-                <button
-                    class="bg-accent hover:bg-secondary hover:text-primary rounded px-4 py-2"
-                >
-                    Login
-                </button>
+                <button class="btn">Login</button>
             </div>
         </form>
     </main>

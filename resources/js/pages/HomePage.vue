@@ -27,8 +27,7 @@
             <ul class="md:flex flex-wrap gap-4 w-full justify-center hidden">
                 <router-link
                     v-for="genre in genres"
-                    :class="`bg-accent rounded w-[125px] h-[50px] text-xl font-semibold text-white
-                text-center flex justify-center items-center capitalize shadow`"
+                    class="btn"
                     :to="`/movies?genre=${genre}&page=1&limit=12`"
                 >
                     {{ genre }}

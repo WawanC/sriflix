@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .btn {
+        @apply bg-accent px-4 py-2 rounded text-xl font-semibold text-white 
+        capitalize shadow hover:bg-secondary hover:text-primary;
+    }
+    .badge {
+        @apply bg-accent px-4 py-2 rounded-full text-white 
+        capitalize shadow hover:bg-secondary hover:text-primary;
+    }
+}
+
 #app {
     min-height: 100dvh;
     display: flex;
@@ -11,7 +22,7 @@
 /* Change scrollbar color */
 :root {
     --primary: #001524;
-    --secondary: #445D48;
+    --secondary: #445d48;
 }
 
 * {

@@ -58,13 +58,14 @@
             <h1 class="text-2xl lg:text-4xl font-bold text-center">
                 {{ props.movies[movieIdx].title }}
             </h1>
-            <ul class="flex gap-4 lg:text-xl font-semibold">
-                <li
+            <ul class="flex gap-4 lg:text-xl">
+                <RouterLink
+                    :to="`/movies?genre=${genre.name}&page=1&limit=12`"
                     v-for="genre in props.movies[movieIdx].genres"
-                    class="bg-accent px-4 py-2 rounded hover:cursor-pointer"
+                    class="badge"
                 >
                     {{ genre.name }}
-                </li>
+                </RouterLink>
             </ul>
             <p class="line-clamp-4 indent-8 lg:indent-16 lg:text-xl">
                 {{ props.movies[movieIdx].description }}
