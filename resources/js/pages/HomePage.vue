@@ -56,7 +56,8 @@
                     v-else
                     :class="`text-center gap-4 grid
                 grid-rows-2 grid-flow-col overflow-x-auto lg:grid-rows-1
-                place-content-start`"
+                place-content-start lg:py-10 justify-center lg:justify-normal
+                overflow-y-hidden`"
                 >
                     <MovieCard
                         v-for="movie in getFeaturedMovies.data.value"

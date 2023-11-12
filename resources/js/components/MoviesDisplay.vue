@@ -16,7 +16,7 @@
             </div>
             <ul
                 v-else
-                class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                class="flex items-center gap-4 text-center w-full md:w-full overflow-x-scroll lg:py-10 overflow-y-hidden"
             >
                 <MovieCard
                     v-for="movie in getMovies.data.value"

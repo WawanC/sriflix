@@ -114,7 +114,7 @@
             </section>
             <section class="flex flex-col gap-2">
                 <h1 class="text-xl md:text-2xl font-bold">Related movies</h1>
-                <hr class="border-b border-black" />
+                <hr class="border-b border-secondary" />
                 <div
                     v-if="getRelatedMovies.isFetching.value"
                     class="flex p-4 justify-center"
@@ -123,7 +123,7 @@
                 </div>
                 <ul
                     v-else
-                    class="flex items-stretch gap-4 text-center w-full md:w-full overflow-x-scroll"
+                    class="flex gap-4 text-center w-full md:w-full overflow-x-scroll lg:py-10 overflow-y-hidden"
                 >
                     <MovieCard
                         v-for="movie in getRelatedMovies.data.value"
@@ -133,7 +133,7 @@
             </section>
             <section class="flex flex-col gap-4">
                 <h1 class="text-4xl font-bold">Reviews</h1>
-                <hr class="border-b border-black" />
+                <hr class="border-b border-secondary" />
                 <ul class="flex flex-col gap-4 py-4">
                     <li
                         v-if="getMovieReview.data.value.length <= 0"
