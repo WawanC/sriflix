@@ -4,7 +4,7 @@
         <input
             v-model="searchInput"
             autofocus
-            class="border-b-2 border-secondary w-3/4 md:w-1/2 text-xl p-2 outline-none bg-transparent"
+            class="border-b-2 border-secondary w-3/4 md:w-1/2 text-xl p-2 outline-none bg-transparent text-center"
             placeholder="Search movies"
             type="text"
         />
@@ -21,8 +21,7 @@
         <ul v-else class="flex flex-wrap gap-4 w-full justify-center">
             <router-link
                 v-for="genre in genres"
-                :class="`bg-green-700 rounded w-[150px] h-[100px] text-2xl font-semibold text-white
-                text-center flex justify-center items-center capitalize shadow`"
+                :class="`btn w-[150px] h-[100px] text-2xl flex justify-center items-center`"
                 :to="`/movies?genre=${genre}&page=1&limit=12`"
             >
                 {{ genre }}

@@ -1,6 +1,6 @@
 <template>
     <nav
-        :class="`sticky md:hidden bottom-0 left-0 right-0 h-[75px] bg-green-700
+        :class="`sticky md:hidden bottom-0 left-0 right-0 h-[75px] bg-accent    
         flex justify-around z-10`"
     >
         <router-link
