@@ -1,6 +1,6 @@
 <template>
     <div
-        class="loader w-[80px] md:w-[120px] aspect-square border-[12px] md:border-[16px] border-t-green-600 border-neutral-200"
+        class="loader w-[80px] md:w-[120px] aspect-square border-[12px] md:border-[16px] border-t-accent border-secondary"
     ></div>
 </template>
 
