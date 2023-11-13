@@ -21,7 +21,7 @@
                 <input
                     v-model="titleInputSearchApi"
                     :class="`border-b-2 outline-none w-full border-secondary p-2
-                    bg-transparent placeholder-secondary`"
+                    bg-transparent`"
                     placeholder="Search from TMDB API"
                     type="text"
                 />
@@ -75,6 +75,7 @@
                     class="border-b-2 border-secondary p-2 outline-none bg-transparent"
                     required
                     type="text"
+                    placeholder="Enter movie title"
                 />
             </div>
             <div class="flex flex-col gap-4">
@@ -85,7 +86,7 @@
                         :class="`
                         ${
                             genre.includes(genreName)
-                                ? `bg-accent text-secondary`
+                                ? `bg-accent text-secondary font-semibold`
                                 : `bg-secondary text-primary`
                         }
                         px-4 py-2 rounded-full shadow text-sm md:text-base border-2 border-primary`"
@@ -103,9 +104,10 @@
                 <textarea
                     id="description"
                     v-model="description"
-                    class="border-2 border-secondary p-4 outline-none bg-transparent rounded-xl"
+                    class="border-2 border-secondary p-4 outline-none bg-transparent rounded-lg"
                     required
                     rows="5"
+                    placeholder="Enter movie description"
                 />
             </div>
             <div class="flex flex-col items-center gap-2">
@@ -129,6 +131,7 @@
                         required
                         type="text"
                         @input="checkPictureValidity"
+                        placeholder="Enter movie picture url"
                     />
                 </div>
             </div>
@@ -150,15 +153,11 @@
                     required
                     type="text"
                     @input="checkVideoValidity"
+                    placeholder="Enter movie video url"
                 />
             </div>
             <div class="flex justify-center">
-                <button
-                    class="bg-accent text-secondary px-4 py-2 rounded"
-                    type="submit"
-                >
-                    Submit
-                </button>
+                <button class="btn" type="submit">Submit</button>
             </div>
         </form>
     </main>
