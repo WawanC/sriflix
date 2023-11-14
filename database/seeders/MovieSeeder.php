@@ -38,7 +38,7 @@ class MovieSeeder extends Seeder
                 "title" => $movie['title'],
                 "description" => $movie["overview"],
                 "picture_url" => "https://image.tmdb.org/t/p/w500" . $movie["poster_path"],
-                "backdrop_url" => "https://image.tmdb.org/t/p/w500" . $movie["backdrop_path"],
+                "backdrop_url" => "https://image.tmdb.org/t/p/w1280" . $movie["backdrop_path"],
                 "video_url" => "https://www.youtube.com/embed/" . $videoId
             ];
 
