@@ -1,44 +1,56 @@
 <template>
     <main
-        class="flex-1 flex flex-col items-center md:justify-center gap-12 p-8 md:p-0"
+        class="flex-1 flex flex-col items-center md:justify-center p-8 md:p-0"
     >
-        <h1 class="text-4xl font-bold">Sign-In</h1>
-        <loading v-if="login.isLoading.value" />
-        <form
-            v-else
-            class="w-full md:w-1/4 flex flex-col gap-8 text-xl"
-            @submit.prevent="formSubmitHandler"
+        <div
+            class="flex flex-col items-center gap-12 w-full md:w-1/2 lg:w-1/4 relative"
         >
-            <span
-                v-if="login.error.value"
-                class="text-red-500 font-semibold text-center"
-                >{{ login.error.value }}</span
+            <div
+                class="bg-black absolute inset-0 -z-10 -m-16 rounded opacity-25"
+            />
+            <h1 class="text-4xl font-bold">Sign-In</h1>
+            <loading v-if="login.isLoading.value" />
+            <form
+                v-else
+                class="w-full flex flex-col gap-8 text-xl"
+                @submit.prevent="formSubmitHandler"
             >
-            <div class="flex flex-col gap-2">
-                <label class="font-semibold" for="username">Username :</label>
-                <input
-                    id="username"
-                    v-model.trim="username"
-                    class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
-                    placeholder="Enter your username"
-                    type="text"
-                />
-            </div>
-            <div class="flex flex-col gap-2">
-                <label class="font-semibold" for="password">Password :</label>
-                <input
-                    id="password"
-                    v-model.trim="password"
-                    class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
-                    placeholder="Enter your password"
-                    type="password"
-                />
-            </div>
+                <!-- <div class="absolute -z-10 inset-0 bg-white -m-1" /> -->
+                <span
+                    v-if="login.error.value"
+                    class="text-red-500 font-semibold text-center"
+                    >{{ login.error.value }}</span
+                >
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold" for="username"
+                        >Username :</label
+                    >
+                    <input
+                        id="username"
+                        v-model.trim="username"
+                        class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
+                        placeholder="Enter your username"
+                        type="text"
+                    />
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold" for="password"
+                        >Password :</label
+                    >
+                    <input
+                        id="password"
+                        v-model.trim="password"
+                        class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
+                        placeholder="Enter your password"
+                        type="password"
+                    />
+                </div>
 
-            <div class="flex justify-center">
-                <button class="btn">Login</button>
-            </div>
-        </form>
+                <div class="flex justify-center">
+                    <button class="btn">Login</button>
+                </div>
+            </form>
+        </div>
     </main>
 </template>
 
