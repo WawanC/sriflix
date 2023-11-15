@@ -15,7 +15,7 @@
         <div class="flex gap-4 text-xl items-center">
             <button
                 :disabled="route.query.page ? +route.query.page < 2 : true"
-                class="bg-green-700 text-white px-4 py-2 rounded disabled:bg-neutral-500"
+                class="btn disabled:bg-neutral-500"
                 @click="movePage(-1)"
             >
                 Prev
@@ -27,7 +27,7 @@
                         ? getMovies.data.value.length < +route.query.limit
                         : true
                 "
-                class="bg-green-700 text-white px-4 py-2 rounded disabled:bg-neutral-500"
+                class="btn disabled:bg-neutral-500"
                 @click="movePage(1)"
             >
                 Next
