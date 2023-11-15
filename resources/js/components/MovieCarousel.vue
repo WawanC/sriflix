@@ -7,6 +7,20 @@
         :initial="{ opacity: 0, y: 50 }"
         :transition="{ duration: 0.5 }"
     >
+        <button
+            @click="movePrev"
+            id="carousel-action"
+            class="hidden md:block absolute left-4 bg-black p-2 rounded-full bg-opacity-50"
+        >
+            <LeftArrowIcon class="w-12 aspect-square" />
+        </button>
+        <button
+            @click="moveNext"
+            id="carousel-action"
+            class="hidden md:block absolute right-4 bg-black p-2 rounded-full bg-opacity-50"
+        >
+            <RightArrowIcon class="w-12 aspect-square" />
+        </button>
         <Motion
             id="carousel-bg"
             :class="`w-full h-full
@@ -25,7 +39,7 @@
                         ].backdrop_url
                     }')`,
                 }"
-                class="absolute right-full w-full h-full bg-cover bg-red-500"
+                class="absolute right-full w-full h-full bg-cover"
             ></div>
             <div
                 :style="{
@@ -37,7 +51,7 @@
                         ].backdrop_url
                     }')`,
                 }"
-                class="absolute left-full w-full h-full bg-cover bg-blue-500"
+                class="absolute left-full w-full h-full bg-cover"
             ></div>
         </Motion>
         <div
@@ -83,6 +97,8 @@ import { Movie } from "../types/Movie";
 import { onMounted, onUnmounted, ref } from "vue";
 import { Motion } from "motion/vue";
 import { animate } from "motion";
+import LeftArrowIcon from "../icons/LeftArrowIcon.vue";
+import RightArrowIcon from "../icons/RightArrowIcon.vue";
 
 const props = defineProps<{ movies: Movie[] }>();
 
@@ -95,25 +111,47 @@ const moveNext = async () => {
         movieIdx.value >= props.movies.length - 1 ? 0 : movieIdx.value + 1;
     await Promise.all([
         animate("#carousel-bg", { x: "-100%" }).finished,
-        animate("#carousel-info, #carousel-poster", { opacity: 0 }).finished,
+        animate("#carousel-info, #carousel-poster, #carousel-action", {
+            opacity: 0,
+        }).finished,
     ]);
     movieIdx.value = nextIdx;
     await Promise.all([
         animate("#carousel-bg", { x: 0 }, { duration: 0 }).finished,
-        animate("#carousel-info, #carousel-poster", { opacity: 1 }).finished,
+        animate("#carousel-info, #carousel-poster, #carousel-action", {
+            opacity: 1,
+        }).finished,
     ]);
+    setCarouselTimer();
 };
-// const movePrev = async () => {
-//     const prevIdx =
-//         movieIdx.value <= 0 ? props.movies.length - 1 : movieIdx.value - 1;
-//     await animate("#carousel-bg", { x: "100%" }).finished;
-//     movieIdx.value = prevIdx;
-//     animate("#carousel-bg", { x: 0 }, { duration: 0 });
-// };
+const movePrev = async () => {
+    const prevIdx =
+        movieIdx.value <= 0 ? props.movies.length - 1 : movieIdx.value - 1;
+    await Promise.all([
+        animate("#carousel-bg", { x: "100%" }).finished,
+        animate("#carousel-info, #carousel-poster, #carousel-action", {
+            opacity: 0,
+        }).finished,
+    ]);
+    movieIdx.value = prevIdx;
+    await Promise.all([
+        animate("#carousel-bg", { x: 0 }, { duration: 0 }).finished,
+        animate("#carousel-info, #carousel-poster, #carousel-action", {
+            opacity: 1,
+        }).finished,
+    ]);
+    setCarouselTimer();
+};
+
+const setCarouselTimer = () => {
+    if (timerId) clearInterval(timerId);
+    timerId = setInterval(moveNext, 3000);
+};
 
 onMounted(() => {
-    timerId = setInterval(moveNext, 3000);
+    setCarouselTimer();
 });
+
 onUnmounted(() => {
     if (!timerId) return;
     clearInterval(timerId);
