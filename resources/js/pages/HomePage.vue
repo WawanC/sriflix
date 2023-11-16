@@ -12,9 +12,7 @@
 
         <input
             v-model="searchInput"
-            :class="`border-b-2 border-secondary w-full md:w-1/2 text-xl p-2
-            outline-none self-center text-center placeholder:text-center hidden md:block
-            bg-transparent`"
+            :class="`text-input md:w-1/2 text-xl self-center text-center placeholder:text-center hidden md:block`"
             placeholder="Search movies"
             type="text"
         />

@@ -11,6 +11,9 @@
         @apply bg-accent px-4 py-2 rounded-full text-white 
         capitalize shadow hover:bg-secondary hover:text-primary;
     }
+    .text-input {
+        @apply p-2 border-b-2 border-secondary w-full outline-none bg-transparent;
+    }
 }
 
 #app {

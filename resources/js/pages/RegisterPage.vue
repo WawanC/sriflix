@@ -27,7 +27,7 @@
                     <input
                         id="username"
                         v-model.trim="username"
-                        class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
+                        class="text-input"
                         placeholder="Enter your username"
                         type="text"
                     />
@@ -39,7 +39,7 @@
                     <input
                         id="password"
                         v-model.trim="password"
-                        class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
+                        class="text-input"
                         placeholder="Enter your password"
                         type="password"
                     />
@@ -51,7 +51,7 @@
                     <input
                         id="password2"
                         v-model.trim="password2"
-                        class="p-2 border-b-2 border-secondary w-full outline-none bg-transparent"
+                        class="text-input"
                         placeholder="Repeat your password"
                         type="password"
                     />

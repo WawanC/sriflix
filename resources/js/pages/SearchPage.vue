@@ -4,7 +4,7 @@
         <input
             v-model="searchInput"
             autofocus
-            class="border-b-2 border-secondary w-3/4 md:w-1/2 text-xl p-2 outline-none bg-transparent text-center"
+            class="text-input w-3/4 md:w-1/2 text-xl text-center"
             placeholder="Search movies"
             type="text"
         />
