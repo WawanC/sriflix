@@ -8,14 +8,14 @@
         :transition="{ duration: 0.5 }"
     >
         <button
-            @click="movePrev"
+            @click="moveCarousel(CAROUSEL_MOVE_DIRECTION.PREV)"
             id="carousel-action"
             class="hidden md:block absolute left-4 bg-black p-2 rounded-full bg-opacity-50"
         >
             <LeftArrowIcon class="w-12 aspect-square" />
         </button>
         <button
-            @click="moveNext"
+            @click="moveCarousel(CAROUSEL_MOVE_DIRECTION.NEXT)"
             id="carousel-action"
             class="hidden md:block absolute right-4 bg-black p-2 rounded-full bg-opacity-50"
         >
@@ -86,10 +86,6 @@
             </p>
         </article>
     </Motion>
-    <!--    <div class="flex gap-4 self-center">-->
-    <!--        <button class="bg-neutral-200 p-2 w-fit" @click="movePrev">Prev</button>-->
-    <!--        <button class="bg-neutral-200 p-2 w-fit" @click="moveNext">Next</button>-->
-    <!--    </div>-->
 </template>
 
 <script lang="ts" setup>
@@ -106,11 +102,25 @@ const movieIdx = ref(0);
 
 let timerId: number | null = null;
 
-const moveNext = async () => {
+enum CAROUSEL_MOVE_DIRECTION {
+    PREV,
+    NEXT,
+}
+
+const moveCarousel = async (direction: CAROUSEL_MOVE_DIRECTION) => {
     const nextIdx =
-        movieIdx.value >= props.movies.length - 1 ? 0 : movieIdx.value + 1;
+        direction === CAROUSEL_MOVE_DIRECTION.NEXT
+            ? movieIdx.value >= props.movies.length - 1
+                ? 0
+                : movieIdx.value + 1
+            : movieIdx.value <= 0
+            ? props.movies.length - 1
+            : movieIdx.value - 1;
+
     await Promise.all([
-        animate("#carousel-bg", { x: "-100%" }).finished,
+        animate("#carousel-bg", {
+            x: direction === CAROUSEL_MOVE_DIRECTION.NEXT ? "-100%" : "100%",
+        }).finished,
         animate("#carousel-info, #carousel-poster, #carousel-action", {
             opacity: 0,
         }).finished,
@@ -124,28 +134,13 @@ const moveNext = async () => {
     ]);
     setCarouselTimer();
 };
-const movePrev = async () => {
-    const prevIdx =
-        movieIdx.value <= 0 ? props.movies.length - 1 : movieIdx.value - 1;
-    await Promise.all([
-        animate("#carousel-bg", { x: "100%" }).finished,
-        animate("#carousel-info, #carousel-poster, #carousel-action", {
-            opacity: 0,
-        }).finished,
-    ]);
-    movieIdx.value = prevIdx;
-    await Promise.all([
-        animate("#carousel-bg", { x: 0 }, { duration: 0 }).finished,
-        animate("#carousel-info, #carousel-poster, #carousel-action", {
-            opacity: 1,
-        }).finished,
-    ]);
-    setCarouselTimer();
-};
 
 const setCarouselTimer = () => {
     if (timerId) clearInterval(timerId);
-    timerId = setInterval(moveNext, 3000);
+    timerId = setInterval(
+        () => moveCarousel(CAROUSEL_MOVE_DIRECTION.NEXT),
+        3000,
+    );
 };
 
 onMounted(() => {
