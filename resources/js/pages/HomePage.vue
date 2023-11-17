@@ -67,19 +67,19 @@
 
         <MoviesDisplay
             :option="{ genre: ['action'], limit: 10 }"
-            title="Action movies"
+            title="Action"
         />
         <MoviesDisplay
             :option="{ genre: ['romance'], limit: 10 }"
-            title="Romance movies"
+            title="Romance"
         />
         <MoviesDisplay
             :option="{ genre: ['comedy'], limit: 10 }"
-            title="Comedy movies"
+            title="Comedy"
         />
         <MoviesDisplay
             :option="{ genre: ['mystery'], limit: 10 }"
-            title="Mystery movies"
+            title="Mystery"
         />
     </main>
 </template>

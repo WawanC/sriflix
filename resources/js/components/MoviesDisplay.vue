@@ -5,9 +5,12 @@
         :transition="{ duration: 0.5 }"
     >
         <section class="flex flex-col gap-6">
-            <h1 class="text-2xl font-semibold underline underline-offset-8">
+            <RouterLink
+                :to="`/movies?genre=${props.title.toLowerCase()}&page=1&limit=12`"
+                class="first-letter:text-4xl md:first-letter:text-5xl first-letter:font-bold text-3xl md:text-4xl font-semibold underline underline-offset-8"
+            >
                 {{ props.title }}
-            </h1>
+            </RouterLink>
             <div
                 v-if="getMovies.isFetching.value"
                 class="flex p-4 justify-center"
