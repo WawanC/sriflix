@@ -12,14 +12,18 @@
             id="carousel-action"
             class="hidden md:block absolute left-4 bg-black p-2 rounded-full bg-opacity-50"
         >
-            <LeftArrowIcon class="w-12 aspect-square" />
+            <LeftArrowIcon
+                class="w-12 aspect-square opacity-50 hover:opacity-100"
+            />
         </button>
         <button
             @click="moveCarousel(CAROUSEL_MOVE_DIRECTION.NEXT)"
             id="carousel-action"
             class="hidden md:block absolute right-4 bg-black p-2 rounded-full bg-opacity-50"
         >
-            <RightArrowIcon class="w-12 aspect-square" />
+            <RightArrowIcon
+                class="w-12 aspect-square opacity-50 hover:opacity-100"
+            />
         </button>
         <Motion
             id="carousel-bg"
